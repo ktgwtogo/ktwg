@@ -1,6 +1,6 @@
 "use client";
 
-import { CheckCircle2, Mail, RotateCcw } from "lucide-react";
+import { CheckCircle2, Loader2, Mail, RotateCcw } from "lucide-react";
 import { useId, type ComponentProps, type MouseEvent, type ReactNode } from "react";
 import type { FieldError, UseFormRegisterReturn } from "react-hook-form";
 import { FaWhatsapp } from "react-icons/fa6";
@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 import type { Delivery } from "@/lib/forms/deliver";
 import { cn } from "@/lib/utils";
+import { Turnstile } from "./turnstile";
+import type { FormOutcome } from "./use-delivery-form";
 
 const control =
   "w-full min-w-0 rounded-xl border border-input bg-card px-4 text-base text-foreground shadow-xs transition-colors outline-none placeholder:text-muted-foreground/70 focus-visible:border-ktgw-orange focus-visible:ring-3 focus-visible:ring-ktgw-sun/40 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/15";
@@ -240,17 +242,62 @@ export function Honeypot({ registration }: { registration: UseFormRegisterReturn
   );
 }
 
-/** Écran de confirmation : propose l'envoi du message préparé par WhatsApp ou e-mail. */
+/** Résultat d'un envoi : confirmation, ou envoi de secours par WhatsApp / e-mail. */
+export function FormResult({
+  outcome,
+  onReset,
+  sentTitle,
+  sentText = "Notre équipe vous répondra dans les meilleurs délais. Un accusé de réception vous a été envoyé par e-mail.",
+}: {
+  outcome: FormOutcome;
+  onReset: () => void;
+  sentTitle: string;
+  sentText?: string;
+}) {
+  return (
+    <div id="form-result">
+      {outcome.status === "sent" ? (
+        <div role="status" className="flex flex-col items-center gap-5 rounded-2xl bg-card p-8 text-center shadow-soft ring-1 ring-foreground/5 animate-in fade-in zoom-in-95 duration-500">
+          <span className="flex size-16 items-center justify-center rounded-full bg-ktgw-green/15 text-ktgw-green-strong">
+            <CheckCircle2 aria-hidden className="size-9" />
+          </span>
+          <div className="flex flex-col gap-2">
+            <h3 className="text-2xl font-bold">{sentTitle}</h3>
+            <p className="max-w-md text-muted-foreground">{sentText}</p>
+          </div>
+          <Button variant="ghost" onClick={onReset} className="gap-2 text-muted-foreground">
+            <RotateCcw aria-hidden />
+            Faire une nouvelle demande
+          </Button>
+        </div>
+      ) : (
+        <DeliveryPanel delivery={outcome.delivery} onReset={onReset} title="Envoyez-nous votre demande" />
+      )}
+    </div>
+  );
+}
+
+/** Message d'erreur renvoyé par le serveur (anti-robot, trop d'envois…). */
+export function ServerError({ message }: { message: string | null }) {
+  if (!message) return null;
+  return (
+    <p role="alert" className="rounded-xl bg-destructive/10 px-4 py-3 text-sm font-medium text-destructive">
+      {message}
+    </p>
+  );
+}
+
+/** Envoi de secours : propose l'envoi du message préparé par WhatsApp ou e-mail. */
 export function DeliveryPanel({ delivery, onReset, title }: { delivery: Delivery; onReset: () => void; title: string }) {
   return (
     <div role="status" className="flex flex-col items-center gap-5 rounded-2xl bg-card p-8 text-center shadow-soft ring-1 ring-foreground/5 animate-in fade-in zoom-in-95 duration-500">
-      <span className="flex size-16 items-center justify-center rounded-full bg-ktgw-green/15 text-ktgw-green-strong">
-        <CheckCircle2 aria-hidden className="size-9" />
+      <span className="flex size-16 items-center justify-center rounded-full bg-ktgw-sun/20 text-ktgw-orange">
+        <Mail aria-hidden className="size-9" />
       </span>
       <div className="flex flex-col gap-2">
         <h3 className="text-2xl font-bold">{title}</h3>
         <p className="max-w-md text-muted-foreground">
-          Dernière étape : choisissez comment nous l&apos;envoyer. Le message est déjà rédigé, il vous suffit de valider l&apos;envoi.
+          L&apos;envoi automatique n&apos;a pas abouti. Votre message est déjà rédigé : choisissez comment nous l&apos;envoyer.
         </p>
       </div>
       <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
@@ -286,11 +333,15 @@ export function DeliveryPanel({ delivery, onReset, title }: { delivery: Delivery
  */
 export const keepFieldFocus = (e: MouseEvent) => e.preventDefault();
 
-/** Bouton d'envoi pleine largeur sur mobile. */
+/** Bouton d'envoi pleine largeur sur mobile, précédé de la vérification anti-robot. */
 export function SubmitButton({ children, pending }: { children: ReactNode; pending?: boolean }) {
   return (
-    <Button type="submit" size="xl" disabled={pending} onMouseDown={keepFieldFocus} className="w-full sm:w-auto">
-      {children}
-    </Button>
+    <>
+      <Turnstile />
+      <Button type="submit" size="xl" disabled={pending} aria-busy={pending} onMouseDown={keepFieldFocus} className="w-full sm:w-auto">
+        {pending ? <Loader2 aria-hidden className="animate-spin" /> : null}
+        {pending ? "Envoi en cours…" : children}
+      </Button>
+    </>
   );
 }

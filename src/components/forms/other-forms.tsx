@@ -4,13 +4,8 @@ import { Heart, Mail, Send, Ticket } from "lucide-react";
 import { useState } from "react";
 import {
   availabilityOptions,
-  donationDeclarationSchema,
-  engagementSchema,
   engagementTypes,
-  eventRegistrationSchema,
-  newsletterSchema,
   schoolLevels,
-  trainingApplicationSchema,
   trainingTracks,
   type DonationDeclarationValues,
   type EngagementValues,
@@ -18,35 +13,25 @@ import {
   type NewsletterValues,
   type TrainingApplicationValues,
 } from "@/lib/validations/forms";
-import { ChoiceGroup, ConsentField, DeliveryPanel, Honeypot, SelectField, SubmitButton, TextAreaField, TextField } from "./fields";
+import { ChoiceGroup, ConsentField, FormResult, Honeypot, SelectField, ServerError, SubmitButton, TextAreaField, TextField } from "./fields";
 import { useDeliveryForm } from "./use-delivery-form";
 
-function Result({ children }: { children: React.ReactNode }) {
-  return <div id="form-result">{children}</div>;
-}
-
 /** Inscription à un événement. */
-export function EventRegistrationForm({ eventTitle, full }: { eventTitle: string; full?: boolean }) {
-  const { form, delivery, onSubmit, reset, errors } = useDeliveryForm<EventRegistrationValues>({
-    schema: eventRegistrationSchema,
+export function EventRegistrationForm({ eventSlug, eventTitle, full }: { eventSlug: string; eventTitle: string; full?: boolean }) {
+  const { form, outcome, onSubmit, reset, pending, serverError, errors } = useDeliveryForm<EventRegistrationValues>({
+    kind: "event",
     defaultValues: { seats: "1", consent: false },
-    subject: () => `${full ? "Liste d'attente" : "Inscription"} : ${eventTitle}`,
-    toFields: (v) => ({
-      Événement: eventTitle,
-      Nom: v.name,
-      "E-mail": v.email,
-      Téléphone: v.phone,
-      Organisation: v.organization,
-      "Nombre de places": v.seats,
-      "Besoins particuliers": v.needs,
-    }),
+    context: { eventSlug, eventTitle, full },
   });
   const { register } = form;
-  if (delivery)
+  if (outcome)
     return (
-      <Result>
-        <DeliveryPanel delivery={delivery} onReset={reset} title="Votre inscription est prête !" />
-      </Result>
+      <FormResult
+        outcome={outcome}
+        onReset={reset}
+        sentTitle={full ? "Vous êtes sur la liste d'attente !" : "Votre inscription est enregistrée !"}
+        sentText="Un e-mail de confirmation vous a été envoyé. Nous vous recontacterons si besoin avant l'événement."
+      />
     );
   return (
     <form onSubmit={onSubmit} noValidate className="relative flex flex-col gap-5">
@@ -60,8 +45,9 @@ export function EventRegistrationForm({ eventTitle, full }: { eventTitle: string
       <TextField label="Nombre de places" required type="number" min={1} max={10} inputMode="numeric" registration={register("seats")} error={errors.seats} className="sm:max-w-48" />
       <TextAreaField label="Besoins particuliers (accessibilité, régime…)" rows={3} registration={register("needs")} error={errors.needs} />
       <ConsentField registration={register("consent")} error={errors.consent} />
+      <ServerError message={serverError} />
       <div>
-        <SubmitButton>
+        <SubmitButton pending={pending}>
           <Ticket aria-hidden />
           {full ? "Rejoindre la liste d'attente" : "Je m'inscris"}
         </SubmitButton>
@@ -72,29 +58,12 @@ export function EventRegistrationForm({ eventTitle, full }: { eventTitle: string
 
 /** Bénévolat ou adhésion. */
 export function EngagementForm({ defaultType = "Bénévolat" }: { defaultType?: EngagementValues["type"] }) {
-  const { form, delivery, onSubmit, reset, errors } = useDeliveryForm<EngagementValues>({
-    schema: engagementSchema,
+  const { form, outcome, onSubmit, reset, pending, serverError, errors } = useDeliveryForm<EngagementValues>({
+    kind: "engagement",
     defaultValues: { type: defaultType, consent: false, availability: [] },
-    subject: (v) => `${v.type} : ${v.name}`,
-    toFields: (v) => ({
-      Démarche: v.type,
-      Nom: v.name,
-      "E-mail": v.email,
-      Téléphone: v.phone,
-      Pays: v.country,
-      Profil: v.profile,
-      Compétences: v.skills,
-      Disponibilités: v.availability,
-      Message: v.message,
-    }),
   });
   const { register } = form;
-  if (delivery)
-    return (
-      <Result>
-        <DeliveryPanel delivery={delivery} onReset={reset} title="Merci pour votre engagement !" />
-      </Result>
-    );
+  if (outcome) return <FormResult outcome={outcome} onReset={reset} sentTitle="Merci pour votre engagement !" />;
   return (
     <form onSubmit={onSubmit} noValidate className="relative flex flex-col gap-5">
       <Honeypot registration={register("website")} />
@@ -110,8 +79,9 @@ export function EngagementForm({ defaultType = "Bénévolat" }: { defaultType?: 
       <ChoiceGroup legend="Disponibilités" required options={availabilityOptions} registration={register("availability")} error={errors.availability as never} />
       <TextAreaField label="Un mot pour nous ?" rows={3} registration={register("message")} error={errors.message} />
       <ConsentField registration={register("consent")} error={errors.consent} />
+      <ServerError message={serverError} />
       <div>
-        <SubmitButton>
+        <SubmitButton pending={pending}>
           <Send aria-hidden />
           Envoyer ma candidature
         </SubmitButton>
@@ -122,28 +92,19 @@ export function EngagementForm({ defaultType = "Bénévolat" }: { defaultType?: 
 
 /** Candidature à une formation (apprenant·e). */
 export function TrainingApplicationForm() {
-  const { form, delivery, onSubmit, reset, errors } = useDeliveryForm<TrainingApplicationValues>({
-    schema: trainingApplicationSchema,
+  const { form, outcome, onSubmit, reset, pending, serverError, errors } = useDeliveryForm<TrainingApplicationValues>({
+    kind: "training",
     defaultValues: { consent: false, boarding: false, email: "" },
-    subject: (v) => `Candidature formation (${v.track}) : ${v.name}`,
-    toFields: (v) => ({
-      Nom: v.name,
-      Âge: v.age,
-      Ville: v.city,
-      Téléphone: v.phone,
-      "E-mail": v.email,
-      "Niveau scolaire": v.level,
-      "Filière souhaitée": v.track,
-      "Besoin de l'internat": v.boarding,
-      Motivation: v.motivation,
-    }),
   });
   const { register } = form;
-  if (delivery)
+  if (outcome)
     return (
-      <Result>
-        <DeliveryPanel delivery={delivery} onReset={reset} title="Votre candidature est prête !" />
-      </Result>
+      <FormResult
+        outcome={outcome}
+        onReset={reset}
+        sentTitle="Votre candidature est bien envoyée !"
+        sentText="Notre équipe l'étudie et vous contactera par téléphone pour la suite."
+      />
     );
   return (
     <form onSubmit={onSubmit} noValidate className="relative flex flex-col gap-5">
@@ -163,10 +124,11 @@ export function TrainingApplicationForm() {
       </label>
       <TextAreaField label="Pourquoi souhaitez-vous suivre cette formation ?" rows={4} registration={register("motivation")} error={errors.motivation} />
       <ConsentField registration={register("consent")} error={errors.consent} />
+      <ServerError message={serverError} />
       <div>
-        <SubmitButton>
+        <SubmitButton pending={pending}>
           <Send aria-hidden />
-          Préparer ma candidature
+          Envoyer ma candidature
         </SubmitButton>
       </div>
     </form>
@@ -177,30 +139,22 @@ const presetAmounts = ["5000", "10000", "25000", "50000"];
 
 /** Déclaration de don (Mobile Money / virement) avec montants prédéfinis. */
 export function DonationDeclarationForm({ project }: { project?: string }) {
-  const { form, delivery, onSubmit, reset, errors } = useDeliveryForm<DonationDeclarationValues>({
-    schema: donationDeclarationSchema,
+  const { form, outcome, onSubmit, reset, pending, serverError, errors } = useDeliveryForm<DonationDeclarationValues>({
+    kind: "donation",
     defaultValues: { amount: "10000", frequency: "Ponctuel", consent: false, project: project ?? "" },
-    subject: (v) => `Déclaration de don : ${Number(v.amount).toLocaleString("fr-FR")} FCFA`,
-    toFields: (v) => ({
-      Donateur: v.name,
-      "E-mail": v.email,
-      Téléphone: v.phone,
-      "Montant (FCFA)": Number(v.amount).toLocaleString("fr-FR"),
-      Fréquence: v.frequency,
-      "Moyen de paiement": v.method,
-      "Projet soutenu": v.project,
-      "Référence de transaction": v.reference,
-    }),
   });
   const { register, setValue, watch } = form;
   const amount = watch("amount");
   const [custom, setCustom] = useState(false);
 
-  if (delivery)
+  if (outcome)
     return (
-      <Result>
-        <DeliveryPanel delivery={delivery} onReset={reset} title="Merci pour votre générosité !" />
-      </Result>
+      <FormResult
+        outcome={outcome}
+        onReset={reset}
+        sentTitle="Merci pour votre générosité !"
+        sentText="Votre déclaration est enregistrée. Nous vérifions la réception du paiement et vous envoyons un reçu."
+      />
     );
   return (
     <form onSubmit={onSubmit} noValidate className="relative flex flex-col gap-6">
@@ -259,8 +213,9 @@ export function DonationDeclarationForm({ project }: { project?: string }) {
         <TextField label="Référence de la transaction" hint="Indiquée dans le SMS de confirmation" registration={register("reference")} error={errors.reference} />
       </div>
       <ConsentField registration={register("consent")} error={errors.consent} />
+      <ServerError message={serverError} />
       <div>
-        <SubmitButton>
+        <SubmitButton pending={pending}>
           <Heart aria-hidden className="fill-current" />
           Déclarer mon don
         </SubmitButton>
@@ -271,18 +226,19 @@ export function DonationDeclarationForm({ project }: { project?: string }) {
 
 /** Inscription à la newsletter (double opt-in automatisé en Phase 6). */
 export function NewsletterForm({ inverted = false }: { inverted?: boolean }) {
-  const { form, delivery, onSubmit, reset, errors } = useDeliveryForm<NewsletterValues>({
-    schema: newsletterSchema,
+  const { form, outcome, onSubmit, reset, pending, serverError, errors } = useDeliveryForm<NewsletterValues>({
+    kind: "newsletter",
     defaultValues: { consent: false },
-    subject: () => "Inscription à la newsletter",
-    toFields: (v) => ({ "E-mail": v.email }),
   });
   const { register } = form;
-  if (delivery)
+  if (outcome)
     return (
-      <Result>
-        <DeliveryPanel delivery={delivery} onReset={reset} title="Plus qu'un clic pour vous inscrire !" />
-      </Result>
+      <FormResult
+        outcome={outcome}
+        onReset={reset}
+        sentTitle="Plus qu'un clic pour vous inscrire !"
+        sentText="Ouvrez l'e-mail que nous venons de vous envoyer et confirmez votre inscription."
+      />
     );
   return (
     <form onSubmit={onSubmit} noValidate className="relative flex w-full flex-col gap-4">
@@ -297,11 +253,12 @@ export function NewsletterForm({ inverted = false }: { inverted?: boolean }) {
           error={errors.email}
           className={inverted ? "flex-1 [&_label]:sr-only [&_p[role=alert]]:text-white" : "flex-1 [&_label]:sr-only"}
         />
-        <SubmitButton>
+        <SubmitButton pending={pending}>
           <Mail aria-hidden />
           Je m&apos;abonne
         </SubmitButton>
       </div>
+      <ServerError message={serverError} />
       <div className={inverted ? "[&_label]:text-white/80 [&_a]:text-white [&_p[role=alert]]:text-white" : undefined}>
         <ConsentField registration={register("consent")} error={errors.consent} />
       </div>

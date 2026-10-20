@@ -1,25 +1,18 @@
 "use client";
 
 import { Send } from "lucide-react";
-import { contactSchema, contactSubjects, type ContactValues } from "@/lib/validations/forms";
-import { ConsentField, DeliveryPanel, Honeypot, SelectField, SubmitButton, TextAreaField, TextField } from "./fields";
+import { contactSubjects, type ContactValues } from "@/lib/validations/forms";
+import { ConsentField, FormResult, Honeypot, SelectField, ServerError, SubmitButton, TextAreaField, TextField } from "./fields";
 import { useDeliveryForm } from "./use-delivery-form";
 
 export function ContactForm({ defaultSubject }: { defaultSubject?: ContactValues["subject"] }) {
-  const { form, delivery, onSubmit, reset, errors } = useDeliveryForm<ContactValues>({
-    schema: contactSchema,
+  const { form, outcome, onSubmit, reset, pending, serverError, errors } = useDeliveryForm<ContactValues>({
+    kind: "contact",
     defaultValues: { country: "Togo", subject: defaultSubject, consent: false },
-    subject: (v) => `Contact : ${v.subject}`,
-    toFields: (v) => ({ Nom: v.name, "E-mail": v.email, Téléphone: v.phone, Pays: v.country, Sujet: v.subject, Message: v.message }),
   });
   const { register } = form;
 
-  if (delivery)
-    return (
-      <div id="form-result">
-        <DeliveryPanel delivery={delivery} onReset={reset} title="Votre message est prêt !" />
-      </div>
-    );
+  if (outcome) return <FormResult outcome={outcome} onReset={reset} sentTitle="Votre message est bien envoyé !" />;
 
   return (
     <form onSubmit={onSubmit} noValidate className="relative flex flex-col gap-5">
@@ -41,10 +34,11 @@ export function ContactForm({ defaultSubject }: { defaultSubject?: ContactValues
       <SelectField label="Sujet" required options={contactSubjects} registration={register("subject")} error={errors.subject} />
       <TextAreaField label="Votre message" required rows={6} registration={register("message")} error={errors.message} />
       <ConsentField registration={register("consent")} error={errors.consent} />
+      <ServerError message={serverError} />
       <div>
-        <SubmitButton>
+        <SubmitButton pending={pending}>
           <Send aria-hidden />
-          Préparer l&apos;envoi
+          Envoyer mon message
         </SubmitButton>
       </div>
     </form>

@@ -664,6 +664,12 @@ export type Database = {
         }
         Relationships: []
       }
+      rate_limits: {
+        Row: { hit_at: string; key: string }
+        Insert: { hit_at?: string; key: string }
+        Update: { hit_at?: string; key?: string }
+        Relationships: []
+      }
       role_invitations: {
         Row: {
           created_at: string
@@ -808,6 +814,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      rate_limit_hit: {
+        Args: { p_key: string; p_max: number; p_window: string }
+        Returns: boolean
+      }
       event_seats_taken: { Args: { p_event_id: string }; Returns: number }
       is_admin: { Args: never; Returns: boolean }
       is_staff: { Args: never; Returns: boolean }

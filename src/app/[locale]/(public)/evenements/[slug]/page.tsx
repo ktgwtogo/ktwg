@@ -134,7 +134,7 @@ export default async function EventPage({ params }: Props) {
               ) : (
                 <>
                   <p className="mb-6 text-sm text-muted-foreground">Gratuit. Vous recevrez une confirmation de notre équipe.</p>
-                  <EventRegistrationForm eventTitle={event.title} full={full} />
+                  <EventRegistrationForm eventSlug={event.slug} eventTitle={event.title} full={full} />
                 </>
               )}
             </div>

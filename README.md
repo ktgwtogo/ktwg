@@ -279,8 +279,8 @@ d'exporter des rapports.
 - [x] Phase 3 — Page d'accueil (hero diaporama, 13 sections, contenus en `src/content/`)
 - [x] Phase 4 — Pages publiques (19 pages + sous-menus ; formulaires en envoi provisoire WhatsApp / e-mail)
 - [x] Phase 5 — Supabase (schéma, RLS, stockage, données initiales, types, clients)
-- [ ] Phase 6 — Formulaires & e-mails
-- [ ] Phase 7 — Authentification
+- [x] Phase 6 — Formulaires & e-mails (Supabase, Resend, Turnstile, limitation d'envois, newsletter double opt-in)
+- [x] Phase 7 — Authentification (Google, /mon-espace, protection de /admin, en-têtes de sécurité, sitemap)
 - [ ] Phase 8 — Dashboard admin
 - [ ] Phase 9 — Qualité
 - [ ] Phase 10 — Déploiement

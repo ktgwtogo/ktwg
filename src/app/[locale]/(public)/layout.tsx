@@ -1,4 +1,6 @@
 import { getTranslations } from "next-intl/server";
+import { Suspense } from "react";
+import { NewsletterNotice } from "@/components/layout/newsletter-notice";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { TopBar } from "@/components/layout/top-bar";
@@ -16,6 +18,9 @@ export default async function PublicLayout({ children }: { children: React.React
       >
         {t("skipToContent")}
       </a>
+      <Suspense>
+        <NewsletterNotice />
+      </Suspense>
       <TopBar />
       <SiteHeader />
       <main id="main" tabIndex={-1} className="flex-1 outline-none">

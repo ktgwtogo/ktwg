@@ -3,16 +3,9 @@
 import { ArrowLeft, ArrowRight, Building2, Check, Send, Sparkles, UserRound } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  budgetRanges,
-  partnerContributions,
-  partnerInterests,
-  partnershipSchema,
-  partnerTypes,
-  type PartnershipValues,
-} from "@/lib/validations/forms";
+import { budgetRanges, partnerContributions, partnerInterests, partnerTypes, type PartnershipValues } from "@/lib/validations/forms";
 import { cn } from "@/lib/utils";
-import { ChoiceGroup, ConsentField, DeliveryPanel, Honeypot, keepFieldFocus, SelectField, SubmitButton, TextAreaField, TextField } from "./fields";
+import { ChoiceGroup, ConsentField, FormResult, Honeypot, keepFieldFocus, SelectField, ServerError, SubmitButton, TextAreaField, TextField } from "./fields";
 import { useDeliveryForm } from "./use-delivery-form";
 
 const steps = [
@@ -24,25 +17,9 @@ const steps = [
 /** Formulaire de partenariat en 3 étapes (validation à chaque étape). */
 export function PartnershipForm() {
   const [step, setStep] = useState(0);
-  const { form, delivery, onSubmit, reset, errors } = useDeliveryForm<PartnershipValues>({
-    schema: partnershipSchema,
-    honeypotKey: "hp",
+  const { form, outcome, onSubmit, reset, pending, serverError, errors } = useDeliveryForm<PartnershipValues>({
+    kind: "partnership",
     defaultValues: { country: "", website: "", consent: false, interests: [], contributions: [] },
-    subject: (v) => `Demande de partenariat : ${v.organization}`,
-    toFields: (v) => ({
-      "Type de partenaire": v.partnerType,
-      Organisation: v.organization,
-      Pays: v.country,
-      "Site web": v.website,
-      Contact: v.contactName,
-      Fonction: v.contactRole,
-      "E-mail": v.email,
-      Téléphone: v.phone,
-      "Domaines d'intérêt": v.interests,
-      "Type d'apport": v.contributions,
-      "Budget indicatif": v.budget,
-      Message: v.message,
-    }),
   });
   const { register, trigger } = form;
 
@@ -51,19 +28,19 @@ export function PartnershipForm() {
     if (ok) setStep((s) => s + 1);
   };
 
-  if (delivery)
+  if (outcome)
     return (
-      <div id="form-result" className="flex flex-col gap-4">
-        <DeliveryPanel
-          delivery={delivery}
+      <div className="flex flex-col gap-4">
+        <FormResult
+          outcome={outcome}
           onReset={() => {
             reset();
             setStep(0);
           }}
-          title="Votre demande de partenariat est prête !"
+          sentTitle="Votre demande de partenariat est bien envoyée !"
         />
         <p className="text-center text-sm text-muted-foreground">
-          Vous avez une plaquette ou un document de présentation (PDF) ? Joignez-le à votre e-mail ou envoyez-le sur WhatsApp.
+          Vous avez une plaquette ou un document de présentation (PDF) ? Envoyez-le en réponse à notre e-mail ou sur WhatsApp.
         </p>
       </div>
     );
@@ -116,6 +93,7 @@ export function PartnershipForm() {
         <SelectField label="Budget indicatif" required options={budgetRanges} registration={register("budget")} error={errors.budget} />
         <TextAreaField label="Présentez votre projet de partenariat" required registration={register("message")} error={errors.message} />
         <ConsentField registration={register("consent")} error={errors.consent} />
+        <ServerError message={serverError} />
       </div>
 
       <div className="flex flex-col-reverse justify-between gap-3 border-t pt-6 sm:flex-row">
@@ -133,9 +111,9 @@ export function PartnershipForm() {
             <ArrowRight aria-hidden />
           </Button>
         ) : (
-          <SubmitButton>
+          <SubmitButton pending={pending}>
             <Send aria-hidden />
-            Préparer ma demande
+            Envoyer ma demande
           </SubmitButton>
         )}
       </div>

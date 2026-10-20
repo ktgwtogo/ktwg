@@ -15,7 +15,9 @@
     "signIn": "Se connecter",
     "learnMore": "En savoir plus",
     "language": "Langue",
-    "skipToContent": "Aller au contenu principal"
+    "skipToContent": "Aller au contenu principal",
+    "home": "Accueil KTGW Togo",
+    "opensInNewTab": "(s'ouvre dans un nouvel onglet)"
   },
   "Nav": {
     "home": "Accueil",
@@ -29,12 +31,106 @@
     "partnership": "Partenariat",
     "getInvolved": "S'engager",
     "donate": "Faire un don",
+    "becomePartner": "Devenir partenaire",
+    "volunteer": "Bénévolat",
+    "join": "Adhérer",
+    "newsletter": "Newsletter",
     "transparency": "Transparence",
-    "contact": "Contact"
+    "contact": "Contact",
+    "legalNotice": "Mentions légales",
+    "privacy": "Confidentialité",
+    "whoWeAre": "Qui sommes-nous",
+    "projectCefopexd": "Centre CEFOPEXD",
+    "projectBoarding": "Internat des jeunes filles",
+    "projectSolar": "Femmes solaires",
+    "allProjects": "Tous nos projets",
+    "ourCourses": "Nos filières",
+    "germanClubs": "Clubs d'allemand",
+    "apply": "Candidater à une formation",
+    "desc": {
+      "whoWeAre": "Notre histoire, notre mission, notre équipe",
+      "objectives": "Les 13 engagements qui guident nos actions",
+      "transparency": "Statuts, rapports d'activité et comptes",
+      "gallery": "Nos actions sur le terrain en images",
+      "projectCefopexd": "Former les jeunes à un métier, à Devikinme",
+      "projectBoarding": "Un toit sûr pour les apprenties",
+      "projectSolar": "L'énergie solaire entre les mains des femmes",
+      "allProjects": "Vue d'ensemble de nos projets",
+      "ourCourses": "Coutellerie, mécanique, comptabilité, solaire, informatique",
+      "germanClubs": "L'allemand et l'ouverture au monde à l'école",
+      "apply": "Déposer une candidature en 2 minutes",
+      "donate": "Mobile Money ou don international",
+      "becomePartner": "Entreprises, fondations, institutions",
+      "volunteer": "Donner de son temps, au Togo ou à distance",
+      "join": "Devenir membre de l'association"
+    },
+    "featured": {
+      "about": {
+        "title": "Depuis 2008",
+        "text": "Une ONG togolaise, branche de kommTOGOgehweiter e.V. (Cologne).",
+        "cta": "Notre histoire"
+      },
+      "projects": {
+        "title": "Internat des jeunes filles",
+        "text": "24 places pour les apprenties depuis fin 2025.",
+        "cta": "Soutenir ce projet"
+      },
+      "trainings": {
+        "title": "Candidatures ouvertes",
+        "text": "Des formations bilingues français–allemand tournées vers l'emploi.",
+        "cta": "Candidater"
+      },
+      "getInvolved": {
+        "title": "Chaque centime compte",
+        "text": "Votre don finance directement la formation des jeunes.",
+        "cta": "Faire un don"
+      }
+    }
+  },
+  "Header": {
+    "mainNav": "Navigation principale",
+    "openMenu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu",
+    "menu": "Menu",
+    "submenu": "Sous-menu {label}",
+    "contactUs": "Nous contacter"
+  },
+  "TopBar": {
+    "call": "Appeler le {number}",
+    "writeTo": "Écrire à {email}",
+    "followUs": "Suivez-nous"
+  },
+  "Theme": {
+    "toggle": "Changer de thème",
+    "toLight": "Passer en mode clair",
+    "toDark": "Passer en mode sombre"
+  },
+  "Social": {
+    "facebook": "Facebook",
+    "tiktok": "TikTok",
+    "instagram": "Instagram",
+    "youtube": "YouTube",
+    "linkedin": "LinkedIn",
+    "whatsapp": "WhatsApp"
+  },
+  "Footer": {
+    "about": "ONG togolaise, branche de l'association kommTOGOgehweiter e.V. (Cologne). Depuis 2008, nous formons les jeunes du Togo, surtout les femmes, à des métiers qui leur permettent de vivre dignement.",
+    "colNavigation": "Navigation",
+    "colEngage": "S'engager",
+    "colFindUs": "Nous trouver",
+    "directions": "Itinéraire",
+    "showMap": "Afficher la carte",
+    "mapNotice": "La carte est fournie par Google Maps. En l'affichant, vous acceptez le dépôt de cookies par Google.",
+    "mapTitle": "Carte : siège de KTGW Togo à Lomé",
+    "germanyHQ": "Siège en Allemagne",
+    "rights": "© {year} KTGW Togo. Tous droits réservés.",
+    "backToTop": "Retour en haut",
+    "phones": "Téléphones",
+    "whatsappWith": "WhatsApp au {number}"
   },
   "Home": {
     "heroTitle": "Former aujourd'hui les bâtisseurs du Togo de demain",
     "heroSubtitle": "Éducation, formation professionnelle bilingue et autonomisation des jeunes, surtout des femmes, depuis 2008.",
-    "wip": "Site en construction — Phase 1 (initialisation) terminée."
+    "wip": "Site en construction — Phase 2 (design system & layout)."
   }
 }

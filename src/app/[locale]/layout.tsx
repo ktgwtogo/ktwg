@@ -1,8 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
-import { Inter, Montserrat } from "next/font/google";
+import { Inter, Montserrat, Playfair_Display } from "next/font/google";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { ThemeProvider } from "@/components/layout/theme-provider";
 import { routing } from "@/i18n/routing";
 import "../globals.css";
 
@@ -17,6 +18,15 @@ const montserrat = Montserrat({
   subsets: ["latin", "latin-ext"],
   weight: ["600", "700", "800"],
   variable: "--font-montserrat",
+  display: "swap",
+});
+
+// Police d'accent (italique) pour les mots mis en valeur dans les grands titres
+const playfair = Playfair_Display({
+  subsets: ["latin", "latin-ext"],
+  weight: ["600", "700"],
+  style: ["italic"],
+  variable: "--font-playfair",
   display: "swap",
 });
 
@@ -38,13 +48,14 @@ export async function generateMetadata({
     metadataBase: new URL(siteUrl),
     title: { default: t("title"), template: t("titleTemplate") },
     description: t("description"),
-    icons: { icon: "/images/logo-ktgw.png" },
+    // Favicon et icône iOS : src/app/icon.png et src/app/apple-icon.png (générés par scripts/prepare-logo.mjs)
     openGraph: {
       type: "website",
       siteName: "KTGW Togo",
       locale,
-      images: ["/images/logo-ktgw.png"],
+      images: [{ url: "/images/og-default.png", width: 1200, height: 630, alt: "KTGW — Komm Togo geh weiter" }],
     },
+    twitter: { card: "summary_large_image", images: ["/images/og-default.png"] },
   };
 }
 
@@ -71,11 +82,13 @@ export default async function LocaleLayout({
   return (
     <html
       lang={locale}
-      className={`${inter.variable} ${montserrat.variable}`}
+      className={`${inter.variable} ${montserrat.variable} ${playfair.variable}`}
       suppressHydrationWarning
     >
-      <body className="min-h-dvh bg-background font-sans text-foreground antialiased">
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+      <body id="top" className="flex min-h-dvh flex-col bg-background font-sans text-foreground antialiased">
+        <NextIntlClientProvider>
+          <ThemeProvider>{children}</ThemeProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

@@ -121,6 +121,15 @@ variante pour le mode sombre. Elles sont utilisables en classes Tailwind :
 Typographie : **Montserrat** pour les titres (`font-heading`), **Inter** pour le texte
 (`font-sans`). Les polices sont chargées via `next/font` et auto-hébergées.
 
+**Logo** : le fichier officiel se trouve dans `../img/logo-ktgw-officiel.jpg`. Pour régénérer
+toutes ses déclinaisons, lancez `node scripts/prepare-logo.mjs ../img/logo-ktgw-officiel.jpg`. Le
+script produit la version transparente, le symbole seul, le favicon, l'icône iOS et l'image de
+partage pour les réseaux sociaux. Si vous obtenez un fichier source de meilleure qualité (PNG ou
+SVG), relancez simplement la même commande sur ce fichier.
+
+**Photos** : `node scripts/optimize-images.mjs ../img` convertit les photos sources en WebP dans
+`public/images/`.
+
 ---
 
 ## Branches Git
@@ -163,6 +172,19 @@ Gardez un document (privé) sous la main pour noter chaque clé récupérée.
    - `Project URL` → `NEXT_PUBLIC_SUPABASE_URL`
    - `anon public` → `NEXT_PUBLIC_SUPABASE_ANON_KEY`
    - `service_role` → `SUPABASE_SERVICE_ROLE_KEY` (**secret, ne jamais le partager**)
+5. Désignez le premier super administrateur : dans **SQL Editor**, exécutez
+   ```sql
+   insert into public.role_invitations (email, role) values ('votre.adresse@gmail.com', 'super_admin');
+   ```
+   Ce rôle lui est attribué à sa première connexion Google. Si le compte existe déjà :
+   `update public.profiles set role = 'super_admin' where email = 'votre.adresse@gmail.com';`
+
+> **Ce qui est en place** — rôles `member` < `editor` < `admin` < `super_admin` ; contenus
+> (projets, actualités, événements, galerie, partenaires, témoignages) lisibles par tous une fois
+> publiés et modifiables par l'équipe ; demandes des formulaires visibles par l'équipe seulement,
+> enregistrées côté serveur avec la clé `service_role` ; bucket public `media` (10 Mo max).
+> Après une modification du schéma, régénérez `src/types/database.ts` avec
+> `npx supabase gen types typescript --project-id <ref> > src/types/database.ts`.
 
 ### 3. Google Cloud Console — bouton « Continuer avec Google »
 
@@ -180,13 +202,13 @@ Gardez un document (privé) sous la main pour noter chaque clé récupérée.
 5. Dans Supabase, ouvrez **Authentication → Providers → Google**, activez le fournisseur et
    collez les deux valeurs.
 6. Dans Supabase, ouvrez **Authentication → URL Configuration** :
-   - Site URL : `https://votre-domaine.org`
-   - Redirect URLs : ajoutez `http://localhost:3000/**` et `https://votre-domaine.org/**`
+   - Site URL : `https://www.ktgw.tg`
+   - Redirect URLs : ajoutez `http://localhost:3000/**`, `https://www.ktgw.tg/**` et `https://ktgw.tg/**`
 
 ### 4. Resend — envoi des e-mails
 
 1. Créez un compte sur <https://resend.com>.
-2. Ouvrez **Domains → Add domain** et saisissez votre domaine (par ex. `ktgw-togo.org`).
+2. Ouvrez **Domains → Add domain** et saisissez votre domaine (`ktgw.tg`).
 3. Resend affiche plusieurs enregistrements DNS (SPF, DKIM, DMARC). Gardez cette page ouverte :
    vous les ajouterez chez LWS à l'étape 6.
 4. Ouvrez **API Keys → Create API key** et copiez la clé dans `RESEND_API_KEY`.
@@ -203,9 +225,9 @@ Gardez un document (privé) sous la main pour noter chaque clé récupérée.
 
 ### 6. LWS — relier le nom de domaine
 
-1. Connectez-vous à votre espace client LWS, choisissez le domaine, puis ouvrez **Zone DNS**.
-2. Dans Vercel, ouvrez **Settings → Domains** et ajoutez `votre-domaine.org` et
-   `www.votre-domaine.org`. **Vercel affiche alors les valeurs exactes à saisir.** Utilisez
+1. Connectez-vous à votre espace client LWS (<https://panel.lws.fr>), choisissez `ktgw.tg`, puis ouvrez **Zone DNS**.
+2. Dans Vercel, ouvrez **Settings → Domains** et ajoutez `ktgw.tg` et
+   `www.ktgw.tg`. **Vercel affiche alors les valeurs exactes à saisir.** Utilisez
    celles-là en priorité. Ce sont habituellement :
 
    | Type | Nom | Valeur |
@@ -221,7 +243,7 @@ Gardez un document (privé) sous la main pour noter chaque clé récupérée.
 
 ### 7. Passer sur le domaine définitif
 
-- Dans Vercel, remplacez `NEXT_PUBLIC_SITE_URL` par `https://votre-domaine.org`, puis
+- Dans Vercel, remplacez `NEXT_PUBLIC_SITE_URL` par `https://www.ktgw.tg`, puis
   redéployez.
 - Vérifiez la Site URL et les Redirect URLs dans Supabase (étape 3.6).
 - Dans Google Cloud, ajoutez le domaine aux **domaines autorisés** de l'écran de consentement.
@@ -236,8 +258,8 @@ Gardez un document (privé) sous la main pour noter chaque clé récupérée.
 ### 9. Référencement Google
 
 1. Allez sur <https://search.google.com/search-console> et ajoutez la propriété
-   `https://votre-domaine.org`. Validez-la par un enregistrement TXT chez LWS.
-2. Ouvrez **Sitemaps** et soumettez `https://votre-domaine.org/sitemap.xml`.
+   `https://www.ktgw.tg`. Validez-la par un enregistrement TXT chez LWS.
+2. Ouvrez **Sitemaps** et soumettez `https://www.ktgw.tg/sitemap.xml`.
 
 ---
 
@@ -253,12 +275,12 @@ d'exporter des rapports.
 ## Avancement
 
 - [x] Phase 1 — Initialisation (Next.js, TypeScript, Tailwind v4, shadcn/ui, next-intl, design tokens, polices)
-- [ ] Phase 2 — Design system & layout
-- [ ] Phase 3 — Page d'accueil
-- [ ] Phase 4 — Pages publiques
-- [ ] Phase 5 — Supabase
-- [ ] Phase 6 — Formulaires & e-mails
-- [ ] Phase 7 — Authentification
+- [x] Phase 2 — Design system & layout (header, top bar, footer + carte, composants, mode sombre, logo officiel)
+- [x] Phase 3 — Page d'accueil (hero diaporama, 13 sections, contenus en `src/content/`)
+- [x] Phase 4 — Pages publiques (19 pages + sous-menus ; formulaires en envoi provisoire WhatsApp / e-mail)
+- [x] Phase 5 — Supabase (schéma, RLS, stockage, données initiales, types, clients)
+- [x] Phase 6 — Formulaires & e-mails (Supabase, Resend, Turnstile, limitation d'envois, newsletter double opt-in)
+- [x] Phase 7 — Authentification (Google, /mon-espace, protection de /admin, en-têtes de sécurité, sitemap)
 - [ ] Phase 8 — Dashboard admin
 - [ ] Phase 9 — Qualité
 - [ ] Phase 10 — Déploiement

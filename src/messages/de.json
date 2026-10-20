@@ -15,7 +15,9 @@
     "signIn": "Anmelden",
     "learnMore": "Mehr erfahren",
     "language": "Sprache",
-    "skipToContent": "Zum Hauptinhalt springen"
+    "skipToContent": "Zum Hauptinhalt springen",
+    "home": "KTGW Togo Startseite",
+    "opensInNewTab": "(öffnet in neuem Tab)"
   },
   "Nav": {
     "home": "Startseite",
@@ -29,12 +31,106 @@
     "partnership": "Partnerschaft",
     "getInvolved": "Mitmachen",
     "donate": "Spenden",
+    "becomePartner": "Partner werden",
+    "volunteer": "Ehrenamt",
+    "join": "Mitglied werden",
+    "newsletter": "Newsletter",
     "transparency": "Transparenz",
-    "contact": "Kontakt"
+    "contact": "Kontakt",
+    "legalNotice": "Impressum",
+    "privacy": "Datenschutz",
+    "whoWeAre": "Wer wir sind",
+    "projectCefopexd": "Ausbildungszentrum CEFOPEXD",
+    "projectBoarding": "Mädcheninternat",
+    "projectSolar": "Solarfrauen",
+    "allProjects": "Alle Projekte",
+    "ourCourses": "Unsere Fachrichtungen",
+    "germanClubs": "Deutschclubs",
+    "apply": "Für eine Ausbildung bewerben",
+    "desc": {
+      "whoWeAre": "Unsere Geschichte, Mission und unser Team",
+      "objectives": "Die 13 Ziele, die unser Handeln leiten",
+      "transparency": "Satzung, Tätigkeits- und Finanzberichte",
+      "gallery": "Unsere Arbeit vor Ort in Bildern",
+      "projectCefopexd": "Berufsausbildung für junge Menschen in Devikinme",
+      "projectBoarding": "Ein sicheres Zuhause für Auszubildende",
+      "projectSolar": "Solarenergie in Frauenhand",
+      "allProjects": "Alle Projekte im Überblick",
+      "ourCourses": "Messerschmiede, Mechanik, Buchhaltung, Solar, IT",
+      "germanClubs": "Deutsch und Weltoffenheit an Schulen",
+      "apply": "In 2 Minuten bewerben",
+      "donate": "Mobile Money oder internationale Spende",
+      "becomePartner": "Unternehmen, Stiftungen, Institutionen",
+      "volunteer": "Zeit schenken, in Togo oder online",
+      "join": "Vereinsmitglied werden"
+    },
+    "featured": {
+      "about": {
+        "title": "Seit 2008",
+        "text": "Eine togoische NGO, Zweig von kommTOGOgehweiter e.V. (Köln).",
+        "cta": "Unsere Geschichte"
+      },
+      "projects": {
+        "title": "Mädcheninternat",
+        "text": "Seit Ende 2025 Platz für 24 Auszubildende.",
+        "cta": "Projekt unterstützen"
+      },
+      "trainings": {
+        "title": "Bewerbungen offen",
+        "text": "Zweisprachige Ausbildung Französisch–Deutsch mit Blick auf den Beruf.",
+        "cta": "Jetzt bewerben"
+      },
+      "getInvolved": {
+        "title": "Jeder Cent zählt",
+        "text": "Ihre Spende finanziert direkt die Ausbildung junger Menschen.",
+        "cta": "Spenden"
+      }
+    }
+  },
+  "Header": {
+    "mainNav": "Hauptnavigation",
+    "openMenu": "Menü öffnen",
+    "closeMenu": "Menü schließen",
+    "menu": "Menü",
+    "submenu": "Untermenü {label}",
+    "contactUs": "Kontakt aufnehmen"
+  },
+  "TopBar": {
+    "call": "{number} anrufen",
+    "writeTo": "E-Mail an {email}",
+    "followUs": "Folgen Sie uns"
+  },
+  "Theme": {
+    "toggle": "Design wechseln",
+    "toLight": "Zum hellen Modus wechseln",
+    "toDark": "Zum dunklen Modus wechseln"
+  },
+  "Social": {
+    "facebook": "Facebook",
+    "tiktok": "TikTok",
+    "instagram": "Instagram",
+    "youtube": "YouTube",
+    "linkedin": "LinkedIn",
+    "whatsapp": "WhatsApp"
+  },
+  "Footer": {
+    "about": "Togoische NGO und Zweig des Vereins kommTOGOgehweiter e.V. (Köln). Seit 2008 bilden wir junge Menschen in Togo, vor allem Frauen, in Berufen aus, die ihnen ein Leben in Würde ermöglichen.",
+    "colNavigation": "Navigation",
+    "colEngage": "Mitmachen",
+    "colFindUs": "So finden Sie uns",
+    "directions": "Route",
+    "showMap": "Karte anzeigen",
+    "mapNotice": "Die Karte wird von Google Maps bereitgestellt. Mit dem Anzeigen stimmen Sie dem Setzen von Cookies durch Google zu.",
+    "mapTitle": "Karte: Sitz von KTGW Togo in Lomé",
+    "germanyHQ": "Sitz in Deutschland",
+    "rights": "© {year} KTGW Togo. Alle Rechte vorbehalten.",
+    "backToTop": "Nach oben",
+    "phones": "Telefon",
+    "whatsappWith": "WhatsApp an {number}"
   },
   "Home": {
     "heroTitle": "Heute die Gestalter des Togo von morgen ausbilden",
     "heroSubtitle": "Bildung, zweisprachige Berufsausbildung und Stärkung junger Menschen, vor allem junger Frauen, seit 2008.",
-    "wip": "Website im Aufbau — Phase 1 (Initialisierung) abgeschlossen."
+    "wip": "Website im Aufbau — Phase 2 (Designsystem & Layout)."
   }
 }

@@ -334,10 +334,10 @@ export function DeliveryPanel({ delivery, onReset, title }: { delivery: Delivery
 export const keepFieldFocus = (e: MouseEvent) => e.preventDefault();
 
 /** Bouton d'envoi pleine largeur sur mobile, précédé de la vérification anti-robot. */
-export function SubmitButton({ children, pending }: { children: ReactNode; pending?: boolean }) {
+export function SubmitButton({ children, pending, captcha = true }: { children: ReactNode; pending?: boolean; captcha?: boolean }) {
   return (
     <>
-      <Turnstile />
+      {captcha && <Turnstile />}
       <Button type="submit" size="xl" disabled={pending} aria-busy={pending} onMouseDown={keepFieldFocus} className="w-full sm:w-auto">
         {pending ? <Loader2 aria-hidden className="animate-spin" /> : null}
         {pending ? "Envoi en cours…" : children}

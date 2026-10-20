@@ -186,6 +186,22 @@ Gardez un document (privé) sous la main pour noter chaque clé récupérée.
 > Après une modification du schéma, régénérez `src/types/database.ts` avec
 > `npx supabase gen types typescript --project-id <ref> > src/types/database.ts`.
 
+### 2 bis. Supabase — comptes par e-mail et adhésions
+
+1. **Authentication → Sign In / Providers → Email** : laissez « Confirm email » activé.
+2. **Authentication → SMTP Settings** : activez « Custom SMTP » pour ne pas être limité à
+   quelques e-mails par heure. Avec Resend : hôte , port ,
+   utilisateur , mot de passe = votre clé API Resend, expéditeur .
+3. **Authentication → Email Templates** (facultatif, recommandé) : pour que les liens marchent
+   même ouverts sur un autre appareil, remplacez le lien du modèle *Confirm signup* par
+    et celui de
+   *Reset password* par .
+
+Parcours membre : création du compte → **Mon profil** (identité, coordonnées, bio, photo) →
+**Adhésion** (adhérent·e, membre actif·ve ou donateur·rice) → décision d'un administrateur dans
+ → notification et e-mail → accès aux **Documents** publiés dans
+. Photos et documents sont stockés dans des buckets privés.
+
 ### 3. Google Cloud Console — bouton « Continuer avec Google »
 
 1. Allez sur <https://console.cloud.google.com> et créez un projet `KTGW Togo`.
@@ -281,6 +297,6 @@ d'exporter des rapports.
 - [x] Phase 5 — Supabase (schéma, RLS, stockage, données initiales, types, clients)
 - [x] Phase 6 — Formulaires & e-mails (Supabase, Resend, Turnstile, limitation d'envois, newsletter double opt-in)
 - [x] Phase 7 — Authentification (Google, /mon-espace, protection de /admin, en-têtes de sécurité, sitemap)
-- [ ] Phase 8 — Dashboard admin
+- [~] Phase 8 — Dashboard admin (fait : adhésions, documents officiels, notifications ; reste : édition des contenus)
 - [ ] Phase 9 — Qualité
 - [ ] Phase 10 — Déploiement

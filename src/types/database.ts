@@ -206,6 +206,129 @@ export type Database = {
           },
         ]
       }
+      documents: {
+        Row: {
+          audience: string
+          created_at: string
+          created_by: string | null
+          description: string | null
+          file_name: string
+          file_path: string
+          id: string
+          recipient_id: string | null
+          title: string
+        }
+        Insert: {
+          audience: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          file_name: string
+          file_path: string
+          id?: string
+          recipient_id?: string | null
+          title: string
+        }
+        Update: {
+          audience?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          file_name?: string
+          file_path?: string
+          id?: string
+          recipient_id?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
+      membership_applications: {
+        Row: {
+          availability: string | null
+          contribution: string | null
+          created_at: string
+          decided_at: string | null
+          decided_by: string | null
+          decision_note: string | null
+          id: string
+          interests: string[]
+          motivation: string
+          referral: string | null
+          skills: string | null
+          statutes_accepted_at: string
+          status: Database["public"]["Enums"]["membership_status"]
+          type: Database["public"]["Enums"]["membership_type"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          availability?: string | null
+          contribution?: string | null
+          created_at?: string
+          decided_at?: string | null
+          decided_by?: string | null
+          decision_note?: string | null
+          id?: string
+          interests?: string[]
+          motivation: string
+          referral?: string | null
+          skills?: string | null
+          statutes_accepted_at?: string
+          status?: Database["public"]["Enums"]["membership_status"]
+          type: Database["public"]["Enums"]["membership_type"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          availability?: string | null
+          contribution?: string | null
+          created_at?: string
+          decided_at?: string | null
+          decided_by?: string | null
+          decision_note?: string | null
+          id?: string
+          interests?: string[]
+          motivation?: string
+          referral?: string | null
+          skills?: string | null
+          statutes_accepted_at?: string
+          status?: Database["public"]["Enums"]["membership_status"]
+          type?: Database["public"]["Enums"]["membership_type"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      notifications: {
+        Row: {
+          body: string
+          created_at: string
+          id: string
+          link: string | null
+          read_at: string | null
+          title: string
+          user_id: string
+        }
+        Insert: {
+          body?: string
+          created_at?: string
+          id?: string
+          link?: string | null
+          read_at?: string | null
+          title: string
+          user_id: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          id?: string
+          link?: string | null
+          read_at?: string | null
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       event_registrations: {
         Row: {
           admin_notes: string | null
@@ -570,6 +693,24 @@ export type Database = {
       }
       profiles: {
         Row: {
+          address: string | null
+          bio: string | null
+          birth_date: string | null
+          city: string | null
+          civility: string | null
+          country: string | null
+          first_name: string | null
+          last_name: string | null
+          member_number: string | null
+          member_since: string | null
+          membership_status: Database["public"]["Enums"]["membership_status"]
+          membership_type: Database["public"]["Enums"]["membership_type"] | null
+          nationality: string | null
+          organization: string | null
+          phone: string | null
+          photo_path: string | null
+          profession: string | null
+          whatsapp: string | null
           avatar_url: string | null
           created_at: string
           email: string
@@ -579,6 +720,24 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          address?: string | null
+          bio?: string | null
+          birth_date?: string | null
+          city?: string | null
+          civility?: string | null
+          country?: string | null
+          first_name?: string | null
+          last_name?: string | null
+          member_number?: string | null
+          member_since?: string | null
+          membership_status?: Database["public"]["Enums"]["membership_status"]
+          membership_type?: Database["public"]["Enums"]["membership_type"] | null
+          nationality?: string | null
+          organization?: string | null
+          phone?: string | null
+          photo_path?: string | null
+          profession?: string | null
+          whatsapp?: string | null
           avatar_url?: string | null
           created_at?: string
           email: string
@@ -588,6 +747,24 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          address?: string | null
+          bio?: string | null
+          birth_date?: string | null
+          city?: string | null
+          civility?: string | null
+          country?: string | null
+          first_name?: string | null
+          last_name?: string | null
+          member_number?: string | null
+          member_since?: string | null
+          membership_status?: Database["public"]["Enums"]["membership_status"]
+          membership_type?: Database["public"]["Enums"]["membership_type"] | null
+          nationality?: string | null
+          organization?: string | null
+          phone?: string | null
+          photo_path?: string | null
+          profession?: string | null
+          whatsapp?: string | null
           avatar_url?: string | null
           created_at?: string
           email?: string
@@ -814,6 +991,11 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      decide_membership: {
+        Args: { p_application_id: string; p_approve: boolean; p_note?: string }
+        Returns: string
+      }
+      is_validated_member: { Args: never; Returns: boolean }
       rate_limit_hit: {
         Args: { p_key: string; p_max: number; p_window: string }
         Returns: boolean
@@ -827,6 +1009,8 @@ export type Database = {
       }
     }
     Enums: {
+      membership_status: "aucune" | "en_attente" | "validee" | "refusee"
+      membership_type: "adherent" | "membre" | "donateur"
       project_status: "en-preparation" | "en-cours" | "realise"
       submission_status: "nouveau" | "en_cours" | "traite" | "archive"
       user_role: "member" | "editor" | "admin" | "super_admin"
@@ -957,6 +1141,8 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      membership_status: ["aucune", "en_attente", "validee", "refusee"],
+      membership_type: ["adherent", "membre", "donateur"],
       project_status: ["en-preparation", "en-cours", "realise"],
       submission_status: ["nouveau", "en_cours", "traite", "archive"],
       user_role: ["member", "editor", "admin", "super_admin"],

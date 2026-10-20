@@ -15,7 +15,9 @@
     "signIn": "Se connecter",
     "learnMore": "En savoir plus",
     "language": "Langue",
-    "skipToContent": "Aller au contenu principal"
+    "skipToContent": "Aller au contenu principal",
+    "home": "Accueil KTGW Togo",
+    "opensInNewTab": "(s'ouvre dans un nouvel onglet)"
   },
   "Nav": {
     "home": "Accueil",
@@ -29,12 +31,56 @@
     "partnership": "Partenariat",
     "getInvolved": "S'engager",
     "donate": "Faire un don",
+    "becomePartner": "Devenir partenaire",
+    "volunteer": "Bénévolat",
+    "join": "Adhérer",
+    "newsletter": "Newsletter",
     "transparency": "Transparence",
-    "contact": "Contact"
+    "contact": "Contact",
+    "legalNotice": "Mentions légales",
+    "privacy": "Confidentialité"
+  },
+  "Header": {
+    "mainNav": "Navigation principale",
+    "openMenu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu",
+    "menu": "Menu"
+  },
+  "TopBar": {
+    "call": "Appeler le {number}",
+    "writeTo": "Écrire à {email}",
+    "followUs": "Suivez-nous"
+  },
+  "Theme": {
+    "toggle": "Changer de thème",
+    "toLight": "Passer en mode clair",
+    "toDark": "Passer en mode sombre"
+  },
+  "Social": {
+    "facebook": "Facebook",
+    "instagram": "Instagram",
+    "linkedin": "LinkedIn",
+    "youtube": "YouTube",
+    "whatsapp": "WhatsApp"
+  },
+  "Footer": {
+    "about": "ONG togolaise, branche de l'association kommTOGOgehweiter e.V. (Cologne). Depuis 2008, nous formons les jeunes du Togo, surtout les femmes, à des métiers qui leur permettent de vivre dignement.",
+    "colNavigation": "Navigation",
+    "colEngage": "S'engager",
+    "colFindUs": "Nous trouver",
+    "directions": "Itinéraire",
+    "showMap": "Afficher la carte",
+    "mapNotice": "La carte est fournie par Google Maps. En l'affichant, vous acceptez le dépôt de cookies par Google.",
+    "mapTitle": "Carte : siège de KTGW Togo à Lomé",
+    "germanyHQ": "Siège en Allemagne",
+    "rights": "© {year} KTGW Togo. Tous droits réservés.",
+    "backToTop": "Retour en haut",
+    "phones": "Téléphones",
+    "whatsappWith": "WhatsApp au {number}"
   },
   "Home": {
     "heroTitle": "Former aujourd'hui les bâtisseurs du Togo de demain",
     "heroSubtitle": "Éducation, formation professionnelle bilingue et autonomisation des jeunes, surtout des femmes, depuis 2008.",
-    "wip": "Site en construction — Phase 1 (initialisation) terminée."
+    "wip": "Site en construction — Phase 2 (design system & layout)."
   }
 }

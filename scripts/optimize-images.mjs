@@ -6,8 +6,9 @@
  *
  * La table MAPPING associe chaque fichier source au nom attendu par le site.
  * Les photos sont redimensionnées à 2000 px de large au maximum (jamais agrandies).
+ * Le logo est traité à part : voir scripts/prepare-logo.mjs.
  */
-import { copyFile, mkdir } from "node:fs/promises";
+import { mkdir } from "node:fs/promises";
 import path from "node:path";
 import sharp from "sharp";
 
@@ -23,8 +24,6 @@ const MAPPING = {
   "img-20230414-wa0038.jpg": "plantation-femme-ouvriers.webp",
   "img-20230414-wa00331.jpg": "benediction-plantation.webp",
 };
-
-const LOGO = { from: "cropped-KTGW-LOGO-Vektor.png", to: "logo-ktgw.png" };
 
 const srcDir = process.argv[2];
 if (!srcDir) {
@@ -42,7 +41,3 @@ for (const [from, to] of Object.entries(MAPPING)) {
     .toFile(path.join(outDir, to));
   console.log(`${to.padEnd(32)} ${info.width}×${info.height}  ${Math.round(info.size / 1024)} Ko`);
 }
-
-// Le logo reste en PNG (transparence, netteté du texte)
-await copyFile(path.join(srcDir, LOGO.from), path.join(outDir, LOGO.to));
-console.log(`${LOGO.to.padEnd(32)} copié`);

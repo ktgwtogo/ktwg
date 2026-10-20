@@ -15,7 +15,9 @@
     "signIn": "Anmelden",
     "learnMore": "Mehr erfahren",
     "language": "Sprache",
-    "skipToContent": "Zum Hauptinhalt springen"
+    "skipToContent": "Zum Hauptinhalt springen",
+    "home": "KTGW Togo Startseite",
+    "opensInNewTab": "(öffnet in neuem Tab)"
   },
   "Nav": {
     "home": "Startseite",
@@ -29,12 +31,56 @@
     "partnership": "Partnerschaft",
     "getInvolved": "Mitmachen",
     "donate": "Spenden",
+    "becomePartner": "Partner werden",
+    "volunteer": "Ehrenamt",
+    "join": "Mitglied werden",
+    "newsletter": "Newsletter",
     "transparency": "Transparenz",
-    "contact": "Kontakt"
+    "contact": "Kontakt",
+    "legalNotice": "Impressum",
+    "privacy": "Datenschutz"
+  },
+  "Header": {
+    "mainNav": "Hauptnavigation",
+    "openMenu": "Menü öffnen",
+    "closeMenu": "Menü schließen",
+    "menu": "Menü"
+  },
+  "TopBar": {
+    "call": "{number} anrufen",
+    "writeTo": "E-Mail an {email}",
+    "followUs": "Folgen Sie uns"
+  },
+  "Theme": {
+    "toggle": "Design wechseln",
+    "toLight": "Zum hellen Modus wechseln",
+    "toDark": "Zum dunklen Modus wechseln"
+  },
+  "Social": {
+    "facebook": "Facebook",
+    "instagram": "Instagram",
+    "linkedin": "LinkedIn",
+    "youtube": "YouTube",
+    "whatsapp": "WhatsApp"
+  },
+  "Footer": {
+    "about": "Togoische NGO und Zweig des Vereins kommTOGOgehweiter e.V. (Köln). Seit 2008 bilden wir junge Menschen in Togo, vor allem Frauen, in Berufen aus, die ihnen ein Leben in Würde ermöglichen.",
+    "colNavigation": "Navigation",
+    "colEngage": "Mitmachen",
+    "colFindUs": "So finden Sie uns",
+    "directions": "Route",
+    "showMap": "Karte anzeigen",
+    "mapNotice": "Die Karte wird von Google Maps bereitgestellt. Mit dem Anzeigen stimmen Sie dem Setzen von Cookies durch Google zu.",
+    "mapTitle": "Karte: Sitz von KTGW Togo in Lomé",
+    "germanyHQ": "Sitz in Deutschland",
+    "rights": "© {year} KTGW Togo. Alle Rechte vorbehalten.",
+    "backToTop": "Nach oben",
+    "phones": "Telefon",
+    "whatsappWith": "WhatsApp an {number}"
   },
   "Home": {
     "heroTitle": "Heute die Gestalter des Togo von morgen ausbilden",
     "heroSubtitle": "Bildung, zweisprachige Berufsausbildung und Stärkung junger Menschen, vor allem junger Frauen, seit 2008.",
-    "wip": "Website im Aufbau — Phase 1 (Initialisierung) abgeschlossen."
+    "wip": "Website im Aufbau — Phase 2 (Designsystem & Layout)."
   }
 }

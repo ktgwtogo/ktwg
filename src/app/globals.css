@@ -22,6 +22,9 @@
   --ink: #1a1a1a;
   --paper: #fffdf8;
 
+  /* Couleur des sur-titres de section (redéfinie localement par certaines sections) */
+  --eyebrow: var(--ktgw-green-dark);
+
   /* Dégradé « soleil levant » réutilisé (CTA final, accents) */
   --gradient-sun: linear-gradient(135deg, var(--ktgw-sun) 0%, var(--ktgw-orange) 55%, var(--ktgw-red) 100%);
 
@@ -64,11 +67,12 @@
 }
 
 .dark {
-  /* Les couleurs de marque gardent leur teinte, légèrement éclaircies pour le fond sombre */
+  /* Couleurs d'accent légèrement éclaircies pour rester lisibles sur fond sombre.
+     --ktgw-green-dark reste inchangé : il sert de fond (top bar, sections vertes). */
   --ktgw-red: #ef5a43;
   --ktgw-sun: #fbcd55;
   --ktgw-green: #34a853;
-  --ktgw-green-dark: #6fcf8a;
+  --eyebrow: var(--ktgw-green);
 
   --background: #141210;
   --foreground: #f5f0e6;

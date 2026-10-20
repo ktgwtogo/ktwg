@@ -15,7 +15,9 @@
     "signIn": "Sign in",
     "learnMore": "Learn more",
     "language": "Language",
-    "skipToContent": "Skip to main content"
+    "skipToContent": "Skip to main content",
+    "home": "KTGW Togo home",
+    "opensInNewTab": "(opens in a new tab)"
   },
   "Nav": {
     "home": "Home",
@@ -29,12 +31,56 @@
     "partnership": "Partnership",
     "getInvolved": "Get involved",
     "donate": "Donate",
+    "becomePartner": "Become a partner",
+    "volunteer": "Volunteer",
+    "join": "Become a member",
+    "newsletter": "Newsletter",
     "transparency": "Transparency",
-    "contact": "Contact"
+    "contact": "Contact",
+    "legalNotice": "Legal notice",
+    "privacy": "Privacy"
+  },
+  "Header": {
+    "mainNav": "Main navigation",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "menu": "Menu"
+  },
+  "TopBar": {
+    "call": "Call {number}",
+    "writeTo": "Email {email}",
+    "followUs": "Follow us"
+  },
+  "Theme": {
+    "toggle": "Toggle theme",
+    "toLight": "Switch to light mode",
+    "toDark": "Switch to dark mode"
+  },
+  "Social": {
+    "facebook": "Facebook",
+    "instagram": "Instagram",
+    "linkedin": "LinkedIn",
+    "youtube": "YouTube",
+    "whatsapp": "WhatsApp"
+  },
+  "Footer": {
+    "about": "Togolese NGO and branch of the kommTOGOgehweiter e.V. association (Cologne). Since 2008 we have been training young people in Togo, especially women, in trades that let them earn a decent living.",
+    "colNavigation": "Navigation",
+    "colEngage": "Get involved",
+    "colFindUs": "Find us",
+    "directions": "Directions",
+    "showMap": "Show map",
+    "mapNotice": "The map is provided by Google Maps. By showing it, you accept cookies set by Google.",
+    "mapTitle": "Map: KTGW Togo headquarters in Lomé",
+    "germanyHQ": "Headquarters in Germany",
+    "rights": "© {year} KTGW Togo. All rights reserved.",
+    "backToTop": "Back to top",
+    "phones": "Phone",
+    "whatsappWith": "WhatsApp {number}"
   },
   "Home": {
     "heroTitle": "Training today the builders of tomorrow's Togo",
     "heroSubtitle": "Education, bilingual vocational training and empowerment of young people, especially women, since 2008.",
-    "wip": "Website under construction — Phase 1 (setup) complete."
+    "wip": "Website under construction — Phase 2 (design system & layout)."
   }
 }

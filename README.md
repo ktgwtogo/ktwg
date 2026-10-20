@@ -121,6 +121,15 @@ variante pour le mode sombre. Elles sont utilisables en classes Tailwind :
 Typographie : **Montserrat** pour les titres (`font-heading`), **Inter** pour le texte
 (`font-sans`). Les polices sont chargées via `next/font` et auto-hébergées.
 
+**Logo** : le fichier officiel se trouve dans `../img/logo-ktgw-officiel.jpg`. Pour régénérer
+toutes ses déclinaisons, lancez `node scripts/prepare-logo.mjs ../img/logo-ktgw-officiel.jpg`. Le
+script produit la version transparente, le symbole seul, le favicon, l'icône iOS et l'image de
+partage pour les réseaux sociaux. Si vous obtenez un fichier source de meilleure qualité (PNG ou
+SVG), relancez simplement la même commande sur ce fichier.
+
+**Photos** : `node scripts/optimize-images.mjs ../img` convertit les photos sources en WebP dans
+`public/images/`.
+
 ---
 
 ## Branches Git
@@ -253,7 +262,7 @@ d'exporter des rapports.
 ## Avancement
 
 - [x] Phase 1 — Initialisation (Next.js, TypeScript, Tailwind v4, shadcn/ui, next-intl, design tokens, polices)
-- [ ] Phase 2 — Design system & layout
+- [x] Phase 2 — Design system & layout (header, top bar, footer + carte, composants, mode sombre, logo officiel)
 - [ ] Phase 3 — Page d'accueil
 - [ ] Phase 4 — Pages publiques
 - [ ] Phase 5 — Supabase

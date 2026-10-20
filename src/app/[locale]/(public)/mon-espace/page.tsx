@@ -18,6 +18,7 @@ export default async function MemberPage({ params }: { params: Promise<{ locale:
   const { locale } = await params;
   setRequestLocale(locale);
 
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) return redirect({ href: "/connexion", locale });
   const supabase = await createClient();
   const {
     data: { user },

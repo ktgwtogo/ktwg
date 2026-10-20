@@ -117,6 +117,7 @@
 
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-heading: var(--font-montserrat), var(--font-inter), ui-sans-serif, sans-serif;
+  --font-accent: var(--font-playfair), Georgia, serif;
 
   --shadow-soft: var(--shadow-soft);
 
@@ -184,6 +185,58 @@
     outline: 2px solid var(--ring);
     outline-offset: 2px;
   }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   4. Animations du site
+   ───────────────────────────────────────────────────────────── */
+@theme {
+  --animate-marquee: marquee 40s linear infinite;
+  --animate-pulse-ring: pulse-ring 2.4s cubic-bezier(0.2, 0.6, 0.4, 1) infinite;
+  --animate-scroll-hint: scroll-hint 1.8s ease-in-out infinite;
+  --animate-sun-rise: sun-rise 2.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-rays: rays-spin 90s linear infinite;
+  --animate-draw: draw-path 3s ease-out 0.4s both;
+
+  @keyframes kenburns {
+    from { transform: scale(1.12) translate3d(1.5%, 1%, 0); }
+    to { transform: scale(1) translate3d(0, 0, 0); }
+  }
+  @keyframes marquee {
+    to { transform: translateX(-50%); }
+  }
+  @keyframes pulse-ring {
+    0% { transform: scale(0.6); opacity: 0.8; }
+    100% { transform: scale(2.6); opacity: 0; }
+  }
+  @keyframes scroll-hint {
+    0%, 100% { transform: translateY(0); opacity: 1; }
+    50% { transform: translateY(8px); opacity: 0.4; }
+  }
+  @keyframes sun-rise {
+    from { transform: translateY(40%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  @keyframes rays-spin {
+    to { transform: rotate(360deg); }
+  }
+  @keyframes progress-fill {
+    from { width: 0%; }
+    to { width: 100%; }
+  }
+  @keyframes draw-path {
+    from { stroke-dashoffset: 1; }
+    to { stroke-dashoffset: 0; }
+  }
+}
+
+/* Apparition au défilement (composant <Reveal>) */
+.reveal {
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal[data-reveal="hidden"] {
+  opacity: 0;
+  transform: translateY(24px);
 }
 
 /* Respect des préférences d'accessibilité : pas d'animation si demandé */

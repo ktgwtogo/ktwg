@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
-import { Inter, Montserrat } from "next/font/google";
+import { Inter, Montserrat, Playfair_Display } from "next/font/google";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { ThemeProvider } from "@/components/layout/theme-provider";
@@ -18,6 +18,15 @@ const montserrat = Montserrat({
   subsets: ["latin", "latin-ext"],
   weight: ["600", "700", "800"],
   variable: "--font-montserrat",
+  display: "swap",
+});
+
+// Police d'accent (italique) pour les mots mis en valeur dans les grands titres
+const playfair = Playfair_Display({
+  subsets: ["latin", "latin-ext"],
+  weight: ["600", "700"],
+  style: ["italic"],
+  variable: "--font-playfair",
   display: "swap",
 });
 
@@ -73,7 +82,7 @@ export default async function LocaleLayout({
   return (
     <html
       lang={locale}
-      className={`${inter.variable} ${montserrat.variable}`}
+      className={`${inter.variable} ${montserrat.variable} ${playfair.variable}`}
       suppressHydrationWarning
     >
       <body id="top" className="flex min-h-dvh flex-col bg-background font-sans text-foreground antialiased">

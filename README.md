@@ -263,8 +263,8 @@ d'exporter des rapports.
 
 - [x] Phase 1 — Initialisation (Next.js, TypeScript, Tailwind v4, shadcn/ui, next-intl, design tokens, polices)
 - [x] Phase 2 — Design system & layout (header, top bar, footer + carte, composants, mode sombre, logo officiel)
-- [ ] Phase 3 — Page d'accueil
-- [ ] Phase 4 — Pages publiques
+- [x] Phase 3 — Page d'accueil (hero diaporama, 13 sections, contenus en `src/content/`)
+- [x] Phase 4 — Pages publiques (19 pages + sous-menus ; formulaires en envoi provisoire WhatsApp / e-mail)
 - [ ] Phase 5 — Supabase
 - [ ] Phase 6 — Formulaires & e-mails
 - [ ] Phase 7 — Authentification

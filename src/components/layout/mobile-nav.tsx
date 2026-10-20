@@ -1,6 +1,6 @@
 "use client";
 
-import { Handshake, Heart, LogIn, Phone, X } from "lucide-react";
+import { ChevronDown, Handshake, Heart, LogIn, Mail, Phone, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import {
@@ -66,25 +66,46 @@ export function MobileNav() {
         <nav aria-label={t("Header.mainNav")} className="px-2 py-4">
           <ul className="flex flex-col">
             {mainNav.map((item, i) => {
-              const active = isActivePath(pathname, item.href);
+              const active =
+                isActivePath(pathname, item.href) || !!item.children?.some((c) => isActivePath(pathname, c.href));
+              const itemClass = cn(
+                "flex w-full items-center justify-between rounded-xl px-4 py-3 font-heading text-lg font-semibold transition-colors hover:bg-muted",
+                active && "text-ktgw-red"
+              );
               return (
                 <li
                   key={item.href}
                   className="animate-in fade-in slide-in-from-right-6 fill-mode-both duration-300"
                   style={{ animationDelay: `${50 + i * 40}ms` }}
                 >
-                  <Link
-                    href={item.href}
-                    onClick={close}
-                    aria-current={active ? "page" : undefined}
-                    className={cn(
-                      "flex items-center justify-between rounded-xl px-4 py-3 font-heading text-lg font-semibold transition-colors hover:bg-muted",
-                      active && "bg-accent text-ktgw-red"
-                    )}
-                  >
-                    {t(`Nav.${item.key}`)}
-                    {active && <span aria-hidden className="size-2 rounded-full bg-ktgw-red" />}
-                  </Link>
+                  {item.children ? (
+                    // Sous-menu en accordéon (élément natif <details> : accessible sans script)
+                    <details open={active} className="group">
+                      <summary className={cn(itemClass, "cursor-pointer list-none [&::-webkit-details-marker]:hidden")}>
+                        {t(`Nav.${item.key}`)}
+                        <ChevronDown aria-hidden className="size-5 transition-transform duration-200 group-open:rotate-180" />
+                      </summary>
+                      <ul className="mt-1 mb-2 ml-4 flex flex-col border-l-2 border-ktgw-sun/60 pl-2">
+                        {item.children.map((child) => (
+                          <li key={child.href}>
+                            <Link
+                              href={child.href}
+                              onClick={close}
+                              aria-current={pathname === child.href ? "page" : undefined}
+                              className="block rounded-lg px-4 py-2.5 text-base text-foreground/80 transition-colors hover:bg-muted hover:text-ktgw-red aria-[current=page]:font-semibold aria-[current=page]:text-ktgw-red"
+                            >
+                              {t(`Nav.${child.key}`)}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </details>
+                  ) : (
+                    <Link href={item.href} onClick={close} aria-current={active ? "page" : undefined} className={cn(itemClass, active && "bg-accent")}>
+                      {t(`Nav.${item.key}`)}
+                      {active && <span aria-hidden className="size-2 rounded-full bg-ktgw-red" />}
+                    </Link>
+                  )}
                 </li>
               );
             })}
@@ -105,20 +126,26 @@ export function MobileNav() {
             {t("Common.signIn")}
           </ButtonLink>
 
-          <a
-            href={`tel:${phone.e164}`}
-            className="mt-2 flex items-center justify-center gap-2 text-sm text-muted-foreground hover:text-foreground"
-          >
-            <Phone aria-hidden className="size-4 text-ktgw-green" />
-            {phone.display}
-          </a>
+          <div className="mt-2 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm text-muted-foreground">
+            <a href={`tel:${phone.e164}`} className="flex items-center gap-2 hover:text-foreground">
+              <Phone aria-hidden className="size-4 text-ktgw-green" />
+              {phone.display}
+            </a>
+            <a href={`mailto:${siteConfig.togo.email}`} className="flex items-center gap-2 hover:text-foreground">
+              <Mail aria-hidden className="size-4 text-ktgw-green" />
+              {siteConfig.togo.email}
+            </a>
+          </div>
 
-          <div className="flex items-center justify-between gap-2 pt-2">
+          <SocialLinks
+            size="md"
+            className="justify-center gap-2"
+            itemClassName="bg-muted text-foreground/80 hover:bg-ktgw-red-strong hover:text-white"
+          />
+
+          <div className="flex items-center justify-between gap-2 border-t pt-4">
             <LanguageSwitcher />
-            <div className="flex items-center gap-1">
-              <SocialLinks size="sm" itemClassName="text-muted-foreground hover:bg-muted hover:text-foreground" />
-              <ThemeToggle className="text-muted-foreground hover:bg-muted hover:text-foreground" />
-            </div>
+            <ThemeToggle className="text-muted-foreground hover:bg-muted hover:text-foreground" />
           </div>
         </div>
       </SheetContent>

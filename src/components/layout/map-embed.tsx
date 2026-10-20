@@ -8,6 +8,8 @@ import { cn } from "@/lib/utils";
 type MapEmbedProps = {
   src: string;
   className?: string;
+  /** `dark` : sur fond sombre (footer) ; `light` : sur fond clair (page Contact). */
+  tone?: "dark" | "light";
 };
 
 /**
@@ -15,12 +17,13 @@ type MapEmbedProps = {
  * - RGPD : aucun cookie Google tant que le visiteur n'a pas choisi d'afficher la carte.
  * - Performance : évite ~500 Ko de scripts tiers au chargement de chaque page.
  */
-export function MapEmbed({ src, className }: MapEmbedProps) {
+export function MapEmbed({ src, className, tone = "dark" }: MapEmbedProps) {
+  const light = tone === "light";
   const t = useTranslations("Footer");
   const [loaded, setLoaded] = useState(false);
 
   return (
-    <div className={cn("relative aspect-[16/10] overflow-hidden rounded-2xl bg-white/5", className)}>
+    <div className={cn("relative aspect-[16/10] overflow-hidden rounded-2xl", light ? "bg-ktgw-green-dark" : "bg-white/5", className)}>
       {loaded ? (
         <iframe
           src={src}

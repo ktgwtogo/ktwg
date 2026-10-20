@@ -1,11 +1,12 @@
 import { useTranslations } from "next-intl";
 import type { IconType } from "react-icons";
-import { FaFacebookF, FaInstagram, FaLinkedinIn, FaWhatsapp, FaYoutube } from "react-icons/fa6";
+import { FaFacebookF, FaInstagram, FaLinkedinIn, FaTiktok, FaWhatsapp, FaYoutube } from "react-icons/fa6";
 import { siteConfig, type SocialNetwork } from "@/config/site";
 import { cn } from "@/lib/utils";
 
 const icons: Record<SocialNetwork, IconType> = {
   facebook: FaFacebookF,
+  tiktok: FaTiktok,
   instagram: FaInstagram,
   linkedin: FaLinkedinIn,
   youtube: FaYoutube,

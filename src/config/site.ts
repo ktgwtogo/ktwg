@@ -6,7 +6,7 @@
  * (modifiables depuis /admin → Paramètres) avec ce fichier en repli.
  */
 
-export type SocialNetwork = "facebook" | "instagram" | "linkedin" | "youtube" | "whatsapp";
+export type SocialNetwork = "facebook" | "tiktok" | "instagram" | "youtube" | "linkedin" | "whatsapp";
 
 export const siteConfig = {
   name: "KTGW Togo",
@@ -40,12 +40,17 @@ export const siteConfig = {
     website: "https://kommtogogehweiter.de",
   },
 
-  /** Laisser une URL vide masque l'icône correspondante. */
+  /**
+   * Réseaux sociaux, dans l'ordre d'affichage. Laisser une URL vide masque l'icône.
+   * ⚠️ À REMPLACER : Facebook, TikTok et YouTube pointent provisoirement vers
+   * l'accueil de chaque plateforme, en attendant les adresses des pages officielles.
+   */
   socials: {
-    facebook: "",
+    facebook: "https://www.facebook.com/",
+    tiktok: "https://www.tiktok.com/",
     instagram: "https://www.instagram.com/kommtogogehweiter/",
+    youtube: "https://www.youtube.com/",
     linkedin: "",
-    youtube: "",
     whatsapp: "https://wa.me/22879952020",
   } satisfies Record<SocialNetwork, string>,
 } as const;

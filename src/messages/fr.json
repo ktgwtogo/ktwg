@@ -38,13 +38,23 @@
     "transparency": "Transparence",
     "contact": "Contact",
     "legalNotice": "Mentions légales",
-    "privacy": "Confidentialité"
+    "privacy": "Confidentialité",
+    "whoWeAre": "Qui sommes-nous",
+    "projectCefopexd": "Centre CEFOPEXD",
+    "projectBoarding": "Internat des jeunes filles",
+    "projectSolar": "Femmes solaires",
+    "allProjects": "Tous nos projets",
+    "ourCourses": "Nos filières",
+    "germanClubs": "Clubs d'allemand",
+    "apply": "Candidater à une formation"
   },
   "Header": {
     "mainNav": "Navigation principale",
     "openMenu": "Ouvrir le menu",
     "closeMenu": "Fermer le menu",
-    "menu": "Menu"
+    "menu": "Menu",
+    "submenu": "Sous-menu {label}",
+    "contactUs": "Nous contacter"
   },
   "TopBar": {
     "call": "Appeler le {number}",
@@ -58,9 +68,10 @@
   },
   "Social": {
     "facebook": "Facebook",
+    "tiktok": "TikTok",
     "instagram": "Instagram",
-    "linkedin": "LinkedIn",
     "youtube": "YouTube",
+    "linkedin": "LinkedIn",
     "whatsapp": "WhatsApp"
   },
   "Footer": {

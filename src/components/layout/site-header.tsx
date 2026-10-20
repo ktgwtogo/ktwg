@@ -6,9 +6,8 @@ import { useEffect, useState } from "react";
 import { ButtonLink } from "@/components/ui/button-link";
 import { Container } from "@/components/shared/section";
 import { Logo } from "@/components/shared/logo";
-import { isActivePath, mainNav } from "@/config/navigation";
-import { Link, usePathname } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
+import { DesktopNav } from "./desktop-nav";
 import { MobileNav } from "./mobile-nav";
 
 /**
@@ -18,7 +17,6 @@ import { MobileNav } from "./mobile-nav";
  */
 export function SiteHeader() {
   const t = useTranslations();
-  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -34,34 +32,13 @@ export function SiteHeader() {
         "sticky top-0 z-40 transition-[background-color,box-shadow,border-color] duration-300",
         scrolled
           ? "border-b border-border bg-background shadow-soft"
-          : "border-b border-transparent bg-background/80 backdrop-blur-md"
+          : "border-b border-transparent bg-background/85 backdrop-blur-md"
       )}
     >
-      <Container className="flex h-18 items-center justify-between gap-6 lg:h-22">
+      <Container className="flex h-18 items-center justify-between gap-4 lg:h-22">
         <Logo priority className="h-14 lg:h-[4.5rem]" />
 
-        <nav aria-label={t("Header.mainNav")} className="hidden xl:block">
-          <ul className="flex items-center gap-1">
-            {mainNav.map((item) => {
-              const active = isActivePath(pathname, item.href);
-              return (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    aria-current={active ? "page" : undefined}
-                    className={cn(
-                      "relative rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:text-ktgw-red",
-                      "after:absolute after:inset-x-3 after:-bottom-0.5 after:h-0.5 after:origin-left after:scale-x-0 after:rounded-full after:bg-ktgw-red after:transition-transform hover:after:scale-x-100",
-                      active ? "text-ktgw-red after:scale-x-100" : "text-foreground/80"
-                    )}
-                  >
-                    {t(`Nav.${item.key}`)}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
+        <DesktopNav />
 
         <div className="flex items-center gap-2">
           <ButtonLink

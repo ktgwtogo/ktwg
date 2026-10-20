@@ -202,13 +202,13 @@ Gardez un document (privé) sous la main pour noter chaque clé récupérée.
 5. Dans Supabase, ouvrez **Authentication → Providers → Google**, activez le fournisseur et
    collez les deux valeurs.
 6. Dans Supabase, ouvrez **Authentication → URL Configuration** :
-   - Site URL : `https://votre-domaine.org`
-   - Redirect URLs : ajoutez `http://localhost:3000/**` et `https://votre-domaine.org/**`
+   - Site URL : `https://www.ktgw.tg`
+   - Redirect URLs : ajoutez `http://localhost:3000/**`, `https://www.ktgw.tg/**` et `https://ktgw.tg/**`
 
 ### 4. Resend — envoi des e-mails
 
 1. Créez un compte sur <https://resend.com>.
-2. Ouvrez **Domains → Add domain** et saisissez votre domaine (par ex. `ktgw-togo.org`).
+2. Ouvrez **Domains → Add domain** et saisissez votre domaine (`ktgw.tg`).
 3. Resend affiche plusieurs enregistrements DNS (SPF, DKIM, DMARC). Gardez cette page ouverte :
    vous les ajouterez chez LWS à l'étape 6.
 4. Ouvrez **API Keys → Create API key** et copiez la clé dans `RESEND_API_KEY`.
@@ -225,9 +225,9 @@ Gardez un document (privé) sous la main pour noter chaque clé récupérée.
 
 ### 6. LWS — relier le nom de domaine
 
-1. Connectez-vous à votre espace client LWS, choisissez le domaine, puis ouvrez **Zone DNS**.
-2. Dans Vercel, ouvrez **Settings → Domains** et ajoutez `votre-domaine.org` et
-   `www.votre-domaine.org`. **Vercel affiche alors les valeurs exactes à saisir.** Utilisez
+1. Connectez-vous à votre espace client LWS (<https://panel.lws.fr>), choisissez `ktgw.tg`, puis ouvrez **Zone DNS**.
+2. Dans Vercel, ouvrez **Settings → Domains** et ajoutez `ktgw.tg` et
+   `www.ktgw.tg`. **Vercel affiche alors les valeurs exactes à saisir.** Utilisez
    celles-là en priorité. Ce sont habituellement :
 
    | Type | Nom | Valeur |
@@ -243,7 +243,7 @@ Gardez un document (privé) sous la main pour noter chaque clé récupérée.
 
 ### 7. Passer sur le domaine définitif
 
-- Dans Vercel, remplacez `NEXT_PUBLIC_SITE_URL` par `https://votre-domaine.org`, puis
+- Dans Vercel, remplacez `NEXT_PUBLIC_SITE_URL` par `https://www.ktgw.tg`, puis
   redéployez.
 - Vérifiez la Site URL et les Redirect URLs dans Supabase (étape 3.6).
 - Dans Google Cloud, ajoutez le domaine aux **domaines autorisés** de l'écran de consentement.
@@ -258,8 +258,8 @@ Gardez un document (privé) sous la main pour noter chaque clé récupérée.
 ### 9. Référencement Google
 
 1. Allez sur <https://search.google.com/search-console> et ajoutez la propriété
-   `https://votre-domaine.org`. Validez-la par un enregistrement TXT chez LWS.
-2. Ouvrez **Sitemaps** et soumettez `https://votre-domaine.org/sitemap.xml`.
+   `https://www.ktgw.tg`. Validez-la par un enregistrement TXT chez LWS.
+2. Ouvrez **Sitemaps** et soumettez `https://www.ktgw.tg/sitemap.xml`.
 
 ---
 

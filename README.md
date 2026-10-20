@@ -172,6 +172,19 @@ Gardez un document (privé) sous la main pour noter chaque clé récupérée.
    - `Project URL` → `NEXT_PUBLIC_SUPABASE_URL`
    - `anon public` → `NEXT_PUBLIC_SUPABASE_ANON_KEY`
    - `service_role` → `SUPABASE_SERVICE_ROLE_KEY` (**secret, ne jamais le partager**)
+5. Désignez le premier super administrateur : dans **SQL Editor**, exécutez
+   ```sql
+   insert into public.role_invitations (email, role) values ('votre.adresse@gmail.com', 'super_admin');
+   ```
+   Ce rôle lui est attribué à sa première connexion Google. Si le compte existe déjà :
+   `update public.profiles set role = 'super_admin' where email = 'votre.adresse@gmail.com';`
+
+> **Ce qui est en place** — rôles `member` < `editor` < `admin` < `super_admin` ; contenus
+> (projets, actualités, événements, galerie, partenaires, témoignages) lisibles par tous une fois
+> publiés et modifiables par l'équipe ; demandes des formulaires visibles par l'équipe seulement,
+> enregistrées côté serveur avec la clé `service_role` ; bucket public `media` (10 Mo max).
+> Après une modification du schéma, régénérez `src/types/database.ts` avec
+> `npx supabase gen types typescript --project-id <ref> > src/types/database.ts`.
 
 ### 3. Google Cloud Console — bouton « Continuer avec Google »
 
@@ -265,7 +278,7 @@ d'exporter des rapports.
 - [x] Phase 2 — Design system & layout (header, top bar, footer + carte, composants, mode sombre, logo officiel)
 - [x] Phase 3 — Page d'accueil (hero diaporama, 13 sections, contenus en `src/content/`)
 - [x] Phase 4 — Pages publiques (19 pages + sous-menus ; formulaires en envoi provisoire WhatsApp / e-mail)
-- [ ] Phase 5 — Supabase
+- [x] Phase 5 — Supabase (schéma, RLS, stockage, données initiales, types, clients)
 - [ ] Phase 6 — Formulaires & e-mails
 - [ ] Phase 7 — Authentification
 - [ ] Phase 8 — Dashboard admin

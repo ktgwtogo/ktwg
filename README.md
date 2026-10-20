@@ -190,17 +190,17 @@ Gardez un document (privé) sous la main pour noter chaque clé récupérée.
 
 1. **Authentication → Sign In / Providers → Email** : laissez « Confirm email » activé.
 2. **Authentication → SMTP Settings** : activez « Custom SMTP » pour ne pas être limité à
-   quelques e-mails par heure. Avec Resend : hôte , port ,
-   utilisateur , mot de passe = votre clé API Resend, expéditeur .
+   quelques e-mails par heure. Avec Resend : hôte `smtp.resend.com`, port `465`,
+   utilisateur `resend`, mot de passe = votre clé API Resend, expéditeur `contact@ktgw.tg`.
 3. **Authentication → Email Templates** (facultatif, recommandé) : pour que les liens marchent
    même ouverts sur un autre appareil, remplacez le lien du modèle *Confirm signup* par
-    et celui de
-   *Reset password* par .
+   `{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=signup` et celui de
+   *Reset password* par `{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=recovery`.
 
 Parcours membre : création du compte → **Mon profil** (identité, coordonnées, bio, photo) →
 **Adhésion** (adhérent·e, membre actif·ve ou donateur·rice) → décision d'un administrateur dans
- → notification et e-mail → accès aux **Documents** publiés dans
-. Photos et documents sont stockés dans des buckets privés.
+`/admin/adhesions` → notification et e-mail → accès aux **Documents** publiés dans
+`/admin/documents`. Photos et documents sont stockés dans des buckets privés.
 
 ### 3. Google Cloud Console — bouton « Continuer avec Google »
 

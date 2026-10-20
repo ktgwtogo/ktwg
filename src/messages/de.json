@@ -1,0 +1,40 @@
+{
+  "Metadata": {
+    "title": "KTGW Togo — Heute die Gestalter des Togo von morgen ausbilden",
+    "titleTemplate": "%s · KTGW Togo",
+    "description": "KommTogoGehWeiter Togo: Bildung, zweisprachige Berufsausbildung und Stärkung junger Menschen, vor allem junger Frauen, seit 2008."
+  },
+  "Common": {
+    "orgName": "KommTogoGehWeiter Togo",
+    "orgShort": "KTGW Togo",
+    "slogan": "Komm Togo geh weiter",
+    "motto": "Jeder Cent, der in Bildung in Afrika investiert wird, schützt vor gefährlichen Wegen nach Europa.",
+    "donate": "Spenden",
+    "becomePartner": "Partner werden",
+    "ourProjects": "Unsere Projekte",
+    "signIn": "Anmelden",
+    "learnMore": "Mehr erfahren",
+    "language": "Sprache",
+    "skipToContent": "Zum Hauptinhalt springen"
+  },
+  "Nav": {
+    "home": "Startseite",
+    "about": "Über uns",
+    "objectives": "Ziele",
+    "projects": "Projekte",
+    "trainings": "Ausbildung",
+    "news": "Aktuelles",
+    "events": "Veranstaltungen",
+    "gallery": "Galerie",
+    "partnership": "Partnerschaft",
+    "getInvolved": "Mitmachen",
+    "donate": "Spenden",
+    "transparency": "Transparenz",
+    "contact": "Kontakt"
+  },
+  "Home": {
+    "heroTitle": "Heute die Gestalter des Togo von morgen ausbilden",
+    "heroSubtitle": "Bildung, zweisprachige Berufsausbildung und Stärkung junger Menschen, vor allem junger Frauen, seit 2008.",
+    "wip": "Website im Aufbau — Phase 1 (Initialisierung) abgeschlossen."
+  }
+}

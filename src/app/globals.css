@@ -1,0 +1,197 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/* Mode sombre piloté par la classe .dark sur <html> (bascule ajoutée en Phase 2) */
+@custom-variant dark (&:is(.dark *));
+
+/* ─────────────────────────────────────────────────────────────
+   1. Jetons de marque KTGW
+   Couleurs du logo : soleil levant, chemin vert, lettres rouges.
+   Les variantes « -strong » sont légèrement assombries pour garantir
+   un contraste WCAG AA (≥ 4,5:1) avec du texte blanc sur les boutons.
+   ───────────────────────────────────────────────────────────── */
+:root {
+  --ktgw-red: #e2412b;
+  --ktgw-red-strong: #c7361f;
+  --ktgw-sun: #f9c23c;
+  --ktgw-orange: #f5a623;
+  --ktgw-green: #1e8e3e;
+  --ktgw-green-strong: #187a34;
+  --ktgw-green-dark: #0f5c2a;
+  --ink: #1a1a1a;
+  --paper: #fffdf8;
+
+  /* Dégradé « soleil levant » réutilisé (CTA final, accents) */
+  --gradient-sun: linear-gradient(135deg, var(--ktgw-sun) 0%, var(--ktgw-orange) 55%, var(--ktgw-red) 100%);
+
+  /* ── Jetons sémantiques shadcn/ui, alignés sur la marque ── */
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --card: #ffffff;
+  --card-foreground: var(--ink);
+  --popover: #ffffff;
+  --popover-foreground: var(--ink);
+  --primary: var(--ktgw-red-strong);
+  --primary-foreground: #ffffff;
+  --secondary: var(--ktgw-green-strong);
+  --secondary-foreground: #ffffff;
+  --muted: #f5f1e8;
+  --muted-foreground: #5c5750;
+  --accent: #fdf3d8;
+  --accent-foreground: var(--ink);
+  --destructive: #b42318;
+  --border: #ebe5d8;
+  --input: #e0d9ca;
+  --ring: var(--ktgw-orange);
+  --chart-1: var(--ktgw-green);
+  --chart-2: var(--ktgw-sun);
+  --chart-3: var(--ktgw-red);
+  --chart-4: var(--ktgw-orange);
+  --chart-5: var(--ktgw-green-dark);
+  --radius: 0.75rem;
+  --sidebar: #fbf8f1;
+  --sidebar-foreground: var(--ink);
+  --sidebar-primary: var(--ktgw-red-strong);
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: var(--accent);
+  --sidebar-accent-foreground: var(--ink);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
+
+  /* Ombres douces et chaleureuses */
+  --shadow-soft: 0 1px 2px rgb(26 26 26 / 0.04), 0 8px 24px -8px rgb(26 26 26 / 0.12);
+}
+
+.dark {
+  /* Les couleurs de marque gardent leur teinte, légèrement éclaircies pour le fond sombre */
+  --ktgw-red: #ef5a43;
+  --ktgw-sun: #fbcd55;
+  --ktgw-green: #34a853;
+  --ktgw-green-dark: #6fcf8a;
+
+  --background: #141210;
+  --foreground: #f5f0e6;
+  --card: #1d1a17;
+  --card-foreground: #f5f0e6;
+  --popover: #1d1a17;
+  --popover-foreground: #f5f0e6;
+  --primary: var(--ktgw-red-strong);
+  --primary-foreground: #ffffff;
+  --secondary: var(--ktgw-green-strong);
+  --secondary-foreground: #ffffff;
+  --muted: #26221e;
+  --muted-foreground: #b3aa9c;
+  --accent: #2e2718;
+  --accent-foreground: #f5f0e6;
+  --destructive: #f97066;
+  --border: rgb(255 255 255 / 0.1);
+  --input: rgb(255 255 255 / 0.15);
+  --ring: var(--ktgw-sun);
+  --sidebar: #1a1714;
+  --sidebar-foreground: #f5f0e6;
+  --sidebar-accent: var(--accent);
+  --sidebar-accent-foreground: #f5f0e6;
+  --sidebar-border: var(--border);
+
+  --shadow-soft: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px -8px rgb(0 0 0 / 0.5);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   2. Exposition des jetons à Tailwind (bg-ktgw-red, font-heading…)
+   ───────────────────────────────────────────────────────────── */
+@theme inline {
+  --color-ktgw-red: var(--ktgw-red);
+  --color-ktgw-red-strong: var(--ktgw-red-strong);
+  --color-ktgw-sun: var(--ktgw-sun);
+  --color-ktgw-orange: var(--ktgw-orange);
+  --color-ktgw-green: var(--ktgw-green);
+  --color-ktgw-green-strong: var(--ktgw-green-strong);
+  --color-ktgw-green-dark: var(--ktgw-green-dark);
+  --color-ink: var(--ink);
+  --color-paper: var(--paper);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-montserrat), var(--font-inter), ui-sans-serif, sans-serif;
+
+  --shadow-soft: var(--shadow-soft);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   3. Styles de base
+   ───────────────────────────────────────────────────────────── */
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans;
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  h1, h2, h3, h4 {
+    @apply font-heading tracking-tight;
+    text-wrap: balance;
+  }
+  /* Focus toujours visible au clavier (WCAG 2.4.7) */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+}
+
+/* Respect des préférences d'accessibilité : pas d'animation si demandé */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

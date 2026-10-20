@@ -1,0 +1,40 @@
+{
+  "Metadata": {
+    "title": "KTGW Togo — Former aujourd'hui les bâtisseurs du Togo de demain",
+    "titleTemplate": "%s · KTGW Togo",
+    "description": "KommTogoGehWeiter Togo : éducation, formation professionnelle bilingue et autonomisation des jeunes, surtout des femmes, depuis 2008."
+  },
+  "Common": {
+    "orgName": "KommTogoGehWeiter Togo",
+    "orgShort": "KTGW Togo",
+    "slogan": "Komm Togo geh weiter",
+    "motto": "Chaque centime investi dans l'éducation en Afrique protège des chemins dangereux vers l'Europe.",
+    "donate": "Faire un don",
+    "becomePartner": "Devenir partenaire",
+    "ourProjects": "Nos projets",
+    "signIn": "Se connecter",
+    "learnMore": "En savoir plus",
+    "language": "Langue",
+    "skipToContent": "Aller au contenu principal"
+  },
+  "Nav": {
+    "home": "Accueil",
+    "about": "À propos",
+    "objectives": "Objectifs",
+    "projects": "Projets",
+    "trainings": "Formations",
+    "news": "Actualités",
+    "events": "Événements",
+    "gallery": "Galerie",
+    "partnership": "Partenariat",
+    "getInvolved": "S'engager",
+    "donate": "Faire un don",
+    "transparency": "Transparence",
+    "contact": "Contact"
+  },
+  "Home": {
+    "heroTitle": "Former aujourd'hui les bâtisseurs du Togo de demain",
+    "heroSubtitle": "Éducation, formation professionnelle bilingue et autonomisation des jeunes, surtout des femmes, depuis 2008.",
+    "wip": "Site en construction — Phase 1 (initialisation) terminée."
+  }
+}

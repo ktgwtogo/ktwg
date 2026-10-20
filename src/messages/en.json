@@ -1,0 +1,40 @@
+{
+  "Metadata": {
+    "title": "KTGW Togo — Training today the builders of tomorrow's Togo",
+    "titleTemplate": "%s · KTGW Togo",
+    "description": "KommTogoGehWeiter Togo: education, bilingual vocational training and empowerment of young people, especially women, since 2008."
+  },
+  "Common": {
+    "orgName": "KommTogoGehWeiter Togo",
+    "orgShort": "KTGW Togo",
+    "slogan": "Komm Togo geh weiter",
+    "motto": "Every cent invested in education in Africa protects against dangerous journeys to Europe.",
+    "donate": "Donate",
+    "becomePartner": "Become a partner",
+    "ourProjects": "Our projects",
+    "signIn": "Sign in",
+    "learnMore": "Learn more",
+    "language": "Language",
+    "skipToContent": "Skip to main content"
+  },
+  "Nav": {
+    "home": "Home",
+    "about": "About us",
+    "objectives": "Objectives",
+    "projects": "Projects",
+    "trainings": "Training",
+    "news": "News",
+    "events": "Events",
+    "gallery": "Gallery",
+    "partnership": "Partnership",
+    "getInvolved": "Get involved",
+    "donate": "Donate",
+    "transparency": "Transparency",
+    "contact": "Contact"
+  },
+  "Home": {
+    "heroTitle": "Training today the builders of tomorrow's Togo",
+    "heroSubtitle": "Education, bilingual vocational training and empowerment of young people, especially women, since 2008.",
+    "wip": "Website under construction — Phase 1 (setup) complete."
+  }
+}

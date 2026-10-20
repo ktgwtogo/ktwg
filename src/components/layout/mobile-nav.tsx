@@ -38,6 +38,9 @@ export function MobileNav() {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger
+        // Identifiant fixe : l'id généré automatiquement par Base UI peut différer
+        // entre le rendu serveur et le navigateur (avertissement d'hydratation)
+        id="mobile-menu-trigger"
         aria-label={t("Header.openMenu")}
         className="group flex size-10 flex-col items-center justify-center gap-1.5 rounded-xl transition-colors hover:bg-muted lg:hidden"
       >

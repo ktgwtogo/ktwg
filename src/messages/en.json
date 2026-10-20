@@ -46,7 +46,46 @@
     "allProjects": "All our projects",
     "ourCourses": "Our courses",
     "germanClubs": "German clubs",
-    "apply": "Apply for training"
+    "apply": "Apply for training",
+    "desc": {
+      "whoWeAre": "Our story, mission and team",
+      "objectives": "The 13 commitments that guide our work",
+      "transparency": "Statutes, activity and financial reports",
+      "gallery": "Our work in the field, in pictures",
+      "projectCefopexd": "Vocational training for young people in Devikinme",
+      "projectBoarding": "A safe home for female apprentices",
+      "projectSolar": "Solar energy in women's hands",
+      "allProjects": "Overview of all our projects",
+      "ourCourses": "Cutlery, mechanics, accounting, solar, IT",
+      "germanClubs": "German and openness to the world at school",
+      "apply": "Apply in 2 minutes",
+      "donate": "Mobile Money or international donation",
+      "becomePartner": "Companies, foundations, institutions",
+      "volunteer": "Give your time, in Togo or remotely",
+      "join": "Become a member of the association"
+    },
+    "featured": {
+      "about": {
+        "title": "Since 2008",
+        "text": "A Togolese NGO, branch of kommTOGOgehweiter e.V. (Cologne).",
+        "cta": "Our story"
+      },
+      "projects": {
+        "title": "Girls' boarding house",
+        "text": "24 places for female apprentices since late 2025.",
+        "cta": "Support this project"
+      },
+      "trainings": {
+        "title": "Applications open",
+        "text": "Bilingual French–German training geared towards employment.",
+        "cta": "Apply now"
+      },
+      "getInvolved": {
+        "title": "Every cent counts",
+        "text": "Your donation directly funds training for young people.",
+        "cta": "Donate"
+      }
+    }
   },
   "Header": {
     "mainNav": "Main navigation",

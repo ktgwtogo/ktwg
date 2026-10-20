@@ -46,7 +46,46 @@
     "allProjects": "Tous nos projets",
     "ourCourses": "Nos filières",
     "germanClubs": "Clubs d'allemand",
-    "apply": "Candidater à une formation"
+    "apply": "Candidater à une formation",
+    "desc": {
+      "whoWeAre": "Notre histoire, notre mission, notre équipe",
+      "objectives": "Les 13 engagements qui guident nos actions",
+      "transparency": "Statuts, rapports d'activité et comptes",
+      "gallery": "Nos actions sur le terrain en images",
+      "projectCefopexd": "Former les jeunes à un métier, à Devikinme",
+      "projectBoarding": "Un toit sûr pour les apprenties",
+      "projectSolar": "L'énergie solaire entre les mains des femmes",
+      "allProjects": "Vue d'ensemble de nos projets",
+      "ourCourses": "Coutellerie, mécanique, comptabilité, solaire, informatique",
+      "germanClubs": "L'allemand et l'ouverture au monde à l'école",
+      "apply": "Déposer une candidature en 2 minutes",
+      "donate": "Mobile Money ou don international",
+      "becomePartner": "Entreprises, fondations, institutions",
+      "volunteer": "Donner de son temps, au Togo ou à distance",
+      "join": "Devenir membre de l'association"
+    },
+    "featured": {
+      "about": {
+        "title": "Depuis 2008",
+        "text": "Une ONG togolaise, branche de kommTOGOgehweiter e.V. (Cologne).",
+        "cta": "Notre histoire"
+      },
+      "projects": {
+        "title": "Internat des jeunes filles",
+        "text": "24 places pour les apprenties depuis fin 2025.",
+        "cta": "Soutenir ce projet"
+      },
+      "trainings": {
+        "title": "Candidatures ouvertes",
+        "text": "Des formations bilingues français–allemand tournées vers l'emploi.",
+        "cta": "Candidater"
+      },
+      "getInvolved": {
+        "title": "Chaque centime compte",
+        "text": "Votre don finance directement la formation des jeunes.",
+        "cta": "Faire un don"
+      }
+    }
   },
   "Header": {
     "mainNav": "Navigation principale",

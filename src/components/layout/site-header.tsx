@@ -13,7 +13,7 @@ import { MobileNav } from "./mobile-nav";
 /**
  * Header collant.
  * Légèrement translucide en haut de page, il devient opaque avec une ombre
- * dès que l'on fait défiler. Menu complet à partir de 1280 px, menu burger en dessous.
+ * dès que l'on fait défiler. Menu horizontal à partir de 1024 px, menu burger en dessous.
  */
 export function SiteHeader() {
   const t = useTranslations();
@@ -35,22 +35,23 @@ export function SiteHeader() {
           : "border-b border-transparent bg-background/85 backdrop-blur-md"
       )}
     >
-      <Container className="flex h-18 items-center justify-between gap-4 lg:h-22">
-        <Logo priority className="h-14 lg:h-[4.5rem]" />
+      <Container className="flex h-18 items-center justify-between gap-3 lg:h-20 lg:gap-2 lg:px-5 xl:h-22 xl:gap-3 xl:px-8">
+        <Logo priority className="h-14 shrink-0 lg:h-16 xl:h-[4.5rem]" />
 
         <DesktopNav />
 
-        <div className="flex items-center gap-2">
+        <div className="flex shrink-0 items-center gap-1.5 xl:gap-2">
           <ButtonLink
             href="/connexion"
             variant="ghost"
             size="lg"
-            className="hidden h-10 rounded-xl px-3 md:inline-flex"
+            title={t("Common.signIn")}
+            className="hidden h-10 rounded-full px-3 md:inline-flex lg:px-2 2xl:px-3"
           >
             <LogIn aria-hidden />
-            {t("Common.signIn")}
+            <span className="lg:sr-only 2xl:not-sr-only">{t("Common.signIn")}</span>
           </ButtonLink>
-          <ButtonLink href="/faire-un-don" size="lg" className="h-10 rounded-xl px-4 font-semibold">
+          <ButtonLink href="/faire-un-don" size="lg" className="h-10 shrink-0 rounded-full px-4 font-semibold shadow-md shadow-ktgw-red/25 lg:px-3.5 xl:h-11 xl:px-5">
             <Heart aria-hidden className="fill-current" />
             <span className="hidden sm:inline">{t("Common.donate")}</span>
             <span className="sr-only sm:hidden">{t("Common.donate")}</span>

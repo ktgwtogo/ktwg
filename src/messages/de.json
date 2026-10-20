@@ -46,7 +46,46 @@
     "allProjects": "Alle Projekte",
     "ourCourses": "Unsere Fachrichtungen",
     "germanClubs": "Deutschclubs",
-    "apply": "Für eine Ausbildung bewerben"
+    "apply": "Für eine Ausbildung bewerben",
+    "desc": {
+      "whoWeAre": "Unsere Geschichte, Mission und unser Team",
+      "objectives": "Die 13 Ziele, die unser Handeln leiten",
+      "transparency": "Satzung, Tätigkeits- und Finanzberichte",
+      "gallery": "Unsere Arbeit vor Ort in Bildern",
+      "projectCefopexd": "Berufsausbildung für junge Menschen in Devikinme",
+      "projectBoarding": "Ein sicheres Zuhause für Auszubildende",
+      "projectSolar": "Solarenergie in Frauenhand",
+      "allProjects": "Alle Projekte im Überblick",
+      "ourCourses": "Messerschmiede, Mechanik, Buchhaltung, Solar, IT",
+      "germanClubs": "Deutsch und Weltoffenheit an Schulen",
+      "apply": "In 2 Minuten bewerben",
+      "donate": "Mobile Money oder internationale Spende",
+      "becomePartner": "Unternehmen, Stiftungen, Institutionen",
+      "volunteer": "Zeit schenken, in Togo oder online",
+      "join": "Vereinsmitglied werden"
+    },
+    "featured": {
+      "about": {
+        "title": "Seit 2008",
+        "text": "Eine togoische NGO, Zweig von kommTOGOgehweiter e.V. (Köln).",
+        "cta": "Unsere Geschichte"
+      },
+      "projects": {
+        "title": "Mädcheninternat",
+        "text": "Seit Ende 2025 Platz für 24 Auszubildende.",
+        "cta": "Projekt unterstützen"
+      },
+      "trainings": {
+        "title": "Bewerbungen offen",
+        "text": "Zweisprachige Ausbildung Französisch–Deutsch mit Blick auf den Beruf.",
+        "cta": "Jetzt bewerben"
+      },
+      "getInvolved": {
+        "title": "Jeder Cent zählt",
+        "text": "Ihre Spende finanziert direkt die Ausbildung junger Menschen.",
+        "cta": "Spenden"
+      }
+    }
   },
   "Header": {
     "mainNav": "Hauptnavigation",

@@ -22,7 +22,7 @@ import { LanguageSwitcher } from "./language-switcher";
 import { ThemeToggle } from "./theme-toggle";
 
 /**
- * Menu mobile (< 1280 px) : panneau latéral accessible
+ * Menu mobile (< 1024 px) : panneau latéral accessible
  * (focus piégé, fermeture par Échap, retour du focus au bouton).
  * Le bouton burger s'anime au survol, les liens apparaissent en cascade
  * (animations CSS tw-animate-css, neutralisées par prefers-reduced-motion).
@@ -39,7 +39,7 @@ export function MobileNav() {
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger
         aria-label={t("Header.openMenu")}
-        className="group flex size-10 flex-col items-center justify-center gap-1.5 rounded-xl transition-colors hover:bg-muted xl:hidden"
+        className="group flex size-10 flex-col items-center justify-center gap-1.5 rounded-xl transition-colors hover:bg-muted lg:hidden"
       >
         <span aria-hidden className="h-0.5 w-5 rounded-full bg-foreground transition-transform group-hover:-translate-y-0.5" />
         <span aria-hidden className="h-0.5 w-5 rounded-full bg-foreground transition-[width] group-hover:w-3.5" />

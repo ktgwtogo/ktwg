@@ -1,25 +1,28 @@
 "use client";
 
-import { ChevronDown } from "lucide-react";
+import { ArrowRight, ChevronDown } from "lucide-react";
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
-import { isActivePath, mainNav } from "@/config/navigation";
+import { featuredImage, isActivePath, mainNav } from "@/config/navigation";
 import { Link, usePathname } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 
 /**
- * Menu principal (≥ 1280 px) avec sous-menus déroulants.
- * - Souris : ouverture au survol (avec léger délai de fermeture).
- * - Clavier : le chevron ouvre/ferme le sous-menu, Échap ferme et rend le focus.
+ * Menu horizontal (≥ 1024 px) avec sous-menus enrichis :
+ * liens avec icône et description + encadré photo mis en avant.
+ * - Souris : ouverture au survol (léger délai de fermeture pour traverser l'espace).
+ * - Clavier : le chevron ouvre/ferme, Échap ferme et rend le focus au chevron.
  */
 export function DesktopNav() {
-  const t = useTranslations();
+  const t = useTranslations("Nav");
+  const tHeader = useTranslations("Header");
   const pathname = usePathname();
   const [open, setOpen] = useState<string | null>(null);
   const closeTimer = useRef<number | undefined>(undefined);
   const navRef = useRef<HTMLElement>(null);
 
-  // Fermeture au changement de page et au clic extérieur
+  // Fermeture au changement de page et au clic à l'extérieur
   useEffect(() => setOpen(null), [pathname]);
   useEffect(() => {
     const onDown = (e: PointerEvent) => {
@@ -34,16 +37,19 @@ export function DesktopNav() {
     setOpen(key);
   };
   const leave = () => {
-    closeTimer.current = window.setTimeout(() => setOpen(null), 150);
+    closeTimer.current = window.setTimeout(() => setOpen(null), 180);
   };
 
   return (
-    <nav ref={navRef} aria-label={t("Header.mainNav")} className="hidden xl:block">
-      <ul className="flex items-center gap-0.5">
-        {mainNav.map((item) => {
-          const active = isActivePath(pathname, item.href) || item.children?.some((c) => isActivePath(pathname, c.href));
+    <nav ref={navRef} aria-label={tHeader("mainNav")} className="hidden lg:block">
+      <ul className="flex items-center xl:gap-1">
+        {mainNav.map((item, index) => {
+          const active =
+            isActivePath(pathname, item.href) || !!item.children?.some((c) => isActivePath(pathname, c.href));
           const isOpen = open === item.key;
           const panelId = `submenu-${item.key}`;
+          // Les derniers sous-menus s'alignent à droite pour ne pas sortir de l'écran
+          const alignRight = index >= mainNav.length - 3;
 
           return (
             <li
@@ -58,62 +64,127 @@ export function DesktopNav() {
                 }
               }}
             >
-              <div className="flex items-center">
+              <div
+                className={cn(
+                  "group/item relative flex items-center rounded-full transition-colors",
+                  isOpen ? "bg-accent" : "hover:bg-accent/70"
+                )}
+              >
                 <Link
                   href={item.href}
                   aria-current={pathname === item.href ? "page" : undefined}
                   className={cn(
-                    "relative rounded-lg py-2 text-[0.9rem] font-semibold transition-colors hover:text-ktgw-red",
-                    item.children ? "pr-1 pl-3" : "px-3",
-                    "after:absolute after:right-3 after:-bottom-0.5 after:left-3 after:h-0.5 after:origin-left after:scale-x-0 after:rounded-full after:bg-ktgw-red after:transition-transform hover:after:scale-x-100",
-                    active ? "text-ktgw-red after:scale-x-100" : "text-foreground/85"
+                    "py-2 text-[0.8rem] font-semibold whitespace-nowrap transition-colors xl:text-[0.92rem]",
+                    item.children ? "pr-0.5 pl-2 xl:pl-3.5" : "px-2 xl:px-3.5",
+                    active || isOpen ? "text-ktgw-red" : "text-foreground/85 hover:text-ktgw-red"
                   )}
                 >
-                  {t(`Nav.${item.key}`)}
+                  {t(item.key)}
                 </Link>
                 {item.children && (
                   <button
                     type="button"
                     aria-expanded={isOpen}
                     aria-controls={panelId}
-                    aria-label={t("Header.submenu", { label: t(`Nav.${item.key}`) })}
+                    aria-label={tHeader("submenu", { label: t(item.key) })}
                     onClick={() => setOpen(isOpen ? null : item.key)}
-                    className="flex size-6 items-center justify-center rounded-md text-foreground/60 hover:bg-muted hover:text-foreground"
+                    className={cn(
+                      "mr-0.5 flex size-6 items-center justify-center rounded-full transition-colors xl:mr-1.5",
+                      active || isOpen ? "text-ktgw-red" : "text-foreground/50 group-hover/item:text-ktgw-red"
+                    )}
                   >
-                    <ChevronDown aria-hidden className={cn("size-4 transition-transform duration-200", isOpen && "rotate-180")} />
+                    <ChevronDown aria-hidden className={cn("size-4 transition-transform duration-300", isOpen && "rotate-180")} />
                   </button>
                 )}
+                {/* Repère de la rubrique active */}
+                <span
+                  aria-hidden
+                  className={cn(
+                    "absolute inset-x-3 -bottom-1.5 h-[3px] origin-center rounded-full bg-[image:linear-gradient(90deg,var(--ktgw-red),var(--ktgw-orange))] transition-transform duration-300",
+                    active ? "scale-x-100" : "scale-x-0"
+                  )}
+                />
               </div>
 
               {item.children && (
                 <div
                   id={panelId}
                   hidden={!isOpen}
-                  className="absolute top-full left-0 z-50 pt-3 animate-in fade-in slide-in-from-top-1 duration-200"
+                  className={cn(
+                    "absolute top-full z-50 pt-4 animate-in fade-in slide-in-from-top-2 duration-200",
+                    alignRight ? "right-0" : "left-0"
+                  )}
                 >
-                  <ul className="min-w-64 overflow-hidden rounded-2xl border bg-popover p-2 text-popover-foreground shadow-xl">
-                    {item.children.map((child) => {
-                      const childActive = pathname === child.href.split("#")[0] && !child.href.includes("#");
-                      return (
-                        <li key={child.href}>
-                          <Link
-                            href={child.href}
-                            onClick={() => setOpen(null)}
-                            aria-current={childActive ? "page" : undefined}
-                            className={cn(
-                              "group flex items-center justify-between gap-3 rounded-xl px-4 py-2.5 text-sm font-medium transition-colors hover:bg-accent hover:text-ktgw-red",
-                              childActive && "bg-accent text-ktgw-red"
-                            )}
-                          >
-                            {t(`Nav.${child.key}`)}
-                            <span aria-hidden className="text-ktgw-red opacity-0 transition-all group-hover:translate-x-0.5 group-hover:opacity-100">
-                              →
-                            </span>
-                          </Link>
-                        </li>
-                      );
-                    })}
-                  </ul>
+                  {/* Petite flèche reliant le panneau à la rubrique */}
+                  <span
+                    aria-hidden
+                    className={cn(
+                      "absolute top-2.5 size-3 rotate-45 border-t border-l bg-popover",
+                      alignRight ? "right-8" : "left-8"
+                    )}
+                  />
+                  <div className="flex w-[min(40rem,calc(100vw-2rem))] overflow-hidden rounded-3xl border bg-popover text-popover-foreground shadow-2xl ring-1 ring-black/5">
+                    <div className="flex-1 p-3">
+                      <p className="px-3 pt-2 pb-3 text-[11px] font-bold tracking-[0.2em] text-(--eyebrow) uppercase">{t(item.key)}</p>
+                      <ul className="flex flex-col gap-0.5">
+                        {item.children.map((child) => {
+                          const childActive = pathname === child.href && !child.href.includes("#");
+                          return (
+                            <li key={child.href}>
+                              <Link
+                                href={child.href}
+                                onClick={() => setOpen(null)}
+                                aria-current={childActive ? "page" : undefined}
+                                className={cn(
+                                  "group/link flex items-start gap-3.5 rounded-2xl p-3 transition-colors hover:bg-accent",
+                                  childActive && "bg-accent"
+                                )}
+                              >
+                                <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-accent text-ktgw-red transition-all duration-300 group-hover/link:scale-105 group-hover/link:bg-ktgw-red-strong group-hover/link:text-white">
+                                  <child.icon aria-hidden className="size-5" />
+                                </span>
+                                <span className="flex flex-col gap-0.5">
+                                  <span className="flex items-center gap-1.5 text-sm font-bold transition-colors group-hover/link:text-ktgw-red">
+                                    {t(child.key)}
+                                    <ArrowRight
+                                      aria-hidden
+                                      className="size-3.5 -translate-x-1 opacity-0 transition-all group-hover/link:translate-x-0 group-hover/link:opacity-100"
+                                    />
+                                  </span>
+                                  <span className="text-xs leading-snug text-muted-foreground">{t(`desc.${child.key}`)}</span>
+                                </span>
+                              </Link>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </div>
+
+                    {item.featured && (
+                      <Link
+                        href={item.featured.href}
+                        onClick={() => setOpen(null)}
+                        className="group/feat relative m-2 flex w-56 shrink-0 flex-col justify-end overflow-hidden rounded-2xl p-5 text-white"
+                      >
+                        <Image
+                          src={featuredImage(item.featured.image).src}
+                          alt=""
+                          fill
+                          sizes="224px"
+                          className="object-cover transition-transform duration-700 group-hover/feat:scale-110"
+                        />
+                        <span aria-hidden className="absolute inset-0 bg-gradient-to-t from-ink via-ink/60 to-ink/0" />
+                        <span className="relative flex flex-col gap-2">
+                          <span className="font-heading text-lg leading-tight font-extrabold">{t(`featured.${item.key}.title`)}</span>
+                          <span className="text-xs leading-relaxed text-white/85">{t(`featured.${item.key}.text`)}</span>
+                          <span className="mt-1 inline-flex w-fit items-center gap-1.5 rounded-full bg-ktgw-sun px-3.5 py-1.5 text-xs font-bold text-ink transition-colors group-hover/feat:bg-white">
+                            {t(`featured.${item.key}.cta`)}
+                            <ArrowRight aria-hidden className="size-3.5" />
+                          </span>
+                        </span>
+                      </Link>
+                    )}
+                  </div>
                 </div>
               )}
             </li>

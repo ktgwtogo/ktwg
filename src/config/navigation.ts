@@ -1,10 +1,34 @@
+import {
+  BedDouble,
+  FileCheck2,
+  GraduationCap,
+  HandHeart,
+  Handshake,
+  Heart,
+  IdCard,
+  Images,
+  Languages,
+  LayoutGrid,
+  PenLine,
+  Sun,
+  Target,
+  Users,
+  Wrench,
+  type LucideIcon,
+} from "lucide-react";
+import { images, type ImageKey } from "@/content/images";
+
 /**
  * Structure de navigation du site.
- * `key` renvoie aux traductions du namespace « Nav » (src/messages/*.json).
+ * `key` renvoie aux traductions du namespace « Nav » (src/messages/*.json) ;
+ * la description d'un sous-lien est la clé `Nav.desc.<key>`.
  */
 
 export type NavItem = { key: string; href: string };
-export type NavEntry = NavItem & { children?: NavItem[] };
+export type NavChild = NavItem & { icon: LucideIcon };
+/** Encadré mis en avant dans un sous-menu (textes : `Nav.featured.<key>.*`). */
+export type NavFeatured = { image: ImageKey; href: string };
+export type NavEntry = NavItem & { children?: NavChild[]; featured?: NavFeatured };
 
 /** Menu principal du header, avec sous-menus (§6.2 du cahier des charges). */
 export const mainNav: NavEntry[] = [
@@ -12,30 +36,33 @@ export const mainNav: NavEntry[] = [
     key: "about",
     href: "/a-propos",
     children: [
-      { key: "whoWeAre", href: "/a-propos" },
-      { key: "objectives", href: "/objectifs" },
-      { key: "transparency", href: "/transparence" },
-      { key: "gallery", href: "/galerie" },
+      { key: "whoWeAre", href: "/a-propos", icon: Users },
+      { key: "objectives", href: "/objectifs", icon: Target },
+      { key: "transparency", href: "/transparence", icon: FileCheck2 },
+      { key: "gallery", href: "/galerie", icon: Images },
     ],
+    featured: { image: "plantingPartners", href: "/a-propos" },
   },
   {
     key: "projects",
     href: "/projets",
     children: [
-      { key: "projectCefopexd", href: "/projets/cefopexd" },
-      { key: "projectBoarding", href: "/projets/internat-jeunes-filles" },
-      { key: "projectSolar", href: "/projets/femmes-solaires" },
-      { key: "allProjects", href: "/projets" },
+      { key: "projectCefopexd", href: "/projets/cefopexd", icon: GraduationCap },
+      { key: "projectBoarding", href: "/projets/internat-jeunes-filles", icon: BedDouble },
+      { key: "projectSolar", href: "/projets/femmes-solaires", icon: Sun },
+      { key: "allProjects", href: "/projets", icon: LayoutGrid },
     ],
+    featured: { image: "ribbon", href: "/faire-un-don?projet=internat-jeunes-filles" },
   },
   {
     key: "trainings",
     href: "/formations",
     children: [
-      { key: "ourCourses", href: "/formations#filieres" },
-      { key: "germanClubs", href: "/formations#clubs-allemand" },
-      { key: "apply", href: "/formations#candidature" },
+      { key: "ourCourses", href: "/formations#filieres", icon: Wrench },
+      { key: "germanClubs", href: "/formations#clubs-allemand", icon: Languages },
+      { key: "apply", href: "/formations#candidature", icon: PenLine },
     ],
+    featured: { image: "speech", href: "/formations#candidature" },
   },
   { key: "news", href: "/actualites" },
   { key: "events", href: "/evenements" },
@@ -43,14 +70,18 @@ export const mainNav: NavEntry[] = [
     key: "getInvolved",
     href: "/s-engager",
     children: [
-      { key: "donate", href: "/faire-un-don" },
-      { key: "becomePartner", href: "/partenariat" },
-      { key: "volunteer", href: "/s-engager#benevolat" },
-      { key: "join", href: "/s-engager#adhesion" },
+      { key: "donate", href: "/faire-un-don", icon: Heart },
+      { key: "becomePartner", href: "/partenariat", icon: Handshake },
+      { key: "volunteer", href: "/s-engager#benevolat", icon: HandHeart },
+      { key: "join", href: "/s-engager#adhesion", icon: IdCard },
     ],
+    featured: { image: "plantingHibiscus", href: "/faire-un-don" },
   },
   { key: "contact", href: "/contact" },
 ];
+
+/** Image d'un encadré de sous-menu. */
+export const featuredImage = (key: ImageKey) => images[key];
 
 /** Colonnes de liens du footer (§8). */
 export const footerNav = {
@@ -81,7 +112,7 @@ export const footerNav = {
 
 /** Vrai si `href` correspond à la page courante ou à l'une de ses sous-pages. */
 export function isActivePath(pathname: string, href: string) {
-  const path = href.split("#")[0];
+  const path = href.split("#")[0].split("?")[0];
   if (path === "/") return pathname === "/";
   return pathname === path || pathname.startsWith(`${path}/`);
 }

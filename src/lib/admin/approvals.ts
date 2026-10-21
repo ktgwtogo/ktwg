@@ -6,6 +6,7 @@ import { mailboxMail } from "@/lib/email/messages";
 import { sendBatch, sendEmail } from "@/lib/email/send";
 import { renderEmail } from "@/lib/email/template";
 import { categoryLabel } from "./mailbox";
+import { operationLabels, rejectOperation, runOperation, type OperationName } from "./operations";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { audit, type Staff } from "./staff";
 
@@ -87,6 +88,9 @@ const executors: Record<string, Executor> = {
     return error ? error.message : null;
   },
 
+  /** Opération interne du bureau (adhésion, carte, dossier, trésorerie…) validée par la présidence. */
+  operation: async (p, requestedBy) => runOperation(String(p.op), (p.args as Record<string, unknown>) ?? {}, requestedBy),
+
   /** E-mail groupé préparé dans « Communication » : envoi individuel à chaque destinataire. */
   "mailing.send": async (p) => {
     const admin = createAdminClient();
@@ -145,6 +149,7 @@ const executors: Record<string, Executor> = {
 
 /** Ce qui se passe quand la présidence refuse une demande (nettoyage, statut). */
 const rejecters: Record<string, (payload: Record<string, unknown>) => Promise<void>> = {
+  operation: async (p) => rejectOperation(String(p.op), (p.args as Record<string, unknown>) ?? {}),
   "document.publish": async (p) => {
     if (p.filePath) await createAdminClient().storage.from("documents").remove([String(p.filePath)]);
   },
@@ -184,6 +189,7 @@ export const approvalKindLabels: Record<string, string> = {
   "content.save": "Contenu du site",
   "content.delete": "Suppression d'un contenu",
   "settings.save": "Paramètres du site",
+  operation: "Action du bureau",
   "mailing.send": "E-mail groupé",
   "report.publish": "Rapport d'activité",
 };
@@ -209,6 +215,24 @@ export async function requestApproval(staff: Staff, kind: keyof typeof executors
     text: `${author} (${staff.position?.name ?? "équipe"}) demande votre validation.\n\n${title}\n${summary}\n\nValider ou refuser : ${site()}/admin/validations`,
   });
   return data.id;
+}
+
+/**
+ * Point de passage de toute action interne du bureau : la présidence l'exécute tout de suite,
+ * les autres postes la soumettent à sa validation (rien n'est exécuté avant son accord).
+ */
+export async function runOrRequest(
+  staff: Staff,
+  op: OperationName,
+  title: string,
+  args: Record<string, unknown>
+): Promise<{ ok: true; pending?: boolean } | { ok: false; error: string }> {
+  if (staff.presidency) {
+    const error = await runOperation(op, args, staff.user.id);
+    return error ? { ok: false, error } : { ok: true };
+  }
+  await requestApproval(staff, "operation", title, operationLabels[op], { op, args });
+  return { ok: true, pending: true };
 }
 
 /** Exécute une demande approuvée. Renvoie un message d'erreur, ou null si tout s'est bien passé. */

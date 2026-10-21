@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "@/i18n/navigation";
 import { addMemberFile, deleteMemberFile } from "@/lib/admin/member-files";
 import { createClient } from "@/lib/supabase/client";
+import { PendingNote } from "./pending-note";
 
 export const fileCategories = [
   { value: "identite", label: "Pièce d'identité" },
@@ -30,6 +31,7 @@ export function MemberFiles({ userId, files, canEdit, dates }: { userId: string;
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
   const [error, setError] = useState<string | null>(null);
+  const [submitted, setSubmitted] = useState(false);
   const [pending, start] = useTransition();
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -53,6 +55,7 @@ export function MemberFiles({ userId, files, canEdit, dates }: { userId: string;
         size: file.size,
       });
       if (!r.ok) return setError(r.error);
+      setSubmitted(Boolean(r.pending));
       formRef.current?.reset();
       router.refresh();
     });
@@ -98,6 +101,7 @@ export function MemberFiles({ userId, files, canEdit, dates }: { userId: string;
                       start(async () => {
                         const r = await deleteMemberFile(f.id);
                         if (!r.ok) setError(r.error);
+                        else setSubmitted(Boolean(r.pending));
                         router.refresh();
                       })
                     }
@@ -137,6 +141,7 @@ export function MemberFiles({ userId, files, canEdit, dates }: { userId: string;
           </label>
           <input name="file" type="file" required accept=".pdf,.jpg,.jpeg,.png,.webp,.doc,.docx,.xls,.xlsx" className="text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-card file:px-4 file:py-2 file:font-semibold" />
           <ServerError message={error} />
+          <PendingNote show={submitted} />
           <div>
             <Button type="submit" size="lg" disabled={pending}>
               <FileUp aria-hidden />

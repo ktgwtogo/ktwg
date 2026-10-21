@@ -2,11 +2,9 @@
 
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { membershipDecision } from "@/lib/email/messages";
-import { sendTemplate } from "@/lib/email/send";
 import type { ActionResult } from "@/lib/member/actions";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { executeApproval, rejectApproval, requestApproval } from "./approvals";
+import { executeApproval, rejectApproval, requestApproval, runOrRequest } from "./approvals";
 import { audienceText, categoryLabel, documentCategories, type DocumentCategory } from "./mailbox";
 import { audit, getStaff } from "./staff";
 
@@ -14,28 +12,14 @@ const FORBIDDEN: ActionResult = { ok: false, error: "Cette action ne fait pas pa
 const refresh = () => revalidatePath("/[locale]/admin", "layout");
 
 /** Valide ou refuse une demande d'adhésion (secrétariat, présidence), puis prévient la personne. */
-export async function decideMembership(applicationId: string, approve: boolean, note: string): Promise<ActionResult> {
+export async function decideMembership(applicationId: string, approve: boolean, note: string): Promise<ActionResult & { pending?: boolean }> {
   const staff = await getStaff();
   if (!staff?.can("members.manage")) return FORBIDDEN;
-
-  const { data: userId, error } = await staff.supabase.rpc("decide_membership", {
-    p_application_id: applicationId,
-    p_approve: approve,
-    p_note: note.slice(0, 1000),
-  });
-  if (error || !userId) {
-    console.error("[admin] décision adhésion", error?.message);
-    return { ok: false, error: error?.message.includes("déjà traitée") ? "Cette demande a déjà été traitée." : "La décision n'a pas pu être enregistrée." };
-  }
-  await audit(staff, approve ? "adhesion.validee" : "adhesion.refusee", "membership_applications", applicationId, { note });
-
-  const { data: person } = await staff.supabase.from("profiles").select("email, first_name").eq("id", userId).maybeSingle();
-  if (person) {
-    const mail = membershipDecision(person.first_name, approve);
-    await sendTemplate(person.email, mail.subject, mail.content);
-  }
-  refresh();
-  return { ok: true };
+  const { data: app } = await staff.supabase.from("membership_applications").select("user_id, status").eq("id", applicationId).maybeSingle();
+  if (!app || app.status !== "en_attente") return { ok: false, error: "Cette demande a déjà été traitée." };
+  const { data: p } = await staff.supabase.from("profiles").select("full_name, email").eq("id", app.user_id).maybeSingle();
+  const who = p?.full_name ?? p?.email ?? "un membre";
+  return runOrRequest(staff, "membership.decide", `${approve ? "Valider" : "Refuser"} l'adhésion de ${who}`, { applicationId, approve, note: note.slice(0, 1000) });
 }
 
 const documentSchema = z.object({

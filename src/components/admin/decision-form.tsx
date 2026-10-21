@@ -5,11 +5,13 @@ import { useState, useTransition } from "react";
 import { ServerError } from "@/components/forms/fields";
 import { Button } from "@/components/ui/button";
 import { decideMembership } from "@/lib/admin/actions";
+import { PendingNote } from "./pending-note";
 
 /** Validation ou refus d'une demande d'adhésion, avec message facultatif. */
 export function DecisionForm({ applicationId, name }: { applicationId: string; name: string }) {
   const [note, setNote] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [submitted, setSubmitted] = useState(false);
   const [pending, startTransition] = useTransition();
 
   const decide = (approve: boolean) => {
@@ -19,6 +21,7 @@ export function DecisionForm({ applicationId, name }: { applicationId: string; n
     startTransition(async () => {
       const result = await decideMembership(applicationId, approve, note);
       if (!result.ok) setError(result.error);
+      else if (result.pending) setSubmitted(true);
     });
   };
 
@@ -35,6 +38,7 @@ export function DecisionForm({ applicationId, name }: { applicationId: string; n
         />
       </label>
       <ServerError message={error} />
+      <PendingNote show={submitted} />
       <div className="flex flex-col gap-2 sm:flex-row">
         <Button type="button" size="lg" disabled={pending} onClick={() => decide(true)} className="bg-ktgw-green-strong text-white hover:bg-ktgw-green-strong/90">
           <Check aria-hidden />

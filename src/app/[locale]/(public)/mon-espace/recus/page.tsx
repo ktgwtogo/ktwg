@@ -18,7 +18,7 @@ export default async function MyReceiptsPage({ params }: { params: Promise<{ loc
   // RLS : uniquement les dons liés au compte ou à son adresse e-mail.
   const { data: rows } = await member.supabase
     .from("donation_declarations")
-    .select("id, kind, amount_fcfa, method, frequency, item_description, receipt_number, status, received_at, created_at")
+    .select("id, kind, amount_fcfa, method, frequency, item_description, receipt_number, receipt_sent_at, status, received_at, created_at")
     .in("status", ["nouveau", "en_cours", "traite"])
     .order("created_at", { ascending: false });
 
@@ -46,10 +46,10 @@ export default async function MyReceiptsPage({ params }: { params: Promise<{ loc
                 {d.item_description && <p className="text-sm">{d.item_description}</p>}
                 <p className="text-xs text-muted-foreground">
                   {formatDate(d.received_at ?? d.created_at, locale)} ·{" "}
-                  {d.receipt_number ? `Reçu n° ${d.receipt_number}` : "En cours de vérification par la trésorerie"}
+                  {d.receipt_number && d.receipt_sent_at ? `Reçu n° ${d.receipt_number}` : "Reçu en cours de préparation par la trésorerie"}
                 </p>
               </div>
-              {d.status === "traite" && d.receipt_number && (
+              {d.status === "traite" && d.receipt_number && d.receipt_sent_at && (
                 <a href={`/impression/recu/${d.id}`} target="_blank" rel="noopener" className="inline-flex h-11 shrink-0 items-center gap-2 rounded-xl bg-ktgw-green-strong px-4 text-sm font-semibold text-white">
                   <Receipt aria-hidden className="size-4" />
                   Voir / télécharger le reçu

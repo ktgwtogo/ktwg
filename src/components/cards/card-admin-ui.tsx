@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "@/i18n/navigation";
 import { issueCard, revokeCard, sendCard, updateCard } from "@/lib/cards/actions";
 import { createClient } from "@/lib/supabase/client";
+import { PENDING_TEXT, PendingNote } from "@/components/admin/pending-note";
 import { membershipTypes } from "@/lib/validations/member";
 
 const input =
@@ -16,6 +17,7 @@ const input =
 export function IssueCardButton({ userId, label = "Créer la carte" }: { userId: string; label?: string }) {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
+  const [submitted, setSubmitted] = useState(false);
   const [pending, start] = useTransition();
   return (
     <div className="flex flex-col items-end gap-1">
@@ -28,7 +30,8 @@ export function IssueCardButton({ userId, label = "Créer la carte" }: { userId:
             setError(null);
             const r = await issueCard(userId);
             if (!r.ok) return setError(r.error);
-            router.push(`/admin/cartes/${r.id}`);
+            if (r.pending) setSubmitted(true);
+            else router.refresh();
           })
         }
       >
@@ -36,6 +39,7 @@ export function IssueCardButton({ userId, label = "Créer la carte" }: { userId:
         {pending ? "Création…" : label}
       </Button>
       <ServerError message={error} />
+      <PendingNote show={submitted} />
     </div>
   );
 }
@@ -58,6 +62,7 @@ export function CardEditor({ cardId, userId, initial, active }: { cardId: string
   const [v, setV] = useState(initial);
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [pending, start] = useTransition();
   const fileRef = useRef<HTMLInputElement>(null);
@@ -94,6 +99,7 @@ export function CardEditor({ cardId, userId, initial, active }: { cardId: string
           setError(null);
           const r = await updateCard(cardId, v);
           if (!r.ok) return setError(r.error);
+          if (r.pending) return setSubmitted(true);
           setSaved(true);
           router.refresh();
         });
@@ -134,6 +140,7 @@ export function CardEditor({ cardId, userId, initial, active }: { cardId: string
         </div>
       )}
       <ServerError message={error} />
+      <PendingNote show={submitted} />
       {saved && (
         <p role="status" className="flex items-center gap-2 text-sm font-semibold text-ktgw-green-strong">
           <CheckCircle2 aria-hidden className="size-5" />
@@ -155,7 +162,7 @@ export function CardEditor({ cardId, userId, initial, active }: { cardId: string
 /** Bouton compact « Envoyer par e-mail » (liste des cartes). */
 export function QuickSendCard({ cardId, name }: { cardId: string; name: string }) {
   const router = useRouter();
-  const [state, setState] = useState<"idle" | "sent" | "error">("idle");
+  const [state, setState] = useState<"idle" | "sent" | "pending" | "error">("idle");
   const [pending, start] = useTransition();
   return (
     <button
@@ -166,14 +173,14 @@ export function QuickSendCard({ cardId, name }: { cardId: string; name: string }
         window.confirm(`Envoyer la carte de ${name} par e-mail ?`) &&
         start(async () => {
           const r = await sendCard(cardId);
-          setState(r.ok ? "sent" : "error");
+          setState(!r.ok ? "error" : r.pending ? "pending" : "sent");
           router.refresh();
         })
       }
       className="inline-flex h-8 items-center gap-1.5 rounded-lg border-2 border-border px-2.5 text-xs font-semibold hover:bg-muted disabled:opacity-60"
     >
       <Mail aria-hidden className="size-3.5" />
-      {pending ? "Envoi…" : state === "sent" ? "Envoyée ✓" : state === "error" ? "Échec" : "Envoyer"}
+      {pending ? "Envoi…" : state === "sent" ? "Envoyée ✓" : state === "pending" ? "Soumis ⏳" : state === "error" ? "Échec" : "Envoyer"}
     </button>
   );
 }
@@ -184,13 +191,13 @@ export function CardActions({ cardId, email, active }: { cardId: string; email: 
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState<string | null>(null);
   const [pending, start] = useTransition();
-  const run = (fn: () => Promise<{ ok: boolean; error?: string }>, message: string) =>
+  const run = (fn: () => Promise<{ ok: boolean; error?: string; pending?: boolean }>, message: string) =>
     start(async () => {
       setError(null);
       setDone(null);
       const r = await fn();
       if (!r.ok) return setError(r.error ?? "Erreur.");
-      setDone(message);
+      setDone(r.pending ? PENDING_TEXT : message);
       router.refresh();
     });
 

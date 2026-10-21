@@ -1,7 +1,7 @@
 import { Download, Receipt } from "lucide-react";
 import { setRequestLocale } from "next-intl/server";
 import { Forbidden, PageHeading } from "@/components/admin/page-heading";
-import { DonationActions, PaymentForm, ResendReceiptButton } from "@/components/admin/records-ui";
+import { DonationActions, PaymentForm } from "@/components/admin/records-ui";
 import { receiptNature } from "@/lib/email/messages";
 import { Link, redirect } from "@/i18n/navigation";
 import { getStaff } from "@/lib/admin/staff";
@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 const fcfa = (n: number) => `${n.toLocaleString("fr-FR")} FCFA`;
 const views = [
   { id: "a-verifier", label: "À vérifier", status: "nouveau" },
-  { id: "encaisses", label: "Encaissés", status: "traite" },
+  { id: "recus", label: "Reçus générés", status: "traite" },
   { id: "ecartes", label: "Écartés", status: "archive" },
 ] as const;
 
@@ -110,13 +110,15 @@ export default async function DonationsPage({
                     </p>
                   </div>
                   {d.status === "nouveau" && <DonationActions id={d.id} />}
-                  {d.status === "traite" && (
-                    <div className="flex flex-wrap gap-2">
-                      <a href={`/impression/recu/${d.id}`} target="_blank" rel="noopener" className="inline-flex h-9 items-center gap-2 rounded-lg bg-ktgw-green-strong px-3 text-sm font-semibold text-white">
+                  {d.status === "traite" && d.receipt_number && (
+                    <div className="flex flex-col items-start gap-2 sm:items-end">
+                      <span className={cn("rounded-full px-2 py-0.5 text-xs font-semibold", d.receipt_sent_at ? "bg-ktgw-green/15 text-ktgw-green-strong" : "bg-ktgw-sun/20 text-ktgw-orange")}>
+                        {d.receipt_sent_at ? "Reçu envoyé" : "Reçu à envoyer"}
+                      </span>
+                      <Link href={`/admin/dons/recu/${d.id}`} className="inline-flex h-9 items-center gap-2 rounded-lg bg-ktgw-green-strong px-3 text-sm font-semibold text-white">
                         <Receipt aria-hidden className="size-4" />
-                        Voir / télécharger
-                      </a>
-                      <ResendReceiptButton id={d.id} />
+                        Voir le reçu, télécharger, envoyer
+                      </Link>
                     </div>
                   )}
                 </li>

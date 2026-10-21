@@ -5,11 +5,18 @@ export type Post = {
   title: string;
   /** Date ISO (AAAA-MM-JJ). */
   date: string;
-  category: "Projets" | "Environnement" | "Vie de l'ONG";
+  /** Rubrique (libre depuis l'administration). */
+  category: string;
   image: SiteImage;
   excerpt: string;
   body: string[];
   gallery?: SiteImage[];
+  /** Emplacements : "actualites", "accueil", "page:<adresse>". */
+  placements?: string[];
+  links?: { label: string; url: string }[];
+  videoUrl?: string | null;
+  author?: string | null;
+  pinned?: boolean;
 };
 
 /** Actualités, de la plus récente à la plus ancienne. Faits issus du cahier des charges. */

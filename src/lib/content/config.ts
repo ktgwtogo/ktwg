@@ -21,7 +21,10 @@ export type FieldType =
   | "facts"
   | "milestones"
   | "progress"
-  | "blocks";
+  | "blocks"
+  | "suggest"
+  | "placements"
+  | "links";
 
 /** Blocs d'une page personnalisée. */
 export type PageBlock =
@@ -98,9 +101,9 @@ export const contentTypes: ContentType[] = [
   {
     id: "actualites",
     table: "posts",
-    label: "Actualités",
-    singular: "actualité",
-    description: "Articles de la page Actualités et de l'accueil.",
+    label: "Publications / articles",
+    singular: "publication",
+    description: "Articles, communiqués, opportunités… publiés sur la page Actualités, l'accueil ou vos pages.",
     permissions: ["content.manage"],
     titleField: "title",
     orderBy: { column: "published_on", ascending: false },
@@ -109,11 +112,24 @@ export const contentTypes: ContentType[] = [
       { name: "title", label: "Titre", type: "text", required: true, max: 160 },
       { name: "slug", label: "Adresse de la page", type: "slug", required: true, hint: "Générée depuis le titre : lettres, chiffres et tirets." },
       { name: "published_on", label: "Date de publication", type: "date", required: true },
-      { name: "category", label: "Catégorie", type: "select", required: true, options: opts("Projets", "Environnement", "Vie de l'ONG") },
-      { name: "image", label: "Image principale", type: "image", required: true },
-      { name: "excerpt", label: "Résumé (cartes et référencement)", type: "textarea", required: true, max: 400 },
+      {
+        name: "category",
+        label: "Rubrique",
+        type: "suggest",
+        required: true,
+        max: 60,
+        options: opts("Vie de l'ONG", "Projets", "Environnement", "Formation", "Annonce", "Communiqué", "Événement", "Partenariat", "Opportunité", "Presse", "Immobilier", "Témoignage"),
+        hint: "Choisissez une rubrique ou écrivez-en une nouvelle.",
+      },
+      { name: "author", label: "Auteur·e / signature (facultatif)", type: "text", max: 120 },
+      { name: "image", label: "Photo d'illustration", type: "image", required: true },
+      { name: "excerpt", label: "Chapeau / résumé (cartes, partages, Google)", type: "textarea", required: true, max: 400 },
       { name: "body", label: "Texte de l'article", type: "paragraphs", required: true, hint: "Laissez une ligne vide entre deux paragraphes." },
-      { name: "gallery", label: "Galerie de l'article", type: "images" },
+      { name: "gallery", label: "Photos de l'article", type: "images" },
+      { name: "video_url", label: "Vidéo (lien YouTube, Facebook ou TikTok)", type: "url" },
+      { name: "links", label: "Liens utiles", type: "links", hint: "Une ligne par lien : Texte du lien | https://adresse" },
+      { name: "placements", label: "Où publier ?", type: "placements", required: true },
+      { name: "pinned", label: "Épingler en tête (« À la une »)", type: "checkbox" },
       published,
     ],
   },

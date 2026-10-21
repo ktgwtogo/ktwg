@@ -21,11 +21,14 @@ export function ContentEditor({
   id,
   initial,
   presidency,
+  pages = [],
 }: {
   typeId: string;
   id: string | null;
   initial: FormValues;
   presidency: boolean;
+  /** Pages personnalisées proposées comme emplacement de publication. */
+  pages?: { slug: string; title: string }[];
 }) {
   const type = getContentType(typeId)!;
   const router = useRouter();
@@ -77,7 +80,7 @@ export function ContentEditor({
   return (
     <form onSubmit={onSubmit} noValidate className="flex flex-col gap-6">
       {type.fields.map((f) => (
-        <FieldInput key={f.name} field={f} value={values[f.name]} error={errors[f.name]} folder={type.id} onChange={(v) => {
+        <FieldInput key={f.name} field={f} value={values[f.name]} error={errors[f.name]} folder={type.id} pages={pages} onChange={(v) => {
           if (f.type === "slug") setSlugTouched(true);
           set(f.name, v);
         }} />
@@ -113,6 +116,7 @@ function FieldInput({
   value,
   error,
   folder,
+  pages = [],
   onChange,
 }: {
   field: Field;
@@ -120,6 +124,7 @@ function FieldInput({
   error?: string;
   folder: string;
   onChange: (v: unknown) => void;
+  pages?: { slug: string; title: string }[];
 }) {
   const id = `champ-${f.name}`;
   const s = typeof value === "string" ? value : "";
@@ -128,6 +133,7 @@ function FieldInput({
 
   let input: React.ReactNode;
   switch (f.type) {
+    case "links":
     case "textarea":
     case "paragraphs":
     case "facts":
@@ -171,6 +177,39 @@ function FieldInput({
     case "images":
       input = <ImagesField value={(value as ImageValue[]) ?? []} onChange={onChange} folder={folder} />;
       break;
+    case "suggest":
+      input = (
+        <>
+          <input {...common} list={`${id}-liste`} value={s} onChange={(e) => onChange(e.target.value)} maxLength={f.max} className={cn(control, "h-12")} />
+          <datalist id={`${id}-liste`}>
+            {f.options?.map((o) => (
+              <option key={o.value} value={o.value} />
+            ))}
+          </datalist>
+        </>
+      );
+      break;
+    case "placements": {
+      const selected = Array.isArray(value) ? (value as string[]) : [];
+      const toggle = (p: string, on: boolean) => onChange(on ? [...selected, p] : selected.filter((x) => x !== p));
+      const choices = [
+        { value: "actualites", label: "Page Actualités" },
+        { value: "accueil", label: "Page d'accueil (section « Actualités »)" },
+        ...pages.map((p) => ({ value: `page:${p.slug}`, label: `Page « ${p.title} »` })),
+      ];
+      input = (
+        <div className="flex flex-col gap-2 rounded-2xl border border-input bg-muted/30 p-3">
+          {choices.map((c) => (
+            <label key={c.value} className="flex items-center gap-2 text-sm">
+              <input type="checkbox" checked={selected.includes(c.value)} onChange={(e) => toggle(c.value, e.target.checked)} className="size-4 accent-[var(--ktgw-green-strong)]" />
+              {c.label}
+            </label>
+          ))}
+          <p className="text-xs text-muted-foreground">Pour publier sur une nouvelle page, créez-la d&apos;abord dans Contenus du site → Pages, puis revenez ici.</p>
+        </div>
+      );
+      break;
+    }
     case "blocks":
       input = <BlocksField value={(value as PageBlock[]) ?? []} onChange={onChange} />;
       break;

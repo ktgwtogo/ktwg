@@ -7,7 +7,7 @@ import { PostCard } from "@/components/shared/cards";
 import { PageHeader } from "@/components/shared/page-header";
 import { Section } from "@/components/shared/section";
 import { images } from "@/content/images";
-import { getPosts } from "@/lib/content/repository";
+import { getPostsFor } from "@/lib/content/repository";
 import { Link } from "@/i18n/navigation";
 import { formatDate } from "@/lib/format";
 
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 export default async function NewsPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const [featured, ...rest] = await getPosts();
+  const [featured, ...rest] = await getPostsFor("actualites");
 
   return (
     <>
@@ -32,7 +32,9 @@ export default async function NewsPage({ params }: { params: Promise<{ locale: s
       />
 
       <Section aria-label="Articles">
+        {!featured && <p className="rounded-3xl border border-dashed p-10 text-center text-muted-foreground">Aucune publication pour le moment.</p>}
         {/* Article à la une */}
+        {featured && (
         <article className="group relative grid overflow-hidden rounded-3xl bg-card shadow-soft ring-1 ring-foreground/5 lg:grid-cols-2">
           <div className="relative aspect-[16/10] lg:aspect-auto lg:min-h-96">
             <Image src={featured.image.src} alt={featured.image.alt} fill priority sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover transition-transform duration-700 group-hover:scale-105" />
@@ -55,6 +57,7 @@ export default async function NewsPage({ params }: { params: Promise<{ locale: s
             </span>
           </div>
         </article>
+        )}
 
         <ul className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {rest.map((p) => (

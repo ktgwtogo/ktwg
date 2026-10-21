@@ -26,6 +26,7 @@ export default async function ContentEdit({ params }: { params: Promise<{ locale
     row = data as unknown as Record<string, unknown>;
   }
 
+  const { data: pages } = type.fields.some((f) => f.type === "placements") ? await staff.supabase.from("pages").select("slug, title").order("sort_order") : { data: [] };
   const initial = toFormValues(type, row);
   if (isNew) {
     // Valeurs par défaut utiles pour un nouvel élément.
@@ -48,7 +49,7 @@ export default async function ContentEdit({ params }: { params: Promise<{ locale
         description={staff.presidency ? undefined : "Votre proposition sera publiée après validation par la présidence."}
       />
       <div className="rounded-3xl bg-card p-6 shadow-soft ring-1 ring-foreground/5">
-        <ContentEditor typeId={type.id} id={isNew ? null : id} initial={initial} presidency={staff.presidency} />
+        <ContentEditor typeId={type.id} id={isNew ? null : id} initial={initial} presidency={staff.presidency} pages={pages ?? []} />
       </div>
     </>
   );

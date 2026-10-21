@@ -57,7 +57,9 @@ function unwrap<T>(r: { data: T | null; error: { message: string } | null }) {
 export const getPosts = cached(
   "posts",
   async (db) =>
-    unwrap(await db.from("posts").select("*").eq("published", true).order("published_on", { ascending: false })).map(
+    unwrap(
+      await db.from("posts").select("*").eq("published", true).order("pinned", { ascending: false }).order("published_on", { ascending: false })
+    ).map(
       (p): Post => ({
         slug: p.slug,
         title: p.title,
@@ -67,6 +69,11 @@ export const getPosts = cached(
         excerpt: p.excerpt,
         body: p.body,
         gallery: asImages(p.gallery),
+        placements: p.placements,
+        links: Array.isArray(p.links) ? (p.links as Post["links"]) : [],
+        videoUrl: p.video_url,
+        author: p.author,
+        pinned: p.pinned,
       })
     ),
   staticPosts
@@ -188,6 +195,11 @@ export async function getPage(slug: string) {
 }
 
 // ── Aides dérivées (mêmes règles que src/content) ──
+
+/** Articles publiés à un emplacement (« actualites », « accueil », « page:<adresse> »). */
+export async function getPostsFor(placement: string) {
+  return (await getPosts()).filter((p) => (p.placements ?? ["actualites", "accueil"]).includes(placement));
+}
 
 export async function getPost(slug: string) {
   return (await getPosts()).find((p) => p.slug === slug);

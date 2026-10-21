@@ -31,6 +31,10 @@ export function ContentPreview({ payload }: { payload: { type?: string; id?: str
           shown = v ? "Oui" : "Non";
         } else if (f.type === "select") {
           shown = f.options?.find((o) => o.value === v)?.label ?? String(v);
+        } else if (f.type === "links") {
+          shown = (v as { label: string; url: string }[]).map((x) => `${x.label} (${x.url})`).join(" · ");
+        } else if (f.type === "placements") {
+          shown = (v as string[]).map((p) => (p === "actualites" ? "Page Actualités" : p === "accueil" ? "Accueil" : `Page « ${p.slice(5)} »`)).join(" · ");
         } else if (f.type === "facts") {
           shown = (v as { label: string; value: string }[]).map((x) => `${x.label} : ${x.value}`).join(" · ");
         } else if (f.type === "milestones") {

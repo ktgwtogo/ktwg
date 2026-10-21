@@ -20,7 +20,7 @@ const csp = [
   `img-src 'self' data: blob: ${supabase} https://lh3.googleusercontent.com https://vercel.live https://vercel.com`,
   "font-src 'self' data: https://vercel.live",
   `connect-src 'self' ${supabase} ${supabase.replace("https://", "wss://")} https://challenges.cloudflare.com https://vercel.live wss://ws-us3.pusher.com ${isDev ? "ws:" : ""}`,
-  "frame-src https://challenges.cloudflare.com https://www.google.com https://vercel.live",
+  "frame-src https://challenges.cloudflare.com https://www.google.com https://vercel.live https://www.youtube-nocookie.com https://www.facebook.com",
   "frame-ancestors 'none'",
   "form-action 'self'",
   "base-uri 'self'",

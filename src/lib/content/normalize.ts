@@ -38,6 +38,7 @@ export function toRow(type: ContentType, values: FormValues): { row: Record<stri
 
     switch (f.type) {
       case "text":
+      case "suggest":
       case "textarea": {
         if (!s && f.required) missing();
         else if (f.max && s.length > f.max) fail(f, `${f.max} caractères maximum.`);
@@ -48,6 +49,25 @@ export function toRow(type: ContentType, values: FormValues): { row: Record<stri
         if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(s) || s.length > 80) fail(f, "Lettres minuscules, chiffres et tirets uniquement.");
         else if (type.table === "pages" && reservedSlugs.includes(s)) fail(f, "Cette adresse est déjà une page du site : choisissez-en une autre.");
         row[f.name] = s;
+        break;
+      }
+      case "placements": {
+        const list = (Array.isArray(raw) ? raw : []).map(String).filter((p) => p === "actualites" || p === "accueil" || /^page:[a-z0-9]+(-[a-z0-9]+)*$/.test(p));
+        if (!list.length && f.required) fail(f, "Choisissez au moins un emplacement.");
+        row[f.name] = [...new Set(list)];
+        break;
+      }
+      case "links": {
+        const links = s
+          .split("\n")
+          .map((l) => l.trim())
+          .filter(Boolean)
+          .map((l) => {
+            const [label, url] = l.includes("|") ? l.split("|").map((x) => x.trim()) : [l, l];
+            return /^https:\/\/\S+$/.test(url) ? { label: (label || url).slice(0, 120), url: url.slice(0, 500) } : null;
+          });
+        if (links.some((x) => !x)) fail(f, "Chaque ligne : Texte du lien | https://adresse");
+        row[f.name] = links.filter(Boolean).slice(0, 20);
         break;
       }
       case "blocks": {
@@ -193,6 +213,12 @@ export function toFormValues(type: ContentType, row: Record<string, unknown> | n
         break;
       case "number":
         values[f.name] = v === null || v === undefined ? "" : String(v);
+        break;
+      case "placements":
+        values[f.name] = Array.isArray(v) ? v : ["actualites", "accueil"];
+        break;
+      case "links":
+        values[f.name] = Array.isArray(v) ? (v as { label: string; url: string }[]).map((x) => `${x.label} | ${x.url}`).join("\n") : "";
         break;
       case "facts":
         values[f.name] = Array.isArray(v) ? (v as { label: string; value: string }[]).map((x) => `${x.label} : ${x.value}`).join("\n") : "";

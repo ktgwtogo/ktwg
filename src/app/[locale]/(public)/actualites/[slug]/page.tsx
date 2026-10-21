@@ -1,16 +1,18 @@
-import { ArrowLeft, CalendarDays, Tag } from "lucide-react";
+import { ArrowLeft, CalendarDays, ExternalLink, PenLine, Tag } from "lucide-react";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
-import { FaFacebookF, FaLinkedinIn, FaWhatsapp } from "react-icons/fa6";
 import { ButtonLink } from "@/components/ui/button-link";
 import { PostCard } from "@/components/shared/cards";
 import { PageHeader } from "@/components/shared/page-header";
 import { Section } from "@/components/shared/section";
+import { ShareBar } from "@/components/shared/share-bar";
+import { VideoEmbed } from "@/components/shared/video-embed";
 import { getPost, getPosts } from "@/lib/content/repository";
 import { routing } from "@/i18n/routing";
 import { formatDate } from "@/lib/format";
+import { getSiteConfig } from "@/lib/site/settings";
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
 
@@ -37,12 +39,8 @@ export default async function PostPage({ params }: Props) {
   if (!post) notFound();
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
-  const url = encodeURIComponent(`${siteUrl}/actualites/${post.slug}`);
-  const shares = [
-    { label: "Partager sur WhatsApp", href: `https://wa.me/?text=${encodeURIComponent(post.title)}%20${url}`, icon: FaWhatsapp },
-    { label: "Partager sur Facebook", href: `https://www.facebook.com/sharer/sharer.php?u=${url}`, icon: FaFacebookF },
-    { label: "Partager sur LinkedIn", href: `https://www.linkedin.com/sharing/share-offsite/?url=${url}`, icon: FaLinkedinIn },
-  ];
+  const url = `${siteUrl}/actualites/${post.slug}`;
+  const { socials } = await getSiteConfig();
 
   return (
     <>
@@ -61,6 +59,12 @@ export default async function PostPage({ params }: Props) {
             <Tag aria-hidden className="size-4" />
             {post.category}
           </span>
+          {post.author && (
+            <span className="flex items-center gap-1.5">
+              <PenLine aria-hidden className="size-4" />
+              {post.author}
+            </span>
+          )}
         </div>
       </PageHeader>
 
@@ -73,7 +77,9 @@ export default async function PostPage({ params }: Props) {
             </p>
           ))}
 
-          {post.gallery && (
+          {post.videoUrl && <VideoEmbed url={post.videoUrl} title={post.title} />}
+
+          {post.gallery && post.gallery.length > 0 && (
             <ul className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
               {post.gallery.map((img) => (
                 <li key={img.src} className="relative aspect-square overflow-hidden rounded-2xl">
@@ -83,26 +89,31 @@ export default async function PostPage({ params }: Props) {
             </ul>
           )}
 
-          <div className="mt-6 flex flex-col items-start justify-between gap-4 border-t pt-6 sm:flex-row sm:items-center">
+          {post.links && post.links.length > 0 && (
+            <aside aria-label="Liens utiles" className="rounded-2xl bg-muted/60 p-5">
+              <p className="mb-3 font-bold">Liens utiles</p>
+              <ul className="flex flex-col gap-2">
+                {post.links.map((l) => (
+                  <li key={l.url}>
+                    <a href={l.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 font-semibold text-ktgw-red underline-offset-2 hover:underline">
+                      <ExternalLink aria-hidden className="size-4" />
+                      {l.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </aside>
+          )}
+
+          <div className="mt-6 flex flex-col items-start justify-between gap-4 border-t pt-6">
+            <div className="flex flex-col gap-2">
+              <span className="text-sm font-semibold">Partager cette publication :</span>
+              <ShareBar url={url} title={post.title} text={post.excerpt} instagram={socials.instagram || undefined} tiktok={socials.tiktok || undefined} size="sm" />
+            </div>
             <ButtonLink href="/actualites" variant="ghost" size="lg">
               <ArrowLeft aria-hidden />
               Toutes les actualités
             </ButtonLink>
-            <div className="flex items-center gap-2">
-              <span className="text-sm font-semibold">Partager :</span>
-              {shares.map((s) => (
-                <a
-                  key={s.label}
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={s.label}
-                  className="flex size-10 items-center justify-center rounded-full bg-muted transition-colors hover:bg-ktgw-red-strong hover:text-white"
-                >
-                  <s.icon aria-hidden className="size-4" />
-                </a>
-              ))}
-            </div>
           </div>
         </article>
       </Section>

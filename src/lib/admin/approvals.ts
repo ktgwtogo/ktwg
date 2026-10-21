@@ -93,15 +93,21 @@ const executors: Record<string, Executor> = {
     const { data: mailing } = await admin.from("mailings").select("*").eq("id", String(p.mailingId)).maybeSingle();
     if (!mailing || mailing.status !== "en_attente") return "Envoi introuvable ou déjà traité.";
     const recipients = await resolveAudience(mailing.audience);
-    const sent = await sendBatch(
-      recipients.map((r) => ({
-        to: r.email,
-        subject: mailing.subject,
-        text: `${mailing.body}\n\n—\nKTGW Togo · ${site()}${
-          r.token ? `\nSe désinscrire de la newsletter : ${site()}/api/newsletter?action=unsubscribe&token=${r.token}` : ""
-        }`,
-      }))
+    // Mise en page au modèle KTGW ; les adresses https:// du message deviennent un bouton si c'est le dernier paragraphe.
+    const paragraphs = mailing.body.split(/\n\s*\n/).map((x) => x.trim()).filter(Boolean);
+    const last = paragraphs.at(-1) ?? "";
+    const cta = /^https:\/\/\S+$/.test(last) ? { label: "Lire la suite", href: last } : undefined;
+    const content = { title: mailing.subject, paragraphs: cta ? paragraphs.slice(0, -1) : paragraphs, cta };
+    const base = await renderEmail(content);
+    const messages = await Promise.all(
+      recipients.map(async (r) => {
+        const { html, text } = r.token
+          ? await renderEmail({ ...content, note: `Se désinscrire de la newsletter : ${site()}/api/newsletter?action=unsubscribe&token=${r.token}` })
+          : base;
+        return { to: r.email, subject: mailing.subject, text, html };
+      })
     );
+    const sent = await sendBatch(messages);
     await admin
       .from("mailings")
       .update({ status: sent > 0 || !recipients.length ? "envoye" : "echec", recipients_count: sent, sent_at: new Date().toISOString() })

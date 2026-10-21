@@ -951,6 +951,11 @@ export type Database = {
       }
       posts: {
         Row: {
+          author: string | null
+          links: Json
+          pinned: boolean
+          placements: string[]
+          video_url: string | null
           body: string[]
           category: string
           created_at: string
@@ -965,6 +970,11 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          author?: string | null
+          links?: Json
+          pinned?: boolean
+          placements?: string[]
+          video_url?: string | null
           body?: string[]
           category: string
           created_at?: string
@@ -979,6 +989,11 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          author?: string | null
+          links?: Json
+          pinned?: boolean
+          placements?: string[]
+          video_url?: string | null
           body?: string[]
           category?: string
           created_at?: string

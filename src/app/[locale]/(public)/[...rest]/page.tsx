@@ -6,7 +6,8 @@ import { PageHeader } from "@/components/shared/page-header";
 import { Section } from "@/components/shared/section";
 import { ButtonLink } from "@/components/ui/button-link";
 import { images } from "@/content/images";
-import { getPage } from "@/lib/content/repository";
+import { PostCard } from "@/components/shared/cards";
+import { getPage, getPostsFor } from "@/lib/content/repository";
 import { cn } from "@/lib/utils";
 
 type Props = { params: Promise<{ locale: string; rest: string[] }> };
@@ -32,6 +33,7 @@ export default async function CustomPageRoute({ params }: Props) {
   const slug = slugOf(rest);
   const page = slug ? await getPage(slug) : undefined;
   if (!page) notFound();
+  const posts = await getPostsFor(`page:${page.slug}`);
 
   return (
     <>
@@ -93,6 +95,20 @@ export default async function CustomPageRoute({ params }: Props) {
           })}
         </div>
       </Section>
+      {posts.length > 0 && (
+        <Section tone="muted" aria-labelledby="publications">
+          <h2 id="publications" className="mb-8 text-3xl font-extrabold">
+            Publications
+          </h2>
+          <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {posts.map((p) => (
+              <li key={p.slug}>
+                <PostCard post={p} />
+              </li>
+            ))}
+          </ul>
+        </Section>
+      )}
     </>
   );
 }

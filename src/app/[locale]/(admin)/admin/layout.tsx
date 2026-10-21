@@ -36,6 +36,8 @@ export default async function AdminLayout({ children, params }: { children: Reac
     { href: "/admin/validations", label: staff.presidency ? "Validations" : "Mes demandes", icon: "approvals", badge: approvals, section: "Pilotage" },
     ...when(staff.can("reports.view") || staff.can("reports.write"), { href: "/admin/rapports", label: "Rapports d'activité", icon: "reports", section: "Pilotage" }),
     { href: "/admin/archives", label: "Archives", icon: "archives", section: "Pilotage" },
+    ...when(staff.can("content.manage"), { href: "/admin/publications", label: "Publications / articles", icon: "publications", section: "Site web" }),
+    ...when(staff.can("content.manage"), { href: "/admin/contenus/annonces", label: "Annonces", icon: "announcements", section: "Site web" }),
     ...when(contentTypes.some((t) => canEdit(t, staff.can)), { href: "/admin/contenus", label: "Contenus du site", icon: "content", section: "Site web" }),
     ...when(staff.can("pages.manage"), { href: "/admin/site", label: "Apparence et textes", icon: "site", section: "Site web" }),
     ...when(staff.can("newsletter.manage"), { href: "/admin/communication", label: "E-mails et newsletter", icon: "mail", section: "Site web" }),

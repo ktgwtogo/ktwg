@@ -21,7 +21,7 @@ import { StatCounter } from "@/components/shared/stat-counter";
 import { images } from "@/content/images";
 import { domains, keyFigures, objectives } from "@/content/organization";
 import type { Partner } from "@/content/partners";
-import { getPartners, getPosts, getProjects, upcomingEvents } from "@/lib/content/repository";
+import { getPartners, getPostsFor, getProjects, upcomingEvents } from "@/lib/content/repository";
 import { Link } from "@/i18n/navigation";
 
 const figureIcons = { sprout: Sprout, map: MapPinned, target: Target, home: Home, handshake: Handshake, globe: Globe2 };
@@ -259,7 +259,8 @@ export async function UpcomingEvents() {
 
 /** Dernières actualités. */
 export async function LatestNews() {
-  const posts = await getPosts();
+  const posts = await getPostsFor("accueil");
+  if (!posts.length) return null;
   return (
     <Section tone="muted" aria-labelledby="news-title">
       <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">

@@ -2,14 +2,14 @@
 
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { sendEmail } from "@/lib/email/send";
+import { membershipDecision } from "@/lib/email/messages";
+import { sendTemplate } from "@/lib/email/send";
 import type { ActionResult } from "@/lib/member/actions";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { executeApproval, rejectApproval, requestApproval } from "./approvals";
 import { audit, getStaff } from "./staff";
 
 const FORBIDDEN: ActionResult = { ok: false, error: "Cette action ne fait pas partie de votre poste." };
-const site = () => process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 const refresh = () => revalidatePath("/[locale]/admin", "layout");
 
 /** Valide ou refuse une demande d'adhésion (secrétariat, présidence), puis prévient la personne. */
@@ -30,15 +30,8 @@ export async function decideMembership(applicationId: string, approve: boolean, 
 
   const { data: person } = await staff.supabase.from("profiles").select("email, first_name").eq("id", userId).maybeSingle();
   if (person) {
-    await sendEmail({
-      to: [person.email],
-      subject: approve ? "Votre adhésion à KTGW Togo est validée" : "Votre demande d'adhésion à KTGW Togo",
-      text: `Bonjour${person.first_name ? ` ${person.first_name}` : ""},\n\n${
-        approve
-          ? "Bonne nouvelle : votre adhésion est validée. Bienvenue dans l'association !"
-          : "Votre demande d'adhésion a été examinée par l'association."
-      }\nConsultez le détail dans votre espace membre : ${site()}/mon-espace\n\nL'équipe KTGW Togo`,
-    });
+    const mail = membershipDecision(person.first_name, approve);
+    await sendTemplate(person.email, mail.subject, mail.content);
   }
   refresh();
   return { ok: true };

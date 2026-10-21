@@ -1,7 +1,8 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { sendEmail, teamRecipients } from "@/lib/email/send";
+import { membershipAck } from "@/lib/email/messages";
+import { sendEmail, sendTemplate, teamRecipients } from "@/lib/email/send";
 import { getMember } from "@/lib/member/session";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { membershipSchema, membershipTypeLabels, missingProfileFields, profileSchema } from "@/lib/validations/member";
@@ -68,18 +69,22 @@ export async function submitMembership(raw: unknown): Promise<ActionResult> {
   if (!parsed.success) return { ok: false, error: "Certains champs sont invalides. Vérifiez le formulaire." };
   const v = parsed.data;
 
-  const { error } = await member.supabase.from("membership_applications").insert({
-    user_id: member.user.id,
-    type: v.type,
-    motivation: v.motivation,
-    interests: v.interests,
-    skills: v.skills || null,
-    availability: v.availability || null,
-    contribution: v.contribution || null,
-    referral: v.referral || null,
-  });
-  if (error) {
-    console.error("[member] adhésion", error.message);
+  const { data: application, error } = await member.supabase
+    .from("membership_applications")
+    .insert({
+      user_id: member.user.id,
+      type: v.type,
+      motivation: v.motivation,
+      interests: v.interests,
+      skills: v.skills || null,
+      availability: v.availability || null,
+      contribution: v.contribution || null,
+      referral: v.referral || null,
+    })
+    .select("id")
+    .single();
+  if (error || !application) {
+    console.error("[member] adhésion", error?.message);
     return {
       ok: false,
       error: error.code === "23505" ? "Vous avez déjà une demande en cours de traitement." : "L'envoi a échoué. Réessayez dans un instant.",
@@ -93,6 +98,9 @@ export async function submitMembership(raw: unknown): Promise<ActionResult> {
     text: `Nouvelle demande d'adhésion (${membershipTypeLabels[v.type]}) de ${profile.first_name} ${profile.last_name} (${profile.email}).\n\nÀ traiter ici : ${site}/admin/adhesions`,
     replyTo: profile.email,
   });
+  // Accusé de réception à la personne.
+  const ack = membershipAck(profile.first_name, membershipTypeLabels[v.type], application.id);
+  await sendTemplate(profile.email, ack.subject, ack.content);
 
   revalidatePath("/[locale]/mon-espace", "layout");
   return { ok: true };

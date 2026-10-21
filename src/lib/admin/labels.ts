@@ -26,6 +26,11 @@ const auditLabels: Record<string, string> = {
   "rapport.soumis": "a soumis un rapport",
   "rapport.diffuse": "a diffusé un rapport au bureau",
   export: "a exporté des données (Excel)",
+  "recu.envoye": "a envoyé un reçu par e-mail",
+  "carte.creee": "a créé une carte de membre",
+  "carte.modifiee": "a corrigé une carte de membre",
+  "carte.revoquee": "a révoqué une carte de membre",
+  "carte.envoyee": "a envoyé une carte de membre par e-mail",
 };
 
 export const auditLabel = (action: string) => auditLabels[action] ?? action;

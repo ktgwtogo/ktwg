@@ -5,6 +5,8 @@ import { z } from "zod";
 import type { ActionResult } from "@/lib/member/actions";
 import { donationMethods, getInbox, submissionStatuses } from "./records";
 import { audit, getStaff } from "./staff";
+import { receiptMail } from "@/lib/email/messages";
+import { NO_EMAIL, sendTemplate } from "@/lib/email/send";
 
 const FORBIDDEN: ActionResult = { ok: false, error: "Cette action ne fait pas partie de votre poste." };
 const refresh = () => revalidatePath("/[locale]/admin", "layout");
@@ -37,6 +39,7 @@ export async function confirmDonation(id: string, confirmed: boolean): Promise<A
     .eq("id", id);
   if (error) return { ok: false, error: "L'enregistrement a échoué." };
   await audit(staff, confirmed ? "don.confirme" : "don.rejete", "donation_declarations", id);
+  if (confirmed) await sendReceipt(staff, id);
   refresh();
   return { ok: true };
 }
@@ -66,7 +69,7 @@ export async function recordPayment(raw: unknown): Promise<ActionResult & { id?:
     .insert({
       kind: v.kind,
       name: v.name,
-      email: v.email || "non-communique@ktgw.tg",
+      email: v.email || NO_EMAIL,
       phone: v.phone || null,
       amount_fcfa: v.amount,
       method: v.method,
@@ -84,6 +87,16 @@ export async function recordPayment(raw: unknown): Promise<ActionResult & { id?:
     return { ok: false, error: "L'enregistrement a échoué." };
   }
   await audit(staff, "don.saisi", "donation_declarations", data.id, { title: `${v.kind} ${v.amount} FCFA`, name: v.name });
+  await sendReceipt(staff, data.id);
   refresh();
   return { ok: true, id: data.id };
+}
+
+/** Envoie le reçu officiel par e-mail (paiement confirmé, numéro de reçu attribué). */
+async function sendReceipt(staff: NonNullable<Awaited<ReturnType<typeof getStaff>>>, id: string) {
+  const { data: d } = await staff.supabase.from("donation_declarations").select("*").eq("id", id).maybeSingle();
+  if (!d?.receipt_number) return;
+  const mail = receiptMail({ ...d, receipt_number: d.receipt_number });
+  const sent = await sendTemplate(d.email, mail.subject, mail.content);
+  if (sent) await audit(staff, "recu.envoye", "donation_declarations", id, { title: d.receipt_number, email: d.email });
 }

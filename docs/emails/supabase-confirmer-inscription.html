@@ -1,0 +1,26 @@
+<!-- Supabase → Authentication → Email Templates → « Confirm signup »
+     Objet : Confirmez votre inscription — KTGW Togo -->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f2f4f1;padding:24px 12px">
+  <tr><td align="center">
+    <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#ffffff;border-radius:14px;overflow:hidden;font-family:Arial,Helvetica,sans-serif">
+      <tr><td style="padding:22px 28px"><img src="https://www.ktgw.tg/images/logo-ktgw.png" width="120" alt="KTGW Togo" style="display:block;height:auto;border:0"></td></tr>
+      <tr><td style="height:5px;line-height:5px;font-size:0;background-color:#187a34">&nbsp;</td></tr>
+      <tr><td style="background:#0f5c2a;padding:20px 28px"><h1 style="margin:0;font-size:21px;color:#ffffff;font-weight:800">Bienvenue sur la plateforme KTGW Togo</h1></td></tr>
+      <tr><td style="padding:28px">
+        <p style="margin:0 0 14px;font-size:15px;line-height:1.6;color:#1f2933">Bonjour,</p>
+        <p style="margin:0 0 14px;font-size:15px;line-height:1.6;color:#1f2933">Nous avons bien reçu votre demande de création de compte sur le site de KTGW Togo. Pour l'activer, confirmez votre adresse e-mail :</p>
+        <table role="presentation" cellpadding="0" cellspacing="0" style="margin:8px 0 22px"><tr><td style="background:#c7361f;border-radius:10px">
+          <a href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=signup" style="display:inline-block;padding:13px 24px;font-size:15px;font-weight:700;color:#ffffff;text-decoration:none">Confirmer mon adresse e-mail</a>
+        </td></tr></table>
+        <p style="margin:0 0 14px;font-size:15px;line-height:1.6;color:#1f2933">Vous pourrez ensuite compléter votre profil, demander votre adhésion et suivre les activités de l'association depuis votre espace membre.</p>
+        <p style="margin:18px 0 0;font-size:15px;line-height:1.6;color:#1f2933">Bien cordialement,<br><strong>L'équipe KTGW Togo</strong></p>
+        <p style="margin:18px 0 0;font-size:12px;line-height:1.5;color:#7b8794">Vous n'êtes pas à l'origine de cette demande ? Ignorez simplement cet e-mail : aucun compte ne sera créé.</p>
+      </td></tr>
+      <tr><td style="background:#1a1a1a;padding:20px 28px;color:#cbd2d9;font-size:12px;line-height:1.6">
+        <strong style="color:#ffffff">KTGW Togo — KommTogoGehWeiter Togo</strong><br>
+        ONG d'éducation et de formation professionnelle, depuis 2008<br>
+        Lomé, Togo · <a href="https://www.ktgw.tg" style="color:#f9c23c;text-decoration:none">www.ktgw.tg</a>
+      </td></tr>
+    </table>
+  </td></tr>
+</table>

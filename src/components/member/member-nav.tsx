@@ -1,6 +1,6 @@
 "use client";
 
-import { BadgeCheck, FileText, KeyRound, LayoutDashboard, UserRound } from "lucide-react";
+import { BadgeCheck, FileText, IdCard, KeyRound, LayoutDashboard, UserRound } from "lucide-react";
 import { Link, usePathname } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 
@@ -8,6 +8,7 @@ const items = [
   { href: "/mon-espace", label: "Tableau de bord", icon: LayoutDashboard },
   { href: "/mon-espace/profil", label: "Mon profil", icon: UserRound },
   { href: "/mon-espace/adhesion", label: "Adhésion", icon: BadgeCheck },
+  { href: "/mon-espace/carte", label: "Ma carte", icon: IdCard },
   { href: "/mon-espace/documents", label: "Documents", icon: FileText },
   { href: "/mon-espace/mot-de-passe", label: "Sécurité", icon: KeyRound },
 ] as const;

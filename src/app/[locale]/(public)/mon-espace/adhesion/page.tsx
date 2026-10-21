@@ -39,9 +39,9 @@ export default async function MembershipPage({ params }: { params: Promise<{ loc
             Voir les documents des membres
           </Link>{" "}
           ·{" "}
-          <a href={`/impression/carte/${member.user.id}`} target="_blank" rel="noopener" className="font-semibold underline underline-offset-2">
-            Imprimer ma carte de membre
-          </a>
+          <Link href="/mon-espace/carte" className="font-semibold underline underline-offset-2">
+            Voir ma carte de membre
+          </Link>
         </Banner>
       )}
       {profile.membership_status === "en_attente" && (

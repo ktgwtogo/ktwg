@@ -2,7 +2,8 @@
 
 import { createHmac } from "node:crypto";
 import { headers } from "next/headers";
-import { sendEmail, teamRecipients } from "@/lib/email/send";
+import { newsletterConfirm, reference, submissionAck } from "@/lib/email/messages";
+import { sendEmail, sendTemplate, teamRecipients } from "@/lib/email/send";
 import { formDefinitions, type FormContext, type FormDefinition, type FormKind } from "@/lib/forms/definitions";
 import { verifyTurnstile } from "@/lib/security/turnstile";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -64,35 +65,34 @@ export async function submitForm(kind: FormKind, raw: unknown, meta: Meta = {}):
     } = await (await createClient()).auth.getUser();
     if (user) row.user_id = user.id;
 
+    const eventInfo: { eventDate?: string; eventVenue?: string } = {};
     if (kind === "event") {
       const { data: event } = await admin
         .from("events")
-        .select("id, title")
+        .select("id, title, starts_at, venue, city")
         .eq("slug", context.eventSlug ?? "")
         .eq("published", true)
         .maybeSingle();
       if (!event) return FAILED;
       row.event_id = event.id;
       context.eventTitle = event.title;
+      eventInfo.eventDate = event.starts_at;
+      eventInfo.eventVenue = [event.venue, event.city].filter(Boolean).join(", ");
     }
 
-    const { error } = await admin.from(def.table as "contact_messages").insert(row as never);
+    const { data: saved, error } = await admin.from(def.table as "contact_messages").insert(row as never).select("id").single();
     if (error?.code === "23505") return { ok: false, error: "Vous êtes déjà inscrit·e à cet événement avec cette adresse e-mail." };
-    if (error) {
-      console.error(`[forms] insertion ${def.table}`, error.message);
+    if (error || !saved) {
+      console.error(`[forms] insertion ${def.table}`, error?.message);
       return FAILED;
     }
 
+    // Accusé de réception au modèle KTGW, adapté à la démarche (référence, récapitulatif, suite donnée).
     const submitter = typeof values.email === "string" && values.email ? values.email : undefined;
+    const ack = submissionAck(kind, values, { ...context, ...eventInfo }, saved.id);
     await Promise.all([
-      notifyTeam(def.subject(values, context), def.fields(values, context), submitter),
-      submitter &&
-        sendEmail({
-          to: [submitter],
-          subject: "Nous avons bien reçu votre demande — KTGW Togo",
-          // Aucun contenu saisi par le visiteur : l'accusé ne peut pas servir à relayer du spam.
-          text: `Bonjour,\n\nNous avons bien reçu ${def.label} et vous remercions de votre confiance.\nNotre équipe vous répondra dans les meilleurs délais.\n\nL'équipe KTGW Togo\n${siteUrl()}`,
-        }),
+      notifyTeam(`${def.subject(values, context)} (${reference(saved.id)})`, def.fields(values, context), submitter),
+      submitter && sendTemplate(submitter, ack.subject, ack.content),
     ]);
     return { ok: true };
   } catch (error) {
@@ -138,10 +138,7 @@ async function subscribeNewsletter(admin: ReturnType<typeof createAdminClient>, 
     token = data.token;
   }
 
-  await sendEmail({
-    to: [email],
-    subject: "Confirmez votre inscription à la newsletter KTGW Togo",
-    text: `Bonjour,\n\nPour recevoir les nouvelles de KTGW Togo, confirmez votre inscription en ouvrant ce lien :\n${siteUrl()}/api/newsletter?action=confirm&token=${token}\n\nVous n'êtes pas à l'origine de cette demande ? Ignorez simplement cet e-mail.\n\nL'équipe KTGW Togo`,
-  });
+  const mail = newsletterConfirm(String(token));
+  await sendTemplate(email, mail.subject, mail.content);
   return { ok: true };
 }

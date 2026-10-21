@@ -3,14 +3,14 @@
 import { randomBytes } from "node:crypto";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { sendEmail } from "@/lib/email/send";
+import { passwordResetMail, staffAccountMail } from "@/lib/email/messages";
+import { sendTemplate } from "@/lib/email/send";
 import type { ActionResult } from "@/lib/member/actions";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { allPermissions } from "./permissions";
 import { audit, getStaff } from "./staff";
 
 const PRESIDENCY_ONLY: ActionResult = { ok: false, error: "Action réservée à la présidence." };
-const site = () => process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 const refresh = () => revalidatePath("/[locale]/admin", "layout");
 
 /** Mot de passe provisoire lisible (sans caractères ambigus). */
@@ -67,11 +67,8 @@ export async function createStaffAccount(raw: unknown): Promise<ActionResult & {
     .eq("id", data.user.id);
   await audit(staff, "compte.cree", "profiles", data.user.id, { email: v.email, poste: position.name });
 
-  await sendEmail({
-    to: [v.email],
-    subject: "Votre accès à l'administration de KTGW Togo",
-    text: `Bonjour ${v.fullName},\n\nLa présidence de KTGW Togo vous a créé un accès en tant que ${position.name}.\n\nAdresse : ${site()}/connexion\nE-mail : ${v.email}\nMot de passe provisoire : ${password}\n\nÀ votre première connexion, vous devrez choisir votre propre mot de passe.\n\nL'équipe KTGW Togo`,
-  });
+  const mail = staffAccountMail(v.fullName, position.name, v.email, password);
+  await sendTemplate(v.email, mail.subject, mail.content);
   refresh();
   return { ok: true, password };
 }
@@ -133,11 +130,8 @@ export async function resetStaffPassword(userId: string): Promise<ActionResult &
   await admin.from("profiles").update({ must_change_password: true }).eq("id", userId);
   await audit(staff, "compte.mot_de_passe_reinitialise", "profiles", userId, { email: target.email });
 
-  await sendEmail({
-    to: [target.email],
-    subject: "Nouveau mot de passe provisoire — KTGW Togo",
-    text: `Bonjour${target.full_name ? ` ${target.full_name}` : ""},\n\nLa présidence a réinitialisé votre mot de passe.\nMot de passe provisoire : ${password}\n\nConnectez-vous sur ${site()}/connexion : vous devrez en choisir un nouveau.\n\nL'équipe KTGW Togo`,
-  });
+  const mail = passwordResetMail(target.full_name, password);
+  await sendTemplate(target.email, mail.subject, mail.content);
   return { ok: true, password };
 }
 

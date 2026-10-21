@@ -17,6 +17,7 @@ export const permissionGroups = [
     items: [
       { id: "members.view", label: "Consulter le fichier des membres" },
       { id: "members.manage", label: "Traiter les adhésions et le bénévolat" },
+      { id: "cards.manage", label: "Créer, corriger et envoyer les cartes de membre" },
       { id: "documents.manage", label: "Préparer les documents officiels" },
       { id: "inbox.manage", label: "Traiter les messages et demandes de partenariat" },
     ],

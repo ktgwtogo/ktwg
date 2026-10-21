@@ -404,6 +404,66 @@ export type Database = {
         }
         Relationships: []
       }
+      member_cards: {
+        Row: {
+          birth_date: string | null
+          card_number: string
+          created_at: string
+          created_by: string | null
+          expires_at: string
+          full_name: string
+          id: string
+          issued_at: string
+          membership_type: Database["public"]["Enums"]["membership_type"]
+          nationality: string | null
+          notes: string | null
+          photo_path: string | null
+          sent_at: string | null
+          status: string
+          updated_at: string
+          user_id: string
+          verification_token: string
+        }
+        Insert: {
+          birth_date?: string | null
+          card_number: string
+          created_at?: string
+          created_by?: string | null
+          expires_at: string
+          full_name: string
+          id?: string
+          issued_at?: string
+          membership_type: Database["public"]["Enums"]["membership_type"]
+          nationality?: string | null
+          notes?: string | null
+          photo_path?: string | null
+          sent_at?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+          verification_token?: string
+        }
+        Update: {
+          birth_date?: string | null
+          card_number?: string
+          created_at?: string
+          created_by?: string | null
+          expires_at?: string
+          full_name?: string
+          id?: string
+          issued_at?: string
+          membership_type?: Database["public"]["Enums"]["membership_type"]
+          nationality?: string | null
+          notes?: string | null
+          photo_path?: string | null
+          sent_at?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+          verification_token?: string
+        }
+        Relationships: []
+      }
       membership_applications: {
         Row: {
           availability: string | null
@@ -1306,6 +1366,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      verify_member_card: {
+        Args: { p_token: string }
+        Returns: { full_name: string; card_number: string; membership_type: Database["public"]["Enums"]["membership_type"]; issued_at: string; expires_at: string; status: string }[]
+      }
       my_position: { Args: never; Returns: string }
       has_permission: { Args: { p_permission: string }; Returns: boolean }
       decide_membership: {

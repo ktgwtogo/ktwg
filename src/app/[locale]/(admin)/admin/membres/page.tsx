@@ -1,4 +1,4 @@
-import { Download, IdCard, Search, UserRound } from "lucide-react";
+import { Download, FolderOpen, Search, UserRound } from "lucide-react";
 import { setRequestLocale } from "next-intl/server";
 import { Forbidden, PageHeading } from "@/components/admin/page-heading";
 import { Link, redirect } from "@/i18n/navigation";
@@ -99,11 +99,9 @@ export default async function MembersPage({
                   {p.member_since && <span className="text-muted-foreground">depuis le {formatDate(p.member_since, locale, "short")}</span>}
                 </p>
               </div>
-              {p.membership_status === "validee" && (
-                <a href={`/impression/carte/${p.id}`} target="_blank" rel="noopener" aria-label="Carte de membre" className="self-start rounded-lg p-2 text-ktgw-green-strong hover:bg-muted">
-                  <IdCard aria-hidden className="size-5" />
-                </a>
-              )}
+              <Link href={`/admin/membres/${p.id}`} aria-label="Ouvrir le dossier du membre" className="self-start rounded-lg p-2 text-ktgw-green-strong hover:bg-muted">
+                <FolderOpen aria-hidden className="size-5" />
+              </Link>
             </li>
           );
         })}

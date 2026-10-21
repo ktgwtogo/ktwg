@@ -69,11 +69,11 @@ export default async function ArchivesPage({
       label: "Membres et cartes",
       icon: IdCard,
       hits: (people.data ?? []).map((p) => ({
-        href: p.membership_status === "validee" ? `/impression/carte/${p.id}` : "/admin/membres",
+        href: `/admin/membres/${p.id}`,
         title: [p.first_name, p.last_name].filter(Boolean).join(" ") || p.full_name || p.email,
         detail: p.member_number ? `Carte n° ${p.member_number}` : p.email,
         date: p.member_since ?? p.created_at,
-        external: p.membership_status === "validee",
+        external: false,
       })),
     });
   }

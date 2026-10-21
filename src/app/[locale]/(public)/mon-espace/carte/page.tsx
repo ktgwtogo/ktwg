@@ -57,25 +57,31 @@ export default async function MyCardPage({ params }: { params: Promise<{ locale:
             <CheckCircle2 aria-hidden className="size-5" />
             Carte confirmée : vous pouvez la télécharger.
           </p>
-          <div className="flex flex-wrap justify-center gap-3">
-            <a
-              href={`/impression/carte/${card.id}?format=carte&telecharger=1`}
-              target="_blank"
-              rel="noopener"
-              className="inline-flex h-12 items-center gap-2 rounded-xl bg-ktgw-green-strong px-6 font-semibold text-white"
-            >
-              <Download aria-hidden className="size-5" />
-              Télécharger (9 × 5,5 cm)
-            </a>
-            <a
-              href={`/impression/carte/${card.id}?telecharger=1`}
-              target="_blank"
-              rel="noopener"
-              className="inline-flex h-12 items-center gap-2 rounded-xl border-2 border-border px-6 font-semibold"
-            >
-              <Download aria-hidden className="size-5" />
-              Planche A4 à imprimer
-            </a>
+          <div className="flex w-full max-w-2xl flex-col gap-3">
+            <p className="text-center font-semibold">Télécharger ma carte (PDF)</p>
+            <div className="grid gap-3 sm:grid-cols-3">
+              {[
+                { format: "carte", label: "Carte de visite", hint: "Format d'impression 9 × 5,5 cm, une page par face" },
+                { format: "duo", label: "Recto + verso", hint: "Les deux faces sur une même page" },
+                { format: "a4", label: "Planche A4", hint: "À imprimer sur papier cartonné et découper" },
+              ].map((o, i) => (
+                <a
+                  key={o.format}
+                  href={`/impression/carte/${card.id}?format=${o.format}&telecharger=1`}
+                  target="_blank"
+                  rel="noopener"
+                  className={
+                    i === 0
+                      ? "flex flex-col items-center gap-1 rounded-2xl bg-ktgw-green-strong p-4 text-center text-white"
+                      : "flex flex-col items-center gap-1 rounded-2xl border-2 border-border p-4 text-center hover:bg-muted"
+                  }
+                >
+                  <Download aria-hidden className="size-5" />
+                  <span className="font-semibold">{o.label}</span>
+                  <span className={i === 0 ? "text-xs text-white/85" : "text-xs text-muted-foreground"}>{o.hint}</span>
+                </a>
+              ))}
+            </div>
           </div>
         </>
       ) : card.member_feedback ? (

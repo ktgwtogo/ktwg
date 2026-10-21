@@ -15,18 +15,40 @@ type CardData = {
 const dmy = (iso: string) => iso.split("-").reverse().join("/");
 
 /**
- * Carte de membre au format 9 × 5,5 cm : recto (identité, photo) et verso (QR code de vérification, validité).
- * Les dimensions en mm donnent la taille exacte à l'impression. `pages` : recto et verso sur deux pages
- * au format de la carte (PDF prêt pour une imprimante à cartes).
+ * Carte de membre au format carte de visite 9 × 5,5 cm : recto (identité, photo) et verso (QR code, validité).
+ * Les dimensions en mm donnent la taille exacte à l'impression. Disposition :
+ * - `sheet` : recto et verso côte à côte ou l'un sous l'autre (planche A4) ;
+ * - `pages` : une page par face, au format de la carte (imprimante à cartes, imprimeur) ;
+ * - `stack` : recto au-dessus du verso, sur une seule page.
  */
-export function MemberCardView({ card, photoUrl, qrSvg, pages = false }: { card: CardData; photoUrl: string | null; qrSvg: string; pages?: boolean }) {
-  const face = pages ? "print:rounded-none print:ring-0 print:break-after-page" : "print:break-inside-avoid";
+export function MemberCardView({
+  card,
+  photoUrl,
+  qrSvg,
+  layout = "sheet",
+}: {
+  card: CardData;
+  photoUrl: string | null;
+  qrSvg: string;
+  layout?: "sheet" | "pages" | "stack";
+}) {
+  const face =
+    layout === "pages"
+      ? "print:rounded-none print:ring-0"
+      : layout === "stack"
+        ? "print:rounded-none print:break-inside-avoid"
+        : "print:break-inside-avoid";
+  const wrapper = {
+    sheet: "flex flex-wrap justify-center gap-6 print:gap-[6mm]",
+    pages: "flex flex-col items-center gap-6 print:block",
+    stack: "flex flex-col items-center gap-6 print:gap-[5mm]",
+  }[layout];
   return (
-    <div className={pages ? "flex flex-col items-center gap-6 print:block" : "flex flex-wrap justify-center gap-6 print:gap-[6mm]"}>
+    <div className={wrapper}>
       {/* Recto */}
       <article
         aria-label={`Carte de membre de ${card.full_name} (recto)`}
-        className={`relative flex h-[55mm] w-[90mm] shrink-0 overflow-hidden rounded-[3mm] bg-gradient-to-br from-ktgw-green-dark to-ktgw-green-strong text-white shadow-2xl print:shadow-none ${face}`}
+        className={`relative flex h-[55mm] w-[90mm] shrink-0 overflow-hidden rounded-[3mm] bg-gradient-to-br from-ktgw-green-dark to-ktgw-green-strong text-white shadow-2xl print:shadow-none ${face} ${layout === "pages" ? "print:break-after-page" : ""}`}
       >
         <div className="absolute inset-x-0 bottom-0 h-[2.2mm] bg-gradient-to-r from-ktgw-red via-ktgw-sun to-ktgw-green" />
         <div className="flex w-[28mm] shrink-0 flex-col items-center justify-center gap-[1.5mm] bg-white/10 p-[2.5mm]">

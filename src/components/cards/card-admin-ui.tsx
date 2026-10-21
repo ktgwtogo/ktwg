@@ -1,6 +1,6 @@
 "use client";
 
-import { Ban, Camera, CheckCircle2, IdCard, Mail, Save } from "lucide-react";
+import { Ban, Camera, CheckCircle2, IdCard, Mail, Save, UserRound } from "lucide-react";
 import { useRef, useState, useTransition } from "react";
 import { ServerError } from "@/components/forms/fields";
 import { Button } from "@/components/ui/button";
@@ -131,12 +131,24 @@ export function CardEditor({ cardId, userId, initial, active }: { cardId: string
       </label>
       {active && (
         <div className="flex flex-wrap items-center gap-3">
-          <button type="button" onClick={() => fileRef.current?.click()} disabled={uploading} className="inline-flex h-10 items-center gap-2 rounded-xl border-2 border-border px-4 text-sm font-semibold">
+          <button
+            type="button"
+            onClick={() => fileRef.current?.click()}
+            disabled={uploading}
+            className="inline-flex h-10 items-center gap-2 rounded-xl border-2 border-border px-4 text-sm font-semibold"
+          >
             <Camera aria-hidden className="size-4" />
             {uploading ? "Envoi…" : "Remplacer la photo"}
           </button>
           {v.photo_path !== initial.photo_path && <span className="text-sm text-ktgw-orange">Nouvelle photo : enregistrez pour l&apos;appliquer.</span>}
-          <input ref={fileRef} type="file" accept="image/jpeg,image/png,image/webp" className="sr-only" tabIndex={-1} onChange={(e) => uploadPhoto(e.target.files?.[0])} />
+          <input
+            ref={fileRef}
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            className="sr-only"
+            tabIndex={-1}
+            onChange={(e) => uploadPhoto(e.target.files?.[0])}
+          />
         </div>
       )}
       <ServerError message={error} />
@@ -159,34 +171,11 @@ export function CardEditor({ cardId, userId, initial, active }: { cardId: string
   );
 }
 
-/** Bouton compact « Envoyer par e-mail » (liste des cartes). */
-export function QuickSendCard({ cardId, name }: { cardId: string; name: string }) {
-  const router = useRouter();
-  const [state, setState] = useState<"idle" | "sent" | "pending" | "error">("idle");
-  const [pending, start] = useTransition();
-  return (
-    <button
-      type="button"
-      disabled={pending}
-      title={state === "error" ? "Échec de l'envoi" : undefined}
-      onClick={() =>
-        window.confirm(`Envoyer la carte de ${name} par e-mail ?`) &&
-        start(async () => {
-          const r = await sendCard(cardId);
-          setState(!r.ok ? "error" : r.pending ? "pending" : "sent");
-          router.refresh();
-        })
-      }
-      className="inline-flex h-8 items-center gap-1.5 rounded-lg border-2 border-border px-2.5 text-xs font-semibold hover:bg-muted disabled:opacity-60"
-    >
-      <Mail aria-hidden className="size-3.5" />
-      {pending ? "Envoi…" : state === "sent" ? "Envoyée ✓" : state === "pending" ? "Soumis ⏳" : state === "error" ? "Échec" : "Envoyer"}
-    </button>
-  );
-}
-
-/** Envoi par e-mail et révocation d'une carte. */
-export function CardActions({ cardId, email, active }: { cardId: string; email: string; active: boolean }) {
+/**
+ * Transmission de la carte au membre pour vérification (e-mail + espace, ou espace seul) et révocation.
+ * La carte n'est jamais transmise automatiquement : le bureau la contrôle d'abord.
+ */
+export function CardActions({ cardId, email, active, sent }: { cardId: string; email: string; active: boolean; sent: boolean }) {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState<string | null>(null);
@@ -202,27 +191,53 @@ export function CardActions({ cardId, email, active }: { cardId: string; email: 
     });
 
   if (!active) return null;
+  const again = sent ? " à nouveau" : "";
   return (
-    <div className="flex flex-col gap-2">
-      <div className="flex flex-wrap gap-2">
-        <Button type="button" size="lg" disabled={pending} onClick={() => window.confirm(`Envoyer la carte à ${email} ?`) && run(() => sendCard(cardId), `Carte envoyée à ${email}.`)}>
+    <div className="flex flex-col gap-3">
+      <p className="text-sm text-muted-foreground">
+        Après contrôle (données, photo, test du QR code), transmettez la carte au membre : il la vérifie et donne son accord avant de pouvoir la télécharger.
+      </p>
+      <div className="flex flex-col gap-2">
+        <Button
+          type="button"
+          size="lg"
+          disabled={pending}
+          onClick={() =>
+            window.confirm(`Transmettre${again} la carte par e-mail (${email}) et dans l'espace membre ?`) &&
+            run(() => sendCard(cardId, "email"), `Carte transmise à ${email} et dans l'espace membre.`)
+          }
+        >
           <Mail aria-hidden />
-          Envoyer au membre
+          Transmettre par e-mail + espace membre
         </Button>
         <Button
           type="button"
           size="lg"
           variant="outline"
           disabled={pending}
-          className="text-destructive"
-          onClick={() => window.confirm("Révoquer cette carte ? Le QR code indiquera « carte révoquée ».") && run(() => revokeCard(cardId), "Carte révoquée.")}
+          onClick={() =>
+            window.confirm(`Transmettre${again} la carte uniquement dans l'espace membre ?`) &&
+            run(() => sendCard(cardId, "espace"), "Carte déposée dans l'espace membre.")
+          }
         >
-          <Ban aria-hidden />
-          Révoquer
+          <UserRound aria-hidden />
+          Transmettre dans l&apos;espace membre seulement
         </Button>
       </div>
       <ServerError message={error} />
       {done && <p className="text-sm font-semibold text-ktgw-green-strong">{done}</p>}
+      <div className="border-t pt-3">
+        <Button
+          type="button"
+          variant="outline"
+          disabled={pending}
+          className="text-destructive"
+          onClick={() => window.confirm("Révoquer cette carte ? Le QR code indiquera « carte révoquée ».") && run(() => revokeCard(cardId), "Carte révoquée.")}
+        >
+          <Ban aria-hidden />
+          Révoquer la carte
+        </Button>
+      </div>
     </div>
   );
 }

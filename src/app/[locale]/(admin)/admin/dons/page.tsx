@@ -1,4 +1,4 @@
-import { Download, Receipt } from "lucide-react";
+import { Download, Eye } from "lucide-react";
 import { setRequestLocale } from "next-intl/server";
 import { Forbidden, PageHeading } from "@/components/admin/page-heading";
 import { DonationActions, PaymentForm } from "@/components/admin/records-ui";
@@ -16,13 +16,7 @@ const views = [
 ] as const;
 
 /** Dons et cotisations : vérification des déclarations, saisie, reçus, totaux. */
-export default async function DonationsPage({
-  params,
-  searchParams,
-}: {
-  params: Promise<{ locale: string }>;
-  searchParams: Promise<{ vue?: string }>;
-}) {
+export default async function DonationsPage({ params, searchParams }: { params: Promise<{ locale: string }>; searchParams: Promise<{ vue?: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
   const staff = await getStaff();
@@ -37,8 +31,7 @@ export default async function DonationsPage({
     staff.supabase.from("donation_declarations").select("amount_fcfa, kind, received_at").eq("status", "traite").gte("received_at", `${year}-01-01`),
   ]);
   const month = new Date().toISOString().slice(0, 7);
-  const sum = (filter: (r: { kind: string; received_at: string | null }) => boolean) =>
-    (cashed ?? []).filter(filter).reduce((s, r) => s + r.amount_fcfa, 0);
+  const sum = (filter: (r: { kind: string; received_at: string | null }) => boolean) => (cashed ?? []).filter(filter).reduce((s, r) => s + r.amount_fcfa, 0);
   const totals = [
     { label: `Dons encaissés en ${year}`, value: fcfa(sum((r) => r.kind === "don")) },
     { label: `Cotisations encaissées en ${year}`, value: fcfa(sum((r) => r.kind === "cotisation")) },
@@ -73,7 +66,10 @@ export default async function DonationsPage({
               <Link
                 key={v.id}
                 href={{ pathname: "/admin/dons", query: { vue: v.id } }}
-                className={cn("rounded-full px-4 py-2 text-sm font-semibold", v.id === view.id ? "bg-ink text-white dark:bg-white dark:text-ink" : "bg-card ring-1 ring-foreground/10")}
+                className={cn(
+                  "rounded-full px-4 py-2 text-sm font-semibold",
+                  v.id === view.id ? "bg-ink text-white dark:bg-white dark:text-ink" : "bg-card ring-1 ring-foreground/10",
+                )}
               >
                 {v.label}
               </Link>
@@ -111,14 +107,33 @@ export default async function DonationsPage({
                   </div>
                   {d.status === "nouveau" && <DonationActions id={d.id} />}
                   {d.status === "traite" && d.receipt_number && (
-                    <div className="flex flex-col items-start gap-2 sm:items-end">
-                      <span className={cn("rounded-full px-2 py-0.5 text-xs font-semibold", d.receipt_sent_at ? "bg-ktgw-green/15 text-ktgw-green-strong" : "bg-ktgw-sun/20 text-ktgw-orange")}>
-                        {d.receipt_sent_at ? "Reçu envoyé" : "Reçu à envoyer"}
+                    <div className="flex shrink-0 flex-col items-start gap-2 sm:items-end">
+                      <span
+                        className={cn(
+                          "rounded-full px-2.5 py-0.5 text-xs font-semibold",
+                          d.receipt_sent_at ? "bg-ktgw-green/15 text-ktgw-green-strong" : "bg-ktgw-sun/20 text-ktgw-orange",
+                        )}
+                      >
+                        {d.receipt_sent_at ? "Reçu envoyé" : "Reçu à vérifier puis envoyer"}
                       </span>
-                      <Link href={`/admin/dons/recu/${d.id}`} className="inline-flex h-9 items-center gap-2 rounded-lg bg-ktgw-green-strong px-3 text-sm font-semibold text-white">
-                        <Receipt aria-hidden className="size-4" />
-                        Voir le reçu, télécharger, envoyer
-                      </Link>
+                      <div className="flex gap-2">
+                        <Link
+                          href={`/admin/dons/recu/${d.id}`}
+                          className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-ktgw-green-strong px-3 text-sm font-semibold whitespace-nowrap text-white"
+                        >
+                          <Eye aria-hidden className="size-4" />
+                          Voir le reçu
+                        </Link>
+                        <a
+                          href={`/impression/recu/${d.id}?telecharger=1`}
+                          target="_blank"
+                          rel="noopener"
+                          className="inline-flex h-9 items-center gap-1.5 rounded-lg border-2 border-border px-3 text-sm font-semibold whitespace-nowrap hover:bg-muted"
+                        >
+                          <Download aria-hidden className="size-4" />
+                          PDF A4
+                        </a>
+                      </div>
                     </div>
                   )}
                 </li>
@@ -128,7 +143,9 @@ export default async function DonationsPage({
         </section>
         <section className="h-fit rounded-3xl bg-card p-6 shadow-soft ring-1 ring-foreground/5">
           <h2 className="mb-1 text-xl font-bold">Enregistrer un paiement ou un don reçu</h2>
-          <p className="mb-4 text-sm text-muted-foreground">Cotisation, don en argent ou en nature : le reçu officiel est généré et envoyé automatiquement.</p>
+          <p className="mb-4 text-sm text-muted-foreground">
+            Cotisation, don en argent ou en nature : le reçu officiel est généré ; vérifiez-le dans « Reçus générés » avant de l&apos;envoyer au donateur.
+          </p>
           <PaymentForm />
         </section>
       </div>

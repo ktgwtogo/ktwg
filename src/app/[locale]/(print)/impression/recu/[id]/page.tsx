@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { PrintButton } from "@/components/admin/records-ui";
+import { AutoPrint, PrintButton } from "@/components/admin/records-ui";
 import { ReceiptDocument } from "@/components/receipts/receipt-document";
 import { redirect } from "@/i18n/navigation";
 import { getStaff } from "@/lib/admin/staff";
@@ -14,8 +14,15 @@ export const metadata: Metadata = { title: "Reçu", robots: { index: false } };
  * Reçu imprimable / PDF. Trésorerie et présidence : dès sa génération.
  * Donateur : une fois le reçu envoyé (la RLS limite aux dons de son compte ou de son e-mail).
  */
-export default async function ReceiptPage({ params }: { params: Promise<{ locale: string; id: string }> }) {
+export default async function ReceiptPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ locale: string; id: string }>;
+  searchParams: Promise<{ telecharger?: string }>;
+}) {
   const { locale, id } = await params;
+  const { telecharger } = await searchParams;
   const member = await getMember();
   if (!member) return redirect({ href: "/connexion", locale });
   const staff = await getStaff();
@@ -28,12 +35,17 @@ export default async function ReceiptPage({ params }: { params: Promise<{ locale
   const { togo } = await getSiteConfig();
 
   return (
-    <main className="flex min-h-dvh flex-col items-center gap-6 bg-muted p-6 print:bg-white print:p-0">
-      <style>{"@page { size: A4; margin: 18mm } @media print { html, body { background: white } }"}</style>
-      <ReceiptDocument d={d} locale={locale} togo={togo} />
+    <main className="flex min-h-dvh flex-col items-center gap-6 bg-muted p-6 print:block print:min-h-0 print:bg-white print:p-0">
+      <style>{"@page { size: A4 portrait; margin: 0 } @media print { html, body { background: white; margin: 0 } }"}</style>
+      {telecharger && <AutoPrint />}
       <div className="flex flex-col items-center gap-2 print:hidden">
-        <PrintButton label="Télécharger en PDF / imprimer" />
-        <p className="text-sm text-muted-foreground">Choisissez « Enregistrer au format PDF » comme imprimante pour télécharger le reçu.</p>
+        <PrintButton label="Télécharger le reçu en PDF (A4)" />
+        <p className="max-w-md text-center text-sm text-muted-foreground">
+          Dans la fenêtre d&apos;impression, choisissez « Enregistrer au format PDF », format A4, échelle 100 %, sans marges.
+        </p>
+      </div>
+      <div className="max-w-full overflow-x-auto print:overflow-visible">
+        <ReceiptDocument d={d} locale={locale} togo={togo} />
       </div>
     </main>
   );

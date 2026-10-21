@@ -1,4 +1,4 @@
-import { Receipt } from "lucide-react";
+import { Download, Eye } from "lucide-react";
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { Link, redirect } from "@/i18n/navigation";
@@ -6,7 +6,10 @@ import { receiptNature } from "@/lib/email/messages";
 import { formatDate } from "@/lib/format";
 import { getMember } from "@/lib/member/session";
 
-export const metadata: Metadata = { title: "Mes reçus", robots: { index: false } };
+export const metadata: Metadata = {
+  title: "Mes reçus",
+  robots: { index: false },
+};
 
 /** Dons, dons en nature et cotisations de la personne connectée, avec leurs reçus officiels. */
 export default async function MyReceiptsPage({ params }: { params: Promise<{ locale: string }> }) {
@@ -50,10 +53,26 @@ export default async function MyReceiptsPage({ params }: { params: Promise<{ loc
                 </p>
               </div>
               {d.status === "traite" && d.receipt_number && d.receipt_sent_at && (
-                <a href={`/impression/recu/${d.id}`} target="_blank" rel="noopener" className="inline-flex h-11 shrink-0 items-center gap-2 rounded-xl bg-ktgw-green-strong px-4 text-sm font-semibold text-white">
-                  <Receipt aria-hidden className="size-4" />
-                  Voir / télécharger le reçu
-                </a>
+                <div className="flex shrink-0 gap-2">
+                  <a
+                    href={`/impression/recu/${d.id}`}
+                    target="_blank"
+                    rel="noopener"
+                    className="inline-flex h-11 items-center gap-2 rounded-xl border-2 border-border px-4 text-sm font-semibold whitespace-nowrap hover:bg-muted"
+                  >
+                    <Eye aria-hidden className="size-4" />
+                    Voir
+                  </a>
+                  <a
+                    href={`/impression/recu/${d.id}?telecharger=1`}
+                    target="_blank"
+                    rel="noopener"
+                    className="inline-flex h-11 items-center gap-2 rounded-xl bg-ktgw-green-strong px-4 text-sm font-semibold whitespace-nowrap text-white"
+                  >
+                    <Download aria-hidden className="size-4" />
+                    Télécharger (PDF A4)
+                  </a>
+                </div>
               )}
             </li>
           ))}

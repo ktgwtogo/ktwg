@@ -246,20 +246,21 @@ export function receiptMail(d: ReceiptData): Mail {
 /** Envoi de la carte de membre. */
 export function cardMail(d: { firstName: string | null; cardNumber: string; typeLabel: string; expiresAt: string; viewUrl: string; verifyUrl: string }): Mail {
   return {
-    subject: `Votre carte de membre ${d.cardNumber} — KTGW Togo`,
+    subject: `Votre carte de membre ${d.cardNumber} est à vérifier — KTGW Togo`,
     content: {
       title: "Votre carte de membre KTGW Togo",
       greeting: safeName(d.firstName) ? `Bonjour ${safeName(d.firstName)},` : "Bonjour,",
       paragraphs: [
-        "Votre carte de membre est prête. Vous pouvez l'afficher, l'imprimer ou l'enregistrer en PDF depuis votre espace membre.",
-        "Elle comporte un QR code : toute personne qui le scanne peut vérifier sa validité auprès de KTGW Togo.",
+        "Votre carte de membre a été préparée par le bureau. Avant de la finaliser, merci de vérifier vos informations (nom, photo, date de naissance, nationalité) dans votre espace membre.",
+        "Si tout est exact, donnez votre accord : vous pourrez alors la télécharger et l'imprimer. Sinon, indiquez la correction souhaitée et le secrétariat la mettra à jour.",
+        "La carte comporte un QR code : toute personne qui le scanne peut vérifier sa validité auprès de KTGW Togo.",
       ],
       rows: [
         ["N° de carte", d.cardNumber],
         ["Qualité", d.typeLabel],
         ["Valable jusqu'au", dateFr(d.expiresAt)],
       ],
-      cta: { label: "Voir et télécharger ma carte", href: d.viewUrl },
+      cta: { label: "Vérifier ma carte", href: d.viewUrl },
       note: `Vérification de la carte : ${d.verifyUrl}`,
     },
   };

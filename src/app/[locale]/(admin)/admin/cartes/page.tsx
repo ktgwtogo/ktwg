@@ -1,10 +1,10 @@
 import { setRequestLocale } from "next-intl/server";
 import { Pencil, Printer } from "lucide-react";
-import { IssueCardButton, QuickSendCard } from "@/components/cards/card-admin-ui";
+import { IssueCardButton } from "@/components/cards/card-admin-ui";
 import { Forbidden, PageHeading } from "@/components/admin/page-heading";
 import { Link, redirect } from "@/i18n/navigation";
 import { getStaff } from "@/lib/admin/staff";
-import { cardStatus, cardStatusLabels } from "@/lib/cards/card";
+import { cardStage, cardStageLabels, cardStatus, cardStatusLabels } from "@/lib/cards/card";
 import { formatDate } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { membershipTypeLabels } from "@/lib/validations/member";
@@ -20,7 +20,11 @@ export default async function CardsPage({ params }: { params: Promise<{ locale: 
 
   const [{ data: cards }, { data: members }] = await Promise.all([
     staff.supabase.from("member_cards").select("*").order("created_at", { ascending: false }).limit(500),
-    staff.supabase.from("profiles").select("id, first_name, last_name, full_name, email, membership_type, member_number, member_since").eq("membership_status", "validee").order("member_since"),
+    staff.supabase
+      .from("profiles")
+      .select("id, first_name, last_name, full_name, email, membership_type, member_number, member_since")
+      .eq("membership_status", "validee")
+      .order("member_since"),
   ]);
   const withActiveCard = new Set((cards ?? []).filter((c) => c.status === "active").map((c) => c.user_id));
   const toEquip = (members ?? []).filter((m) => !withActiveCard.has(m.id));
@@ -29,7 +33,7 @@ export default async function CardsPage({ params }: { params: Promise<{ locale: 
     <>
       <PageHeading
         title="Cartes de membre"
-        description="Chaque carte reprend la photo et les informations du membre, porte un QR code vérifiable et reste valable 5 ans. Corrigez, imprimez ou envoyez-la depuis sa fiche."
+        description="Carte 9 × 5,5 cm avec photo, QR code vérifiable, valable 5 ans. Circuit : création → contrôle par le bureau → transmission au membre → accord du membre → téléchargement."
       />
 
       <section className="rounded-3xl bg-card p-6 shadow-soft ring-1 ring-foreground/5">
@@ -62,20 +66,36 @@ export default async function CardsPage({ params }: { params: Promise<{ locale: 
           <p className="rounded-3xl border border-dashed p-8 text-center text-muted-foreground">Aucune carte émise pour le moment.</p>
         ) : (
           <div className="overflow-x-auto rounded-3xl bg-card shadow-soft ring-1 ring-foreground/5">
-            <table className="w-full min-w-[860px] text-left text-sm">
+            <table className="w-full min-w-[960px] text-left text-sm">
               <thead className="border-b bg-muted/50 text-xs tracking-wide text-muted-foreground uppercase">
                 <tr>
-                  <th scope="col" className="px-5 py-3">N° de carte</th>
-                  <th scope="col" className="px-5 py-3">Titulaire</th>
-                  <th scope="col" className="px-5 py-3">Qualité</th>
-                  <th scope="col" className="px-5 py-3">Validité</th>
-                  <th scope="col" className="px-5 py-3">État</th>
-                  <th scope="col" className="px-5 py-3">Actions</th>
+                  <th scope="col" className="px-5 py-3">
+                    N° de carte
+                  </th>
+                  <th scope="col" className="px-5 py-3">
+                    Titulaire
+                  </th>
+                  <th scope="col" className="px-5 py-3">
+                    Qualité
+                  </th>
+                  <th scope="col" className="px-5 py-3">
+                    Validité
+                  </th>
+                  <th scope="col" className="px-5 py-3">
+                    État
+                  </th>
+                  <th scope="col" className="px-5 py-3">
+                    Circuit
+                  </th>
+                  <th scope="col" className="px-5 py-3">
+                    Actions
+                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y">
                 {cards.map((c) => {
                   const [label, tone] = cardStatusLabels[cardStatus(c)];
+                  const [stage, stageTone] = cardStageLabels[cardStage(c)];
                   return (
                     <tr key={c.id}>
                       <td className="px-5 py-3 font-semibold">
@@ -88,17 +108,28 @@ export default async function CardsPage({ params }: { params: Promise<{ locale: 
                       <td className="px-5 py-3 text-muted-foreground">jusqu&apos;au {formatDate(c.expires_at, locale, "short")}</td>
                       <td className="px-5 py-3">
                         <span className={cn("rounded-full px-2 py-0.5 text-xs font-semibold", tone)}>{label}</span>
-                        {c.sent_at && <span className="ml-2 text-xs text-muted-foreground">envoyée</span>}
+                      </td>
+                      <td className="px-5 py-3">
+                        {c.status === "active" && (
+                          <span className={cn("rounded-full px-2 py-0.5 text-xs font-semibold whitespace-nowrap", stageTone)}>{stage}</span>
+                        )}
                       </td>
                       <td className="px-5 py-3">
                         <div className="flex flex-wrap gap-1.5">
-                          <Link href={`/admin/cartes/${c.id}`} className="inline-flex h-8 items-center gap-1.5 rounded-lg bg-ktgw-green-strong px-2.5 text-xs font-semibold text-white">
+                          <Link
+                            href={`/admin/cartes/${c.id}`}
+                            className="inline-flex h-8 items-center gap-1.5 rounded-lg bg-ktgw-green-strong px-2.5 text-xs font-semibold text-white"
+                          >
                             <Pencil aria-hidden className="size-3.5" />
-                            Voir / modifier
+                            Contrôler
                           </Link>
-                          {c.status === "active" && canManage && <QuickSendCard cardId={c.id} name={c.full_name} />}
                           {c.status === "active" && (
-                            <a href={`/impression/carte/${c.id}`} target="_blank" rel="noopener" className="inline-flex h-8 items-center gap-1.5 rounded-lg border-2 border-border px-2.5 text-xs font-semibold hover:bg-muted">
+                            <a
+                              href={`/impression/carte/${c.id}?format=carte`}
+                              target="_blank"
+                              rel="noopener"
+                              className="inline-flex h-8 items-center gap-1.5 rounded-lg border-2 border-border px-2.5 text-xs font-semibold hover:bg-muted"
+                            >
                               <Printer aria-hidden className="size-3.5" />
                               PDF
                             </a>

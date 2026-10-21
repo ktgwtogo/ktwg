@@ -15,24 +15,26 @@ type CardData = {
 const dmy = (iso: string) => iso.split("-").reverse().join("/");
 
 /**
- * Carte de membre au format carte bancaire (85,6 × 54 mm) : recto (identité, photo)
- * et verso (QR code de vérification, validité). Les dimensions en mm donnent la bonne taille à l'impression.
+ * Carte de membre au format 9 × 5,5 cm : recto (identité, photo) et verso (QR code de vérification, validité).
+ * Les dimensions en mm donnent la taille exacte à l'impression. `pages` : recto et verso sur deux pages
+ * au format de la carte (PDF prêt pour une imprimante à cartes).
  */
-export function MemberCardView({ card, photoUrl, qrSvg }: { card: CardData; photoUrl: string | null; qrSvg: string }) {
+export function MemberCardView({ card, photoUrl, qrSvg, pages = false }: { card: CardData; photoUrl: string | null; qrSvg: string; pages?: boolean }) {
+  const face = pages ? "print:rounded-none print:ring-0 print:break-after-page" : "print:break-inside-avoid";
   return (
-    <div className="flex flex-wrap justify-center gap-6 print:gap-[6mm]">
+    <div className={pages ? "flex flex-col items-center gap-6 print:block" : "flex flex-wrap justify-center gap-6 print:gap-[6mm]"}>
       {/* Recto */}
       <article
         aria-label={`Carte de membre de ${card.full_name} (recto)`}
-        className="relative flex h-[54mm] w-[85.6mm] shrink-0 overflow-hidden rounded-[3mm] bg-gradient-to-br from-ktgw-green-dark to-ktgw-green-strong text-white shadow-2xl print:break-inside-avoid print:shadow-none"
+        className={`relative flex h-[55mm] w-[90mm] shrink-0 overflow-hidden rounded-[3mm] bg-gradient-to-br from-ktgw-green-dark to-ktgw-green-strong text-white shadow-2xl print:shadow-none ${face}`}
       >
         <div className="absolute inset-x-0 bottom-0 h-[2.2mm] bg-gradient-to-r from-ktgw-red via-ktgw-sun to-ktgw-green" />
-        <div className="flex w-[27mm] shrink-0 flex-col items-center justify-center gap-[1.5mm] bg-white/10 p-[2.5mm]">
+        <div className="flex w-[28mm] shrink-0 flex-col items-center justify-center gap-[1.5mm] bg-white/10 p-[2.5mm]">
           {photoUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={photoUrl} alt="" className="h-[30mm] w-[23mm] rounded-[1.5mm] object-cover ring-2 ring-white/70" />
+            <img src={photoUrl} alt="" className="h-[31mm] w-[24mm] rounded-[1.5mm] object-cover ring-2 ring-white/70" />
           ) : (
-            <span className="flex h-[30mm] w-[23mm] items-center justify-center rounded-[1.5mm] bg-white/20">
+            <span className="flex h-[31mm] w-[24mm] items-center justify-center rounded-[1.5mm] bg-white/20">
               <UserRound aria-hidden className="size-10" />
             </span>
           )}
@@ -50,10 +52,17 @@ export function MemberCardView({ card, photoUrl, qrSvg }: { card: CardData; phot
           </div>
           <div className="min-w-0 leading-tight">
             <p className="truncate text-[3.8mm] font-extrabold">{card.full_name}</p>
-            <p className="mt-[0.8mm] inline-block rounded-full bg-ktgw-sun px-[2mm] py-[0.4mm] text-[2.2mm] font-bold text-ink">{membershipTypeLabels[card.membership_type]}</p>
+            <p className="mt-[0.8mm] inline-block rounded-full bg-ktgw-sun px-[2mm] py-[0.4mm] text-[2.2mm] font-bold text-ink">
+              {membershipTypeLabels[card.membership_type]}
+            </p>
           </div>
           <div className="text-[2mm] leading-snug text-white/85">
-            {card.birth_date && <p>Né·e le {dmy(card.birth_date)}{card.nationality ? ` · ${card.nationality}` : ""}</p>}
+            {card.birth_date && (
+              <p>
+                Né·e le {dmy(card.birth_date)}
+                {card.nationality ? ` · ${card.nationality}` : ""}
+              </p>
+            )}
             <p>
               Émise le {dmy(card.issued_at)} · <strong className="text-white">Valable jusqu&apos;au {dmy(card.expires_at)}</strong>
             </p>
@@ -64,10 +73,10 @@ export function MemberCardView({ card, photoUrl, qrSvg }: { card: CardData; phot
       {/* Verso */}
       <article
         aria-label="Carte de membre (verso)"
-        className="relative flex h-[54mm] w-[85.6mm] shrink-0 items-center gap-[4mm] overflow-hidden rounded-[3mm] bg-white p-[4mm] text-ink shadow-2xl ring-1 ring-black/10 print:break-inside-avoid print:shadow-none"
+        className={`relative flex h-[55mm] w-[90mm] shrink-0 items-center gap-[4mm] overflow-hidden rounded-[3mm] bg-white p-[4mm] text-ink shadow-2xl ring-1 ring-black/10 print:shadow-none ${face}`}
       >
         <div className="absolute inset-x-0 top-0 h-[2.2mm] bg-gradient-to-r from-ktgw-red via-ktgw-sun to-ktgw-green" />
-        <div className="size-[34mm] shrink-0 [&>svg]:h-full [&>svg]:w-full" dangerouslySetInnerHTML={{ __html: qrSvg }} />
+        <div className="size-[35mm] shrink-0 [&>svg]:h-full [&>svg]:w-full" dangerouslySetInnerHTML={{ __html: qrSvg }} />
         <div className="flex min-w-0 flex-col gap-[1.5mm] text-[2.1mm] leading-snug">
           <p className="text-[2.8mm] font-extrabold text-ktgw-green-dark">Carte vérifiable</p>
           <p>Scannez le QR code pour vérifier la validité de cette carte auprès de KTGW Togo.</p>

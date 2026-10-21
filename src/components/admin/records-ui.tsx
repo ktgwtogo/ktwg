@@ -1,7 +1,7 @@
 "use client";
 
 import { Check, Plus, Printer, Save, Send, X } from "lucide-react";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { ServerError } from "@/components/forms/fields";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "@/i18n/navigation";
@@ -75,13 +75,21 @@ export function DonationActions({ id }: { id: string }) {
           type="button"
           size="sm"
           disabled={pending || submitted}
-          onClick={() => window.confirm("Confirmer la réception de ce paiement ? Le reçu officiel sera généré (vous pourrez le consulter avant de l'envoyer).") && run(true)}
+          onClick={() =>
+            window.confirm("Confirmer la réception de ce paiement ? Le reçu officiel sera généré (vous pourrez le consulter avant de l'envoyer).") && run(true)
+          }
           className="bg-ktgw-green-strong text-white hover:bg-ktgw-green-strong/90"
         >
           <Check aria-hidden />
           Paiement reçu : générer le reçu
         </Button>
-        <Button type="button" size="sm" variant="outline" disabled={pending || submitted} onClick={() => window.confirm("Écarter cette déclaration (paiement introuvable) ?") && run(false)}>
+        <Button
+          type="button"
+          size="sm"
+          variant="outline"
+          disabled={pending || submitted}
+          onClick={() => window.confirm("Écarter cette déclaration (paiement introuvable) ?") && run(false)}
+        >
           <X aria-hidden />
           Écarter
         </Button>
@@ -168,7 +176,9 @@ export function PaymentForm() {
       )}
       <ServerError message={error} />
       {done === "saved" && (
-        <p className="text-sm font-semibold text-ktgw-green-strong">Enregistré : le reçu est généré. Consultez-le dans « Reçus générés », puis envoyez-le au donateur.</p>
+        <p className="text-sm font-semibold text-ktgw-green-strong">
+          Enregistré : le reçu est généré. Consultez-le dans « Reçus générés », puis envoyez-le au donateur.
+        </p>
       )}
       <PendingNote show={done === "pending"} />
       <div>
@@ -202,7 +212,7 @@ export function SendReceiptButton({ id, sent }: { id: string; sent: boolean }) {
             if (!r.pending) router.refresh();
           })
         }
-        className="inline-flex h-9 items-center gap-2 rounded-lg border-2 border-border px-3 text-sm font-semibold hover:bg-muted disabled:opacity-60"
+        className="inline-flex h-10 w-fit items-center gap-2 rounded-lg bg-ktgw-green-strong px-4 text-sm font-semibold whitespace-nowrap text-white hover:opacity-90 disabled:opacity-60"
       >
         <Send aria-hidden className="size-4" />
         {pending ? "Envoi…" : state === "ok" ? "Envoyé ✓" : sent ? "Renvoyer au donateur" : "Envoyer au donateur"}
@@ -211,6 +221,15 @@ export function SendReceiptButton({ id, sent }: { id: string; sent: boolean }) {
       <PendingNote show={state === "pending"} />
     </div>
   );
+}
+
+/** Ouvre directement la fenêtre d'impression (« Enregistrer au format PDF ») : liens « Télécharger ». */
+export function AutoPrint() {
+  useEffect(() => {
+    const t = setTimeout(() => window.print(), 700);
+    return () => clearTimeout(t);
+  }, []);
+  return null;
 }
 
 export function PrintButton({ label = "Imprimer / enregistrer en PDF" }: { label?: string }) {

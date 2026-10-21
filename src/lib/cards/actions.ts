@@ -6,7 +6,10 @@ import { getStaff } from "@/lib/admin/staff";
 import type { ActionResult } from "@/lib/member/actions";
 
 type Result = ActionResult & { pending?: boolean };
-const FORBIDDEN: Result = { ok: false, error: "La gestion des cartes ne fait pas partie de votre poste." };
+const FORBIDDEN: Result = {
+  ok: false,
+  error: "La gestion des cartes ne fait pas partie de votre poste.",
+};
 
 async function cardManager() {
   const staff = await getStaff();
@@ -19,7 +22,11 @@ export async function issueCard(userId: string): Promise<Result> {
   if (!staff) return FORBIDDEN;
   const { data: p } = await staff.supabase.from("profiles").select("first_name, last_name, full_name, email, membership_status").eq("id", userId).maybeSingle();
   if (!p) return { ok: false, error: "Membre introuvable." };
-  if (p.membership_status !== "validee") return { ok: false, error: "La carte n'est délivrée qu'aux membres dont l'adhésion est validée." };
+  if (p.membership_status !== "validee")
+    return {
+      ok: false,
+      error: "La carte n'est délivrée qu'aux membres dont l'adhésion est validée.",
+    };
   const name = [p.first_name, p.last_name].filter(Boolean).join(" ") || p.full_name || p.email;
   return runOrRequest(staff, "card.issue", `Créer la carte de membre de ${name}`, { userId });
 }
@@ -36,14 +43,21 @@ const cardSchema = z
     notes: z.string().trim().max(1000),
     photo_path: z.string().nullable(),
   })
-  .refine((v) => v.expires_at > v.issued_at, { message: "La fin de validité doit suivre la date d'émission.", path: ["expires_at"] });
+  .refine((v) => v.expires_at > v.issued_at, {
+    message: "La fin de validité doit suivre la date d'émission.",
+    path: ["expires_at"],
+  });
 
 /** Correction des données d'une carte (erreur de saisie, photo, dates). */
 export async function updateCard(cardId: string, raw: unknown): Promise<Result> {
   const staff = await cardManager();
   if (!staff) return FORBIDDEN;
   const parsed = cardSchema.safeParse(raw);
-  if (!parsed.success) return { ok: false, error: parsed.error.issues[0]?.message ?? "Formulaire invalide." };
+  if (!parsed.success)
+    return {
+      ok: false,
+      error: parsed.error.issues[0]?.message ?? "Formulaire invalide.",
+    };
   const v = parsed.data;
   const { data: card } = await staff.supabase.from("member_cards").select("user_id").eq("id", cardId).maybeSingle();
   if (!card) return { ok: false, error: "Carte introuvable." };
@@ -59,11 +73,12 @@ export async function revokeCard(cardId: string): Promise<Result> {
   return runOrRequest(staff, "card.revoke", `Révoquer la carte ${card.card_number} (${card.full_name})`, { cardId });
 }
 
-/** Envoie la carte au membre, à l'adresse e-mail de son compte. */
-export async function sendCard(cardId: string): Promise<Result> {
+/** Transmet la carte au membre pour vérification : espace membre, et e-mail si « email ». */
+export async function sendCard(cardId: string, channel: "email" | "espace" = "email"): Promise<Result> {
   const staff = await cardManager();
   if (!staff) return FORBIDDEN;
   const { data: card } = await staff.supabase.from("member_cards").select("card_number, full_name, status").eq("id", cardId).maybeSingle();
-  if (!card || card.status !== "active") return { ok: false, error: "Seule une carte active peut être envoyée." };
-  return runOrRequest(staff, "card.send", `Envoyer la carte ${card.card_number} à ${card.full_name}`, { cardId });
+  if (!card || card.status !== "active") return { ok: false, error: "Seule une carte active peut être transmise." };
+  const where = channel === "email" ? "par e-mail et dans son espace" : "dans son espace membre";
+  return runOrRequest(staff, "card.send", `Transmettre la carte ${card.card_number} à ${card.full_name} (${where}) pour vérification`, { cardId, channel });
 }

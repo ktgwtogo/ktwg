@@ -24,7 +24,10 @@ export default async function AdminReceiptPage({ params }: { params: Promise<{ l
 
   return (
     <>
-      <Link href={{ pathname: "/admin/dons", query: { vue: "recus" } }} className="inline-flex w-fit items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground">
+      <Link
+        href={{ pathname: "/admin/dons", query: { vue: "recus" } }}
+        className="inline-flex w-fit items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground"
+      >
         <ArrowLeft aria-hidden className="size-4" />
         Dons et cotisations
       </Link>
@@ -37,25 +40,47 @@ export default async function AdminReceiptPage({ params }: { params: Promise<{ l
         }
       />
 
-      <div className="flex flex-wrap items-start gap-3 rounded-3xl bg-card p-5 shadow-soft ring-1 ring-foreground/5">
-        <a href={`/impression/recu/${d.id}`} target="_blank" rel="noopener" className="inline-flex h-9 items-center gap-2 rounded-lg bg-ink px-3 text-sm font-semibold text-white dark:bg-white dark:text-ink">
-          <Download aria-hidden className="size-4" />
-          Télécharger (PDF)
-        </a>
-        <SendReceiptButton id={d.id} sent={Boolean(d.receipt_sent_at)} />
-        {d.user_id && (
-          <Link href={`/admin/membres/${d.user_id}`} className="inline-flex h-9 items-center gap-2 rounded-lg border-2 border-border px-3 text-sm font-semibold hover:bg-muted">
-            <FolderOpen aria-hidden className="size-4" />
-            Dossier du donateur
-          </Link>
-        )}
-        <p className="w-full text-sm text-muted-foreground">
-          {noEmail ? "Aucune adresse e-mail : le reçu sera déposé dans l'espace du donateur s'il a un compte, sinon remettez-le imprimé." : `Destinataire : ${d.email}`}
-        </p>
-      </div>
+      <ol className="grid gap-3 rounded-3xl bg-card p-5 shadow-soft ring-1 ring-foreground/5 md:grid-cols-3">
+        <li className="flex flex-col gap-2">
+          <p className="text-xs font-bold tracking-wide text-ktgw-green-strong uppercase">1. Vérifier</p>
+          <p className="text-sm text-muted-foreground">Relisez le reçu ci-dessous : nom, montant ou objets, moyen de paiement, affectation.</p>
+        </li>
+        <li className="flex flex-col gap-2">
+          <p className="text-xs font-bold tracking-wide text-ktgw-green-strong uppercase">2. Télécharger</p>
+          <a
+            href={`/impression/recu/${d.id}?telecharger=1`}
+            target="_blank"
+            rel="noopener"
+            className="inline-flex h-10 w-fit items-center gap-2 rounded-lg bg-ink px-4 text-sm font-semibold whitespace-nowrap text-white dark:bg-white dark:text-ink"
+          >
+            <Download aria-hidden className="size-4" />
+            Télécharger en PDF (A4)
+          </a>
+        </li>
+        <li className="flex flex-col gap-2">
+          <p className="text-xs font-bold tracking-wide text-ktgw-green-strong uppercase">3. Envoyer</p>
+          <SendReceiptButton id={d.id} sent={Boolean(d.receipt_sent_at)} />
+          <p className="text-xs text-muted-foreground">
+            {noEmail
+              ? "Pas d'e-mail : déposé dans l'espace du donateur s'il a un compte, sinon remettez-le imprimé."
+              : `Par e-mail à ${d.email} et dans son espace membre.`}
+          </p>
+        </li>
+      </ol>
+      {d.user_id && (
+        <Link
+          href={`/admin/membres/${d.user_id}`}
+          className="inline-flex h-10 w-fit items-center gap-2 rounded-lg border-2 border-border px-4 text-sm font-semibold hover:bg-muted"
+        >
+          <FolderOpen aria-hidden className="size-4" />
+          Dossier du donateur
+        </Link>
+      )}
 
-      <div className="flex justify-center overflow-x-auto rounded-3xl bg-muted/60 p-4 sm:p-8">
-        <ReceiptDocument d={d} locale={locale} togo={togo} />
+      <div className="overflow-x-auto rounded-3xl bg-muted/60 p-4 sm:p-8">
+        <div className="mx-auto w-fit">
+          <ReceiptDocument d={d} locale={locale} togo={togo} />
+        </div>
       </div>
     </>
   );

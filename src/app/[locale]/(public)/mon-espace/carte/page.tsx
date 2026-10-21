@@ -1,20 +1,28 @@
-import { IdCard, Printer } from "lucide-react";
+import { CheckCircle2, Clock, Download, IdCard } from "lucide-react";
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
+import { CardApproval } from "@/components/cards/card-member-ui";
 import { MemberCardView } from "@/components/cards/member-card-view";
 import { Link, redirect } from "@/i18n/navigation";
 import { cardPhotoUrl, cardQrSvg } from "@/lib/cards/card";
 import { getMember } from "@/lib/member/session";
 
-export const metadata: Metadata = { title: "Ma carte de membre", robots: { index: false } };
+export const metadata: Metadata = {
+  title: "Ma carte de membre",
+  robots: { index: false },
+};
 
-/** Carte de membre active de la personne connectée. */
+/**
+ * Carte de membre de la personne connectée, visible une fois transmise par le bureau.
+ * Le membre la vérifie et donne son accord ; le téléchargement s'ouvre ensuite.
+ */
 export default async function MyCardPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
   const member = await getMember();
   if (!member) return redirect({ href: "/connexion", locale });
 
+  // RLS : la carte n'est visible qu'une fois transmise par le bureau (sent_at renseigné).
   const { data: card } = await member.supabase.from("member_cards").select("*").eq("user_id", member.user.id).eq("status", "active").maybeSingle();
 
   if (!card) {
@@ -43,13 +51,45 @@ export default async function MyCardPage({ params }: { params: Promise<{ locale:
       <div className="max-w-full overflow-x-auto">
         <MemberCardView card={card} photoUrl={photo} qrSvg={qr} />
       </div>
-      <a href={`/impression/carte/${card.id}`} target="_blank" rel="noopener" className="inline-flex h-12 items-center gap-2 rounded-xl bg-ktgw-green-strong px-6 font-semibold text-white">
-        <Printer aria-hidden className="size-5" />
-        Imprimer ou enregistrer en PDF
-      </a>
-      <p className="max-w-lg text-center text-sm text-muted-foreground">
-        Une erreur sur votre carte ? Corrigez votre profil ou écrivez-nous : le secrétariat mettra la carte à jour.
-      </p>
+      {card.member_approved_at ? (
+        <>
+          <p className="flex items-center gap-2 text-sm font-semibold text-ktgw-green-strong">
+            <CheckCircle2 aria-hidden className="size-5" />
+            Carte confirmée : vous pouvez la télécharger.
+          </p>
+          <div className="flex flex-wrap justify-center gap-3">
+            <a
+              href={`/impression/carte/${card.id}?format=carte&telecharger=1`}
+              target="_blank"
+              rel="noopener"
+              className="inline-flex h-12 items-center gap-2 rounded-xl bg-ktgw-green-strong px-6 font-semibold text-white"
+            >
+              <Download aria-hidden className="size-5" />
+              Télécharger (9 × 5,5 cm)
+            </a>
+            <a
+              href={`/impression/carte/${card.id}?telecharger=1`}
+              target="_blank"
+              rel="noopener"
+              className="inline-flex h-12 items-center gap-2 rounded-xl border-2 border-border px-6 font-semibold"
+            >
+              <Download aria-hidden className="size-5" />
+              Planche A4 à imprimer
+            </a>
+          </div>
+        </>
+      ) : card.member_feedback ? (
+        <div className="flex max-w-xl flex-col gap-2 rounded-2xl bg-muted p-5 text-sm">
+          <p className="flex items-center gap-2 font-semibold">
+            <Clock aria-hidden className="size-5 text-ktgw-orange" />
+            Correction demandée : le secrétariat met votre carte à jour.
+          </p>
+          <p className="whitespace-pre-line text-muted-foreground">« {card.member_feedback} »</p>
+          <p className="text-muted-foreground">Vous serez prévenu·e dès que la carte corrigée vous sera transmise.</p>
+        </div>
+      ) : (
+        <CardApproval cardId={card.id} />
+      )}
     </section>
   );
 }

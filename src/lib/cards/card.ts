@@ -44,3 +44,14 @@ export const cardStatusLabels = {
   expiree: ["Expirée", "bg-ktgw-sun/20 text-ktgw-orange"],
   revoquee: ["Révoquée", "bg-destructive/10 text-destructive"],
 } as const;
+
+/** Étape du circuit : contrôle interne → transmise au membre → accord (ou correction demandée). */
+export const cardStage = (card: Pick<MemberCard, "sent_at" | "member_approved_at" | "member_feedback">) =>
+  card.member_approved_at ? "approuvee" : card.member_feedback ? "correction" : card.sent_at ? "transmise" : "interne";
+
+export const cardStageLabels = {
+  interne: ["À contrôler · non transmise", "bg-ink/10 text-ink dark:bg-white/10 dark:text-white"],
+  transmise: ["En attente de l'accord du membre", "bg-ktgw-sun/20 text-ktgw-orange"],
+  correction: ["Correction demandée", "bg-destructive/10 text-destructive"],
+  approuvee: ["Approuvée par le membre", "bg-ktgw-green/15 text-ktgw-green-strong"],
+} as const;

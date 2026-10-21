@@ -18,7 +18,15 @@ type Operation = (args: Args, actorId: string | null) => Promise<string | null>;
 const db = () => createAdminClient();
 
 async function log(actorId: string | null, action: string, entity: string, entityId: string | null, details: Record<string, unknown> = {}) {
-  await db().from("audit_log").insert({ actor_id: actorId, action, entity, entity_id: entityId, details: details as never });
+  await db()
+    .from("audit_log")
+    .insert({
+      actor_id: actorId,
+      action,
+      entity,
+      entity_id: entityId,
+      details: details as never,
+    });
 }
 
 const refresh = () => revalidatePath("/[locale]/admin", "layout");
@@ -28,10 +36,18 @@ const refresh = () => revalidatePath("/[locale]/admin", "layout");
 const decideMembership: Operation = async (a, actorId) => {
   const admin = db();
   const approve = a.approve === true;
-  const note = String(a.note ?? "").trim().slice(0, 1000) || null;
+  const note =
+    String(a.note ?? "")
+      .trim()
+      .slice(0, 1000) || null;
   const { data: app } = await admin
     .from("membership_applications")
-    .update({ status: approve ? "validee" : "refusee", decision_note: note, decided_by: actorId, decided_at: new Date().toISOString() })
+    .update({
+      status: approve ? "validee" : "refusee",
+      decision_note: note,
+      decided_by: actorId,
+      decided_at: new Date().toISOString(),
+    })
     .eq("id", String(a.applicationId))
     .eq("status", "en_attente")
     .select("*")
@@ -66,10 +82,16 @@ const updateSubmission: Operation = async (a, actorId) => {
   if (!inbox) return "Boîte inconnue.";
   const { error } = await db()
     .from(inbox.table as "contact_messages")
-    .update({ status: String(a.status) as never, admin_notes: String(a.notes ?? "").slice(0, 2000) || null })
+    .update({
+      status: String(a.status) as never,
+      admin_notes: String(a.notes ?? "").slice(0, 2000) || null,
+    })
     .eq("id", String(a.id));
   if (error) return error.message;
-  await log(actorId, "demande.traitee", inbox.table, String(a.id), { title: inbox.label, note: String(a.status) });
+  await log(actorId, "demande.traitee", inbox.table, String(a.id), {
+    title: inbox.label,
+    note: String(a.status),
+  });
   return null;
 };
 
@@ -113,7 +135,10 @@ const recordPayment: Operation = async (a, actorId) => {
     .select("id")
     .single();
   if (error) return error.message;
-  await log(actorId, "don.saisi", "donation_declarations", data.id, { title: `${a.kind} ${Number(a.amount) || 0} FCFA`, name: a.name });
+  await log(actorId, "don.saisi", "donation_declarations", data.id, {
+    title: `${a.kind} ${Number(a.amount) || 0} FCFA`,
+    name: a.name,
+  });
   return null;
 };
 
@@ -138,7 +163,10 @@ const sendReceipt: Operation = async (a, actorId) => {
     });
   }
   await admin.from("donation_declarations").update({ receipt_sent_at: new Date().toISOString() }).eq("id", d.id);
-  await log(actorId, "recu.envoye", "donation_declarations", d.id, { title: d.receipt_number, email: d.email });
+  await log(actorId, "recu.envoye", "donation_declarations", d.id, {
+    title: d.receipt_number,
+    email: d.email,
+  });
   return null;
 };
 
@@ -174,7 +202,10 @@ const issueCard: Operation = async (a, actorId) => {
     .select("id")
     .single();
   if (error) return error.message;
-  await log(actorId, "carte.creee", "member_cards", data.id, { title: cardNumber, name });
+  await log(actorId, "carte.creee", "member_cards", data.id, {
+    title: cardNumber,
+    name,
+  });
   return null;
 };
 
@@ -192,10 +223,15 @@ const updateCard: Operation = async (a, actorId) => {
       expires_at: String(v.expires_at),
       notes: v.notes || null,
       photo_path: v.photo_path,
+      // Données modifiées : le membre devra donner à nouveau son accord.
+      member_approved_at: null,
     })
     .eq("id", String(a.cardId));
   if (error) return error.code === "23505" ? "Ce numéro de carte est déjà utilisé." : error.message;
-  await log(actorId, "carte.modifiee", "member_cards", String(a.cardId), { title: v.card_number, name: v.full_name });
+  await log(actorId, "carte.modifiee", "member_cards", String(a.cardId), {
+    title: v.card_number,
+    name: v.full_name,
+  });
   return null;
 };
 
@@ -206,24 +242,47 @@ const revokeCard: Operation = async (a, actorId) => {
   return null;
 };
 
+/**
+ * Transmet la carte au membre pour vérification : toujours dans son espace membre,
+ * et par e-mail si demandé. Le membre la confirme ensuite avant de pouvoir la télécharger.
+ */
 const sendCard: Operation = async (a, actorId) => {
   const admin = db();
+  const byEmail = a.channel !== "espace";
   const { data: card } = await admin.from("member_cards").select("*").eq("id", String(a.cardId)).maybeSingle();
-  if (!card || card.status !== "active") return "Seule une carte active peut être envoyée.";
+  if (!card || card.status !== "active") return "Seule une carte active peut être transmise.";
   const { data: person } = await admin.from("profiles").select("email, first_name").eq("id", card.user_id).maybeSingle();
   if (!person) return "Membre introuvable.";
-  const mail = cardMail({
-    firstName: person.first_name,
-    cardNumber: card.card_number,
-    typeLabel: membershipTypeLabels[card.membership_type],
-    expiresAt: card.expires_at,
-    viewUrl: cardViewUrl(),
-    verifyUrl: verifyUrl(card.verification_token),
+  if (byEmail) {
+    const mail = cardMail({
+      firstName: person.first_name,
+      cardNumber: card.card_number,
+      typeLabel: membershipTypeLabels[card.membership_type],
+      expiresAt: card.expires_at,
+      viewUrl: cardViewUrl(),
+      verifyUrl: verifyUrl(card.verification_token),
+    });
+    if (!(await sendTemplate(person.email, mail.subject, mail.content))) return "L'e-mail n'a pas pu partir (vérifiez la configuration Resend).";
+  }
+  await admin
+    .from("member_cards")
+    .update({
+      sent_at: new Date().toISOString(),
+      member_approved_at: null,
+      member_feedback: null,
+      feedback_at: null,
+    })
+    .eq("id", card.id);
+  await admin.from("notifications").insert({
+    user_id: card.user_id,
+    title: "Votre carte de membre est prête : vérifiez-la",
+    body: `Carte n° ${card.card_number}. Contrôlez vos informations puis donnez votre accord pour la télécharger.`,
+    link: "/mon-espace/carte",
   });
-  if (!(await sendTemplate(person.email, mail.subject, mail.content))) return "L'e-mail n'a pas pu partir (vérifiez la configuration Resend).";
-  await admin.from("member_cards").update({ sent_at: new Date().toISOString() }).eq("id", card.id);
-  await admin.from("notifications").insert({ user_id: card.user_id, title: "Votre carte de membre est disponible", body: `Carte n° ${card.card_number}`, link: "/mon-espace/carte" });
-  await log(actorId, "carte.envoyee", "member_cards", card.id, { title: card.card_number, email: person.email });
+  await log(actorId, "carte.envoyee", "member_cards", card.id, {
+    title: card.card_number,
+    email: byEmail ? person.email : "espace membre",
+  });
   return null;
 };
 
@@ -245,7 +304,9 @@ const addMemberFile: Operation = async (a, actorId) => {
     .select("id")
     .single();
   if (error) return error.message;
-  await log(actorId, "dossier.piece_ajoutee", "member_files", data.id, { title: a.title });
+  await log(actorId, "dossier.piece_ajoutee", "member_files", data.id, {
+    title: a.title,
+  });
   return null;
 };
 
@@ -256,7 +317,9 @@ const deleteMemberFile: Operation = async (a, actorId) => {
   const { error } = await admin.from("member_files").delete().eq("id", String(a.id));
   if (error) return error.message;
   await admin.storage.from("documents").remove([file.file_path]);
-  await log(actorId, "dossier.piece_supprimee", "member_files", String(a.id), { title: file.title });
+  await log(actorId, "dossier.piece_supprimee", "member_files", String(a.id), {
+    title: file.title,
+  });
   return null;
 };
 
@@ -285,7 +348,7 @@ export const operationLabels: Record<OperationName, string> = {
   "card.issue": "Création d'une carte de membre",
   "card.update": "Correction d'une carte de membre",
   "card.revoke": "Révocation d'une carte de membre",
-  "card.send": "Envoi d'une carte de membre",
+  "card.send": "Transmission d'une carte au membre pour vérification",
   "file.add": "Ajout d'une pièce au dossier d'un membre",
   "file.delete": "Suppression d'une pièce d'un dossier",
 };
@@ -301,5 +364,8 @@ export async function runOperation(name: string, args: Args, actorId: string | n
 
 /** Nettoyage quand la présidence refuse une opération (fichier déposé non conservé). */
 export async function rejectOperation(name: string, args: Args) {
-  if (name === "file.add" && args.filePath) await db().storage.from("documents").remove([String(args.filePath)]);
+  if (name === "file.add" && args.filePath)
+    await db()
+      .storage.from("documents")
+      .remove([String(args.filePath)]);
 }

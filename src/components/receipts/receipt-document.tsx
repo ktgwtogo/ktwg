@@ -6,11 +6,14 @@ import type { Database } from "@/types/database";
 
 type Donation = Database["public"]["Tables"]["donation_declarations"]["Row"];
 
-/** Reçu officiel KTGW (A4) : affiché dans l'administration, l'espace membre et à l'impression. */
+/**
+ * Reçu officiel KTGW, feuille A4 (210 × 297 mm) : affiché dans l'administration, l'espace membre
+ * et à l'impression (« Enregistrer au format PDF » donne un PDF A4 d'une page).
+ */
 export function ReceiptDocument({ d, locale, togo }: { d: Donation; locale: string; togo: SiteConfigData["togo"] }) {
   const inKind = d.kind === "nature";
   return (
-    <article className="w-full max-w-[180mm] rounded-2xl bg-white p-10 text-ink shadow-xl print:rounded-none print:p-0 print:shadow-none">
+    <article className="flex min-h-[297mm] w-[210mm] shrink-0 flex-col bg-white p-[18mm] text-ink shadow-xl print:h-[296mm] print:min-h-0 print:overflow-hidden print:shadow-none">
       <header className="flex items-start justify-between gap-6 border-b-4 border-ktgw-green pb-6">
         <div className="flex items-center gap-4">
           <Logo className="h-16 w-auto" />
@@ -34,38 +37,52 @@ export function ReceiptDocument({ d, locale, togo }: { d: Donation; locale: stri
           KTGW Togo certifie avoir reçu de <strong>{d.name}</strong> {inKind ? "le don en nature suivant :" : "la somme de :"}
         </p>
         {inKind ? (
-          <p className="rounded-xl bg-ktgw-green/10 p-6 text-center text-lg font-bold whitespace-pre-line text-ktgw-green-strong">{d.item_description ?? "Objets et matériel"}</p>
+          <p className="rounded-xl bg-ktgw-green/10 p-6 text-center text-lg font-bold whitespace-pre-line text-ktgw-green-strong">
+            {d.item_description ?? "Objets et matériel"}
+          </p>
         ) : (
-          <p className="rounded-xl bg-ktgw-green/10 p-6 text-center text-3xl font-extrabold text-ktgw-green-strong">{d.amount_fcfa.toLocaleString("fr-FR")} FCFA</p>
+          <p className="rounded-xl bg-ktgw-green/10 p-6 text-center text-3xl font-extrabold text-ktgw-green-strong">
+            {d.amount_fcfa.toLocaleString("fr-FR")} FCFA
+          </p>
         )}
         <table className="w-full text-sm">
           <tbody className="divide-y">
             <tr>
-              <th scope="row" className="py-2 text-left font-semibold">Nature</th>
+              <th scope="row" className="py-2 text-left font-semibold">
+                Nature
+              </th>
               <td className="py-2">{receiptNature(d)}</td>
             </tr>
             {inKind ? (
               d.amount_fcfa > 0 && (
                 <tr>
-                  <th scope="row" className="py-2 text-left font-semibold">Valeur estimée</th>
+                  <th scope="row" className="py-2 text-left font-semibold">
+                    Valeur estimée
+                  </th>
                   <td className="py-2">{d.amount_fcfa.toLocaleString("fr-FR")} FCFA</td>
                 </tr>
               )
             ) : (
               <tr>
-                <th scope="row" className="py-2 text-left font-semibold">Moyen de paiement</th>
+                <th scope="row" className="py-2 text-left font-semibold">
+                  Moyen de paiement
+                </th>
                 <td className="py-2">{d.method}</td>
               </tr>
             )}
             {d.reference && !inKind && (
               <tr>
-                <th scope="row" className="py-2 text-left font-semibold">Référence</th>
+                <th scope="row" className="py-2 text-left font-semibold">
+                  Référence
+                </th>
                 <td className="py-2">{d.reference}</td>
               </tr>
             )}
             {d.project && (
               <tr>
-                <th scope="row" className="py-2 text-left font-semibold">Affectation</th>
+                <th scope="row" className="py-2 text-left font-semibold">
+                  Affectation
+                </th>
                 <td className="py-2">{d.project}</td>
               </tr>
             )}
@@ -74,11 +91,20 @@ export function ReceiptDocument({ d, locale, togo }: { d: Donation; locale: stri
         <p className="mt-6">Nous vous remercions chaleureusement pour votre soutien à l&apos;éducation et à la formation des jeunes au Togo.</p>
       </section>
 
-      <footer className="mt-16 flex justify-end">
+      <div className="mt-16 flex justify-end">
         <div className="text-center">
           <p className="text-sm text-neutral-600">Pour l&apos;association, la trésorerie</p>
           <div className="mt-14 w-56 border-t border-neutral-400" />
         </div>
+      </div>
+
+      <footer className="mt-auto border-t-2 border-ktgw-green pt-3 text-center text-xs text-neutral-600">
+        <p>
+          KTGW Togo — {togo.address.street}, {togo.address.district}, {togo.address.city}, {togo.address.country}
+        </p>
+        <p>
+          {togo.phones.map((p) => p.display).join(" · ")} · {togo.email} · www.ktgw.tg
+        </p>
       </footer>
     </article>
   );

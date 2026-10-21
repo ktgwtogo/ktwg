@@ -426,9 +426,12 @@ export type Database = {
           created_at: string
           created_by: string | null
           expires_at: string
+          feedback_at: string | null
           full_name: string
           id: string
           issued_at: string
+          member_approved_at: string | null
+          member_feedback: string | null
           membership_type: Database["public"]["Enums"]["membership_type"]
           nationality: string | null
           notes: string | null
@@ -448,6 +451,9 @@ export type Database = {
           full_name: string
           id?: string
           issued_at?: string
+          member_approved_at?: string | null
+          member_feedback?: string | null
+          feedback_at?: string | null
           membership_type: Database["public"]["Enums"]["membership_type"]
           nationality?: string | null
           notes?: string | null
@@ -467,6 +473,9 @@ export type Database = {
           full_name?: string
           id?: string
           issued_at?: string
+          member_approved_at?: string | null
+          member_feedback?: string | null
+          feedback_at?: string | null
           membership_type?: Database["public"]["Enums"]["membership_type"]
           nationality?: string | null
           notes?: string | null
@@ -1467,6 +1476,7 @@ export type Database = {
     Functions: {
       record_page_view: { Args: { p_path: string; p_visitor: string; p_referrer?: string | null; p_device?: string | null }; Returns: undefined }
       site_stats: { Args: { p_days?: number }; Returns: Json }
+      respond_to_my_card: { Args: { p_card: string; p_approve: boolean; p_comment?: string | null }; Returns: undefined }
       verify_member_card: {
         Args: { p_token: string }
         Returns: { full_name: string; card_number: string; membership_type: Database["public"]["Enums"]["membership_type"]; issued_at: string; expires_at: string; status: string }[]

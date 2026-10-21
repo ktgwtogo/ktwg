@@ -1,65 +1,30 @@
 "use client";
 
-import {
-  BadgeCheck,
-  ClipboardCheck,
-  ExternalLink,
-  FileText,
-  History,
-  LayoutDashboard,
-  LogOut,
-  Menu,
-  Newspaper,
-  BarChart3,
-  Megaphone,
-  PenSquare,
-  IdCard,
-  Archive,
-  Contact,
-  HandCoins,
-  Inbox,
-  Mail,
-  NotebookText,
-  Palette,
-  UserRound,
-  UsersRound,
-  X,
-} from "lucide-react";
+import { ExternalLink, LifeBuoy, LogOut, Menu, UserRound, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Logo } from "@/components/shared/logo";
 import { Link, usePathname } from "@/i18n/navigation";
+import { guideFor, type Guide } from "@/lib/admin/guides";
 import { cn } from "@/lib/utils";
+import { navIcons, type AdminNavItem } from "./nav-icons";
+import { ValidationRule } from "./validation-rule";
 
-const icons = {
-  overview: LayoutDashboard,
-  approvals: ClipboardCheck,
-  content: Newspaper,
-  stats: BarChart3,
-  publications: PenSquare,
-  announcements: Megaphone,
-  site: Palette,
-  reports: NotebookText,
-  archives: Archive,
-  mail: Mail,
-  members: Contact,
-  inbox: Inbox,
-  donations: HandCoins,
-  cards: IdCard,
-  memberships: BadgeCheck,
-  documents: FileText,
-  team: UsersRound,
-  journal: History,
-} as const;
+export type { AdminNavItem };
 
-export type AdminNavItem = { href: string; label: string; icon: keyof typeof icons; badge?: number; section: string };
-
-/** Gabarit du tableau de bord : menu latéral (repliable sur mobile) et zone de contenu. */
+/**
+ * Gabarit du tableau de bord : menu latéral (repliable sur mobile), zone de contenu
+ * et, en tête de chaque page, son mode d'emploi (repliable).
+ */
 export function AdminShell({
   items,
+  guides,
+  presidency,
   user,
   children,
 }: {
   items: AdminNavItem[];
+  guides: Guide[];
+  presidency: boolean;
   user: { name: string; position: string };
   children: React.ReactNode;
 }) {
@@ -68,15 +33,20 @@ export function AdminShell({
   useEffect(() => setOpen(false), [pathname]);
 
   const sections = [...new Set(items.map((i) => i.section))];
+  const guide = guideFor(pathname, guides);
   const nav = (
-    <nav aria-label="Administration" className="flex flex-col gap-6">
+    <nav aria-label="Administration" className="flex flex-col gap-5">
       {sections.map((section) => (
         <div key={section} className="flex flex-col gap-1">
-          <p className="px-3 text-[11px] font-bold tracking-wider text-white/50 uppercase">{section}</p>
+          {/* Titre de rubrique : jaune KTGW, distinct des liens (blancs). */}
+          <p className="mb-1 flex items-center gap-2 px-3 text-xs font-extrabold tracking-widest text-ktgw-sun uppercase">
+            <span aria-hidden className="h-3 w-1 rounded-full bg-ktgw-sun" />
+            {section}
+          </p>
           {items
             .filter((i) => i.section === section)
             .map((item) => {
-              const Icon = icons[item.icon];
+              const Icon = navIcons[item.icon];
               const active = item.href === "/admin" ? pathname === item.href : pathname.startsWith(item.href);
               return (
                 <Link
@@ -84,15 +54,13 @@ export function AdminShell({
                   href={item.href}
                   aria-current={active ? "page" : undefined}
                   className={cn(
-                    "flex h-10 items-center gap-3 rounded-xl px-3 text-sm font-semibold transition-colors",
-                    active ? "bg-white text-ktgw-green-dark" : "text-white/85 hover:bg-white/10 hover:text-white"
+                    "ml-2 flex h-10 items-center gap-3 rounded-xl border-l-2 px-3 text-sm font-medium transition-colors",
+                    active ? "border-ktgw-sun bg-white font-bold text-ktgw-green-dark" : "border-white/15 text-white hover:border-white/60 hover:bg-white/10",
                   )}
                 >
-                  <Icon aria-hidden className="size-4 shrink-0" />
+                  <Icon aria-hidden className={cn("size-4 shrink-0", active ? "text-ktgw-green-strong" : "text-white/70")} />
                   <span className="flex-1">{item.label}</span>
-                  {item.badge ? (
-                    <span className="rounded-full bg-ktgw-sun px-2 py-0.5 text-[11px] leading-none font-bold text-ink">{item.badge}</span>
-                  ) : null}
+                  {item.badge ? <span className="rounded-full bg-ktgw-sun px-2 py-0.5 text-[11px] leading-none font-bold text-ink">{item.badge}</span> : null}
                 </Link>
               );
             })}
@@ -161,7 +129,28 @@ export function AdminShell({
           </div>
         )}
         <main id="main" className="flex-1 px-4 py-6 sm:px-8 sm:py-10">
-          <div className="mx-auto flex max-w-6xl flex-col gap-6">{children}</div>
+          <div className="mx-auto flex max-w-6xl flex-col gap-6">
+            {guide && guide.href !== "/admin" && (
+              <details className="group rounded-2xl bg-ktgw-green/10 ring-1 ring-ktgw-green/25 print:hidden">
+                <summary className="flex cursor-pointer list-none items-center gap-2 px-4 py-3 text-sm font-semibold text-ktgw-green-strong">
+                  <LifeBuoy aria-hidden className="size-4" />
+                  Mode d&apos;emploi : {guide.title}
+                  <span className="ml-auto text-xs font-normal text-muted-foreground group-open:hidden">Afficher</span>
+                  <span className="ml-auto hidden text-xs font-normal text-muted-foreground group-open:inline">Masquer</span>
+                </summary>
+                <div className="flex flex-col gap-3 px-4 pb-4 text-sm">
+                  <p className="text-muted-foreground">{guide.summary}</p>
+                  <ol className="flex list-decimal flex-col gap-1 pl-5 marker:font-bold marker:text-ktgw-green-strong">
+                    {guide.steps.map((step) => (
+                      <li key={step}>{step.replace(/^\d\.\s/, "")}</li>
+                    ))}
+                  </ol>
+                  <ValidationRule presidency={presidency} />
+                </div>
+              </details>
+            )}
+            {children}
+          </div>
         </main>
       </div>
     </div>

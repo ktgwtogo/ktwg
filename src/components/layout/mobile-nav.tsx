@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronDown, Handshake, Heart, LogIn, Mail, Phone, X } from "lucide-react";
+import { ChevronDown, Handshake, Heart, LogIn, Mail, Phone, UserPlus, UserRound, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import {
@@ -18,6 +18,7 @@ import { isActivePath, type NavEntry } from "@/config/navigation";
 import type { SiteConfigData } from "@/lib/site/types";
 import { Link, usePathname } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
+import { useSignedIn } from "./use-signed-in";
 import { LanguageSwitcher } from "./language-switcher";
 import { ThemeToggle } from "./theme-toggle";
 
@@ -32,6 +33,7 @@ export function MobileNav({ items: mainNav, config }: { items: NavEntry[]; confi
   const label = (item: { key?: string; label?: string }) => item.label || (item.key && t.has(`Nav.${item.key}`) ? t(`Nav.${item.key}`) : item.key ?? "");
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const signedIn = useSignedIn();
   const phone = config.togo.phones[0];
 
   const close = () => setOpen(false);
@@ -125,10 +127,23 @@ export function MobileNav({ items: mainNav, config }: { items: NavEntry[]; confi
             <Handshake aria-hidden />
             {t("Common.becomePartner")}
           </ButtonLink>
-          <ButtonLink href="/connexion" size="xl" variant="outline" onClick={close}>
-            <LogIn aria-hidden />
-            {t("Common.signIn")}
-          </ButtonLink>
+          {signedIn ? (
+            <ButtonLink href="/mon-espace" size="xl" variant="outline" onClick={close}>
+              <UserRound aria-hidden />
+              Espace membre
+            </ButtonLink>
+          ) : (
+            <>
+              <ButtonLink href="/connexion?mode=inscription" size="xl" variant="outline" onClick={close} className="border-ktgw-green text-ktgw-green-strong">
+                <UserPlus aria-hidden />
+                Devenir membre
+              </ButtonLink>
+              <ButtonLink href="/connexion" size="xl" variant="ghost" onClick={close}>
+                <LogIn aria-hidden />
+                Connexion
+              </ButtonLink>
+            </>
+          )}
 
           <div className="mt-2 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm text-muted-foreground">
             <a href={`tel:${phone.e164}`} className="flex items-center gap-2 hover:text-foreground">

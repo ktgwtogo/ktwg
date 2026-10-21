@@ -28,10 +28,11 @@ export default async function SignInPage({
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ next?: string; erreur?: string }>;
+  searchParams: Promise<{ next?: string; erreur?: string; mode?: string }>;
 }) {
   const { locale } = await params;
-  const { next, erreur } = await searchParams;
+  const { next, erreur, mode } = await searchParams;
+  const signup = mode === "inscription";
   setRequestLocale(locale);
 
   // `next` contient déjà le préfixe de langue (posé par le middleware).
@@ -43,7 +44,7 @@ export default async function SignInPage({
     <Container className="flex justify-center py-16 sm:py-24">
       <div className="w-full max-w-md rounded-3xl bg-card p-8 text-center shadow-xl ring-1 ring-foreground/5 sm:p-10">
         <Logo className="mx-auto h-24" />
-        <h1 className="mt-6 text-3xl font-extrabold">Espace membre</h1>
+        <h1 className="mt-6 text-3xl font-extrabold">{signup ? "Devenir membre" : "Espace membre"}</h1>
         <p className="mt-2 text-muted-foreground">
           Créez votre compte ou connectez-vous pour compléter votre profil, demander votre adhésion et accéder aux documents de l&apos;association.
         </p>
@@ -62,7 +63,7 @@ export default async function SignInPage({
             <span className="h-px flex-1 bg-border" />
           </div>
         )}
-        {providers.email && <EmailAuth next={next} />}
+        {providers.email && <EmailAuth next={next} initialMode={signup ? "signup" : "signin"} />}
         {!open && (
           <p className="mt-8 flex items-center justify-center gap-1.5 text-sm text-muted-foreground">
             <LockKeyhole aria-hidden className="size-4" />

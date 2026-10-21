@@ -36,8 +36,8 @@ function callbackUrl(next: string) {
 }
 
 /** Connexion, création de compte et mot de passe oublié par e-mail. */
-export function EmailAuth({ next }: { next?: string }) {
-  const [mode, setMode] = useState<Mode>("signin");
+export function EmailAuth({ next, initialMode = "signin" }: { next?: string; initialMode?: "signin" | "signup" }) {
+  const [mode, setMode] = useState<Mode>(initialMode);
   const [sentTo, setSentTo] = useState<{ email: string; kind: "signup" | "reset" } | null>(null);
 
   if (sentTo)

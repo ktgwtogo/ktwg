@@ -4,7 +4,8 @@ import { DecisionForm } from "@/components/admin/decision-form";
 import { Link, redirect } from "@/i18n/navigation";
 import { formatDate } from "@/lib/format";
 import { membershipStatusLabels, membershipStatusTone } from "@/lib/member/labels";
-import { getMember } from "@/lib/member/session";
+import { Forbidden, PageHeading } from "@/components/admin/page-heading";
+import { getStaff } from "@/lib/admin/staff";
 import { cn } from "@/lib/utils";
 import { membershipTypeLabels } from "@/lib/validations/member";
 import type { Database } from "@/types/database";
@@ -28,10 +29,11 @@ export default async function AdminMemberships({
   setRequestLocale(locale);
   const { statut } = await searchParams;
   const status = filters.find((f) => f.value === statut)?.value ?? "en_attente";
-  const member = await getMember();
-  if (!member) return redirect({ href: "/connexion", locale });
-  const { supabase } = member;
-  const canDecide = member.profile.role === "admin" || member.profile.role === "super_admin";
+  const staff = await getStaff();
+  if (!staff) return redirect({ href: "/mon-espace", locale });
+  if (!staff.can("members.view")) return <Forbidden />;
+  const { supabase } = staff;
+  const canDecide = staff.can("members.manage");
 
   const { data: applications } = await supabase
     .from("membership_applications")
@@ -51,6 +53,7 @@ export default async function AdminMemberships({
 
   return (
     <div className="flex flex-col gap-6">
+      <PageHeading title="Adhésions" description="Demandes d'adhésion avec la fiche complète de chaque personne. La décision notifie la personne dans son espace et par e-mail." />
       <div role="tablist" aria-label="Statut des demandes" className="flex flex-wrap gap-2">
         {filters.map((f) => (
           <Link
@@ -126,7 +129,7 @@ export default async function AdminMemberships({
                   (canDecide ? (
                     <DecisionForm applicationId={a.id} name={name} />
                   ) : (
-                    <p className="border-t pt-4 text-sm text-muted-foreground">La décision est réservée aux administrateurs.</p>
+                    <p className="border-t pt-4 text-sm text-muted-foreground">La décision est réservée au secrétariat et à la présidence.</p>
                   ))}
               </li>
             );

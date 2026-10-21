@@ -14,6 +14,78 @@ export type Database = {
   }
   public: {
     Tables: {
+      approval_requests: {
+        Row: {
+          created_at: string
+          decided_at: string | null
+          decided_by: string | null
+          decision_note: string | null
+          id: string
+          kind: string
+          payload: Json
+          requested_by: string | null
+          status: Database["public"]["Enums"]["approval_status"]
+          summary: string
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          decided_at?: string | null
+          decided_by?: string | null
+          decision_note?: string | null
+          id?: string
+          kind: string
+          payload?: Json
+          requested_by?: string | null
+          status?: Database["public"]["Enums"]["approval_status"]
+          summary?: string
+          title: string
+        }
+        Update: {
+          created_at?: string
+          decided_at?: string | null
+          decided_by?: string | null
+          decision_note?: string | null
+          id?: string
+          kind?: string
+          payload?: Json
+          requested_by?: string | null
+          status?: Database["public"]["Enums"]["approval_status"]
+          summary?: string
+          title?: string
+        }
+        Relationships: []
+      }
+      audit_log: {
+        Row: {
+          action: string
+          actor_id: string | null
+          created_at: string
+          details: Json
+          entity: string
+          entity_id: string | null
+          id: number
+        }
+        Insert: {
+          action: string
+          actor_id?: string | null
+          created_at?: string
+          details?: Json
+          entity?: string
+          entity_id?: string | null
+          id?: number
+        }
+        Update: {
+          action?: string
+          actor_id?: string | null
+          created_at?: string
+          details?: Json
+          entity?: string
+          entity_id?: string | null
+          id?: number
+        }
+        Relationships: []
+      }
       contact_messages: {
         Row: {
           admin_notes: string | null
@@ -646,6 +718,39 @@ export type Database = {
           },
         ]
       }
+      positions: {
+        Row: {
+          created_at: string
+          description: string
+          id: string
+          is_system: boolean
+          name: string
+          permissions: string[]
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string
+          id: string
+          is_system?: boolean
+          name: string
+          permissions?: string[]
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          id?: string
+          is_system?: boolean
+          name?: string
+          permissions?: string[]
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       posts: {
         Row: {
           body: string[]
@@ -693,6 +798,9 @@ export type Database = {
       }
       profiles: {
         Row: {
+          is_active: boolean
+          must_change_password: boolean
+          position_id: string | null
           address: string | null
           bio: string | null
           birth_date: string | null
@@ -720,6 +828,9 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          is_active?: boolean
+          must_change_password?: boolean
+          position_id?: string | null
           address?: string | null
           bio?: string | null
           birth_date?: string | null
@@ -747,6 +858,9 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          is_active?: boolean
+          must_change_password?: boolean
+          position_id?: string | null
           address?: string | null
           bio?: string | null
           birth_date?: string | null
@@ -991,6 +1105,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      has_permission: { Args: { p_permission: string }; Returns: boolean }
       decide_membership: {
         Args: { p_application_id: string; p_approve: boolean; p_note?: string }
         Returns: string
@@ -1009,6 +1124,7 @@ export type Database = {
       }
     }
     Enums: {
+      approval_status: "en_attente" | "approuvee" | "rejetee"
       membership_status: "aucune" | "en_attente" | "validee" | "refusee"
       membership_type: "adherent" | "membre" | "donateur"
       project_status: "en-preparation" | "en-cours" | "realise"
@@ -1141,6 +1257,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      approval_status: ["en_attente", "approuvee", "rejetee"],
       membership_status: ["aucune", "en_attente", "validee", "refusee"],
       membership_type: ["adherent", "membre", "donateur"],
       project_status: ["en-preparation", "en-cours", "realise"],

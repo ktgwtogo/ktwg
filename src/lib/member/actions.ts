@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { sendEmail, teamRecipients } from "@/lib/email/send";
 import { getMember } from "@/lib/member/session";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { membershipSchema, membershipTypeLabels, missingProfileFields, profileSchema } from "@/lib/validations/member";
 
 export type ActionResult = { ok: true } | { ok: false; error: string };
@@ -95,6 +96,15 @@ export async function submitMembership(raw: unknown): Promise<ActionResult> {
 
   revalidatePath("/[locale]/mon-espace", "layout");
   return { ok: true };
+}
+
+/** Lève l'obligation de changer le mot de passe provisoire, une fois le nouveau enregistré. */
+export async function passwordChanged(): Promise<void> {
+  const member = await getMember();
+  if (!member?.profile.must_change_password) return;
+  await createAdminClient().from("profiles").update({ must_change_password: false }).eq("id", member.user.id);
+  revalidatePath("/[locale]/admin", "layout");
+  revalidatePath("/[locale]/mon-espace", "layout");
 }
 
 /** Marque toutes les notifications de la personne connectée comme lues. */

@@ -24,14 +24,14 @@ const safeName = (name: string) =>
 export function DocumentUpload({ people }: { people: { id: string; label: string }[] }) {
   const [audience, setAudience] = useState<"members" | "user">("members");
   const [error, setError] = useState<string | null>(null);
-  const [done, setDone] = useState(false);
+  const [done, setDone] = useState<"published" | "pending" | null>(null);
   const [pending, startTransition] = useTransition();
   const formRef = useRef<HTMLFormElement>(null);
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
-    setDone(false);
+    setDone(null);
     const data = new FormData(e.currentTarget);
     const file = data.get("file");
     if (!(file instanceof File) || file.size === 0) return setError("Choisissez un fichier.");
@@ -52,7 +52,7 @@ export function DocumentUpload({ people }: { people: { id: string; label: string
       if (!result.ok) return setError(result.error);
       formRef.current?.reset();
       setAudience("members");
-      setDone(true);
+      setDone(result.pending ? "pending" : "published");
     });
   };
 
@@ -105,7 +105,9 @@ export function DocumentUpload({ people }: { people: { id: string; label: string
       {done && (
         <p role="status" className="flex items-center gap-2 rounded-xl bg-ktgw-green/10 px-4 py-3 text-sm font-semibold text-ktgw-green-strong">
           <CheckCircle2 aria-hidden className="size-5" />
-          Document publié. Les destinataires ont reçu une notification.
+          {done === "pending"
+            ? "Document envoyé à la présidence : il sera publié après sa validation."
+            : "Document publié. Les destinataires ont reçu une notification."}
         </p>
       )}
       <div>

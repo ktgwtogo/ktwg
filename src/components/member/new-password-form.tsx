@@ -5,11 +5,15 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { ServerError, SubmitButton, TextField } from "@/components/forms/fields";
 import { zodResolver } from "@/lib/forms/zod-resolver";
+import { passwordChanged } from "@/lib/member/actions";
 import { createClient } from "@/lib/supabase/client";
 import { newPasswordSchema, type NewPasswordValues } from "@/lib/validations/member";
 
-/** Choix d'un nouveau mot de passe (après le lien « mot de passe oublié », ou depuis l'espace). */
-export function NewPasswordForm() {
+/**
+ * Choix d'un nouveau mot de passe (lien « mot de passe oublié », mot de passe provisoire
+ * attribué par la présidence, ou simple changement depuis l'espace).
+ */
+export function NewPasswordForm({ continueTo }: { continueTo?: string }) {
   const form = useForm<NewPasswordValues>({ resolver: zodResolver(newPasswordSchema), mode: "onTouched" });
   const { register, formState } = form;
   const [error, setError] = useState<string | null>(null);
@@ -19,6 +23,8 @@ export function NewPasswordForm() {
     setError(null);
     const { error } = await createClient().auth.updateUser({ password: v.password });
     if (error) return setError(/different|same/i.test(error.message) ? "Choisissez un mot de passe différent de l'ancien." : "Le changement a échoué. Réessayez.");
+    await passwordChanged();
+    if (continueTo) return window.location.assign(continueTo);
     setDone(true);
     form.reset();
   });

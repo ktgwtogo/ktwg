@@ -11,7 +11,8 @@ const localePrefix = new RegExp(`^/(${routing.locales.join("|")})(?=/|$)`);
  * Middleware racine :
  * 1. langue (next-intl) ;
  * 2. rafraîchissement de la session Supabase, seulement si un cookie de session existe ;
- * 3. protection de /mon-espace (connecté·e) et /admin (équipe : editor et au-dessus).
+ * 3. protection de /mon-espace (connecté·e) et /admin (compte du bureau actif) ;
+ * 4. mot de passe provisoire : changement obligatoire avant d'accéder aux pages privées.
  */
 export default async function middleware(request: NextRequest) {
   const response = intl(request);
@@ -44,9 +45,11 @@ export default async function middleware(request: NextRequest) {
     target.searchParams.set("next", pathname);
     return NextResponse.redirect(target);
   }
-  if (path.startsWith("/admin")) {
-    const { data: isStaff } = await supabase.rpc("is_staff");
-    if (!isStaff) return NextResponse.redirect(localized("/mon-espace"));
+  const { data: profile } = await supabase.from("profiles").select("role, is_active, must_change_password").eq("id", user.id).maybeSingle();
+  // Mot de passe provisoire (compte créé par la présidence) : à changer avant tout.
+  if (profile?.must_change_password && path !== "/mon-espace/mot-de-passe") return NextResponse.redirect(localized("/mon-espace/mot-de-passe"));
+  if (path.startsWith("/admin") && (!profile || profile.role === "member" || !profile.is_active)) {
+    return NextResponse.redirect(localized("/mon-espace"));
   }
   return response;
 }

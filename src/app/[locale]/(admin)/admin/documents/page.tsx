@@ -3,16 +3,18 @@ import { setRequestLocale } from "next-intl/server";
 import { DeleteDocumentButton, DocumentUpload } from "@/components/admin/document-upload";
 import { redirect } from "@/i18n/navigation";
 import { formatDate } from "@/lib/format";
-import { getMember } from "@/lib/member/session";
+import { Forbidden, PageHeading } from "@/components/admin/page-heading";
+import { getStaff } from "@/lib/admin/staff";
 
 /** Publication et liste des documents officiels. */
 export default async function AdminDocuments({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const member = await getMember();
-  if (!member) return redirect({ href: "/connexion", locale });
-  const { supabase } = member;
-  const isAdmin = member.profile.role === "admin" || member.profile.role === "super_admin";
+  const staff = await getStaff();
+  if (!staff) return redirect({ href: "/mon-espace", locale });
+  if (!staff.can("documents.manage")) return <Forbidden />;
+  const { supabase } = staff;
+  const isAdmin = staff.presidency;
 
   const [{ data: documents }, { data: people }] = await Promise.all([
     supabase.from("documents").select("id, title, description, audience, recipient_id, file_name, created_at").order("created_at", { ascending: false }),
@@ -23,12 +25,21 @@ export default async function AdminDocuments({ params }: { params: Promise<{ loc
   );
 
   return (
+    <>
+    <PageHeading
+      title="Documents officiels"
+      description={
+        isAdmin
+          ? "Statuts, procès-verbaux, convocations… pour tous les membres validés ou une personne. Les destinataires sont notifiés."
+          : "Préparez les documents : ils sont publiés après validation par la présidence."
+      }
+    />
     <div className="grid gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
       <section aria-labelledby="publier" className="h-fit rounded-3xl bg-card p-6 shadow-soft ring-1 ring-foreground/5">
         <h2 id="publier" className="mb-5 text-xl font-bold">
-          Publier un document
+          {isAdmin ? "Publier un document" : "Proposer un document"}
         </h2>
-        {isAdmin ? (
+        {staff.can("documents.manage") ? (
           <DocumentUpload
             people={(people ?? []).map((p) => ({
               id: p.id,
@@ -74,5 +85,6 @@ export default async function AdminDocuments({ params }: { params: Promise<{ loc
         )}
       </section>
     </div>
+    </>
   );
 }

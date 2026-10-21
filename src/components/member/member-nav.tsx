@@ -1,6 +1,6 @@
 "use client";
 
-import { BadgeCheck, FileText, LayoutDashboard, UserRound } from "lucide-react";
+import { BadgeCheck, FileText, KeyRound, LayoutDashboard, UserRound } from "lucide-react";
 import { Link, usePathname } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 
@@ -9,6 +9,7 @@ const items = [
   { href: "/mon-espace/profil", label: "Mon profil", icon: UserRound },
   { href: "/mon-espace/adhesion", label: "Adhésion", icon: BadgeCheck },
   { href: "/mon-espace/documents", label: "Documents", icon: FileText },
+  { href: "/mon-espace/mot-de-passe", label: "Sécurité", icon: KeyRound },
 ] as const;
 
 /** Onglets de l'espace membre. */

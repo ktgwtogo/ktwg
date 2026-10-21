@@ -5,59 +5,19 @@ import { ArrowRight, ChevronLeft, ChevronRight, Handshake, Heart, Pause, Play } 
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ButtonLink } from "@/components/ui/button-link";
-import { images, type SiteImage } from "@/content/images";
+import type { HeroSlide } from "@/lib/site/types";
 import { cn } from "@/lib/utils";
-
-type Slide = {
-  image: SiteImage;
-  eyebrow: string;
-  /** Titre en 3 parties : la partie centrale est mise en valeur. */
-  title: [string, string, string];
-  subtitle: string;
-};
-
-/** Contenu du diaporama (sera éditable depuis le dashboard en Phase 8). */
-const slides: Slide[] = [
-  {
-    image: images.ribbon,
-    eyebrow: "ONG togolaise · depuis 2008",
-    title: ["Former aujourd'hui les", "bâtisseurs", "du Togo de demain"],
-    subtitle:
-      "Éducation, formation professionnelle bilingue et autonomisation des jeunes, surtout des femmes, depuis 2008.",
-  },
-  {
-    image: images.speech,
-    eyebrow: "Formation professionnelle bilingue",
-    title: ["Un métier entre les mains,", "un avenir", "devant soi"],
-    subtitle:
-      "Coutellerie, mécanique, comptabilité, énergies renouvelables, informatique : des formations en français et en allemand, tournées vers l'emploi.",
-  },
-  {
-    image: images.plantingEmbassy,
-    eyebrow: "Autonomisation des femmes",
-    title: ["Les femmes,", "cœur battant", "du changement"],
-    subtitle:
-      "Internat pour les apprenties, entrepreneuriat féminin et énergie solaire : nous accompagnons chaque jeune fille vers son autonomie.",
-  },
-  {
-    image: images.guests,
-    eyebrow: "Coopération Togo – Allemagne",
-    title: ["Ensemble,", "de Lomé à Cologne,", "pour l'éducation"],
-    subtitle:
-      "Avec kommTOGOgehweiter e.V., nos partenaires et nos bénévoles, nous unissons nos forces pour que chaque centime investi dans l'éducation compte.",
-  },
-];
 
 const DURATION = 7000;
 
-export function HeroSlider() {
+export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
   const reduceMotion = useReducedMotion();
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const [hovered, setHovered] = useState(false);
   const touchX = useRef<number | null>(null);
 
-  const go = useCallback((delta: number) => setIndex((i) => (i + delta + slides.length) % slides.length), []);
+  const go = useCallback((delta: number) => setIndex((i) => (i + delta + slides.length) % slides.length), [slides.length]);
 
   // Défilement automatique (désactivé si « réduire les animations », en pause au survol)
   const autoplay = !paused && !hovered && !reduceMotion;

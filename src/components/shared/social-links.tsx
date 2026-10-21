@@ -1,7 +1,7 @@
 import { useTranslations } from "next-intl";
 import type { IconType } from "react-icons";
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaTiktok, FaWhatsapp, FaYoutube } from "react-icons/fa6";
-import { siteConfig, type SocialNetwork } from "@/config/site";
+import type { SocialNetwork } from "@/config/site";
 import { cn } from "@/lib/utils";
 
 const icons: Record<SocialNetwork, IconType> = {
@@ -14,15 +14,16 @@ const icons: Record<SocialNetwork, IconType> = {
 };
 
 type SocialLinksProps = {
+  socials: Record<SocialNetwork, string>;
   size?: "sm" | "md";
   className?: string;
   itemClassName?: string;
 };
 
 /** Icônes des réseaux sociaux ; celles sans URL configurée sont masquées. */
-export function SocialLinks({ size = "md", className, itemClassName }: SocialLinksProps) {
+export function SocialLinks({ socials, size = "md", className, itemClassName }: SocialLinksProps) {
   const t = useTranslations();
-  const entries = (Object.entries(siteConfig.socials) as [SocialNetwork, string][]).filter(
+  const entries = (Object.entries(socials) as [SocialNetwork, string][]).filter(
     ([, url]) => url
   );
 

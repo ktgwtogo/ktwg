@@ -14,8 +14,8 @@ import {
 import { ButtonLink } from "@/components/ui/button-link";
 import { Logo } from "@/components/shared/logo";
 import { SocialLinks } from "@/components/shared/social-links";
-import { isActivePath, mainNav } from "@/config/navigation";
-import { siteConfig } from "@/config/site";
+import { isActivePath, type NavEntry } from "@/config/navigation";
+import type { SiteConfigData } from "@/lib/site/types";
 import { Link, usePathname } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 import { LanguageSwitcher } from "./language-switcher";
@@ -27,11 +27,12 @@ import { ThemeToggle } from "./theme-toggle";
  * Le bouton burger s'anime au survol, les liens apparaissent en cascade
  * (animations CSS tw-animate-css, neutralisées par prefers-reduced-motion).
  */
-export function MobileNav() {
+export function MobileNav({ items: mainNav, config }: { items: NavEntry[]; config: SiteConfigData }) {
   const t = useTranslations();
+  const label = (item: { key?: string; label?: string }) => item.label || (item.key && t.has(`Nav.${item.key}`) ? t(`Nav.${item.key}`) : item.key ?? "");
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const phone = siteConfig.togo.phones[0];
+  const phone = config.togo.phones[0];
 
   const close = () => setOpen(false);
 
@@ -85,7 +86,7 @@ export function MobileNav() {
                     // Sous-menu en accordéon (élément natif <details> : accessible sans script)
                     <details open={active} className="group">
                       <summary className={cn(itemClass, "cursor-pointer list-none [&::-webkit-details-marker]:hidden")}>
-                        {t(`Nav.${item.key}`)}
+                        {label(item)}
                         <ChevronDown aria-hidden className="size-5 transition-transform duration-200 group-open:rotate-180" />
                       </summary>
                       <ul className="mt-1 mb-2 ml-4 flex flex-col border-l-2 border-ktgw-sun/60 pl-2">
@@ -97,7 +98,7 @@ export function MobileNav() {
                               aria-current={pathname === child.href ? "page" : undefined}
                               className="block rounded-lg px-4 py-2.5 text-base text-foreground/80 transition-colors hover:bg-muted hover:text-ktgw-red aria-[current=page]:font-semibold aria-[current=page]:text-ktgw-red"
                             >
-                              {t(`Nav.${child.key}`)}
+                              {label(child)}
                             </Link>
                           </li>
                         ))}
@@ -105,7 +106,7 @@ export function MobileNav() {
                     </details>
                   ) : (
                     <Link href={item.href} onClick={close} aria-current={active ? "page" : undefined} className={cn(itemClass, active && "bg-accent")}>
-                      {t(`Nav.${item.key}`)}
+                      {label(item)}
                       {active && <span aria-hidden className="size-2 rounded-full bg-ktgw-red" />}
                     </Link>
                   )}
@@ -134,13 +135,14 @@ export function MobileNav() {
               <Phone aria-hidden className="size-4 text-ktgw-green" />
               {phone.display}
             </a>
-            <a href={`mailto:${siteConfig.togo.email}`} className="flex items-center gap-2 hover:text-foreground">
+            <a href={`mailto:${config.togo.email}`} className="flex items-center gap-2 hover:text-foreground">
               <Mail aria-hidden className="size-4 text-ktgw-green" />
-              {siteConfig.togo.email}
+              {config.togo.email}
             </a>
           </div>
 
           <SocialLinks
+            socials={config.socials}
             size="md"
             className="justify-center gap-2"
             itemClassName="bg-muted text-foreground/80 hover:bg-ktgw-red-strong hover:text-white"

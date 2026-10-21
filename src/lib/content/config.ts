@@ -20,7 +20,29 @@ export type FieldType =
   | "images"
   | "facts"
   | "milestones"
-  | "progress";
+  | "progress"
+  | "blocks";
+
+/** Blocs d'une page personnalisée. */
+export type PageBlock =
+  | { type: "text"; heading: string; body: string }
+  | { type: "imageText"; heading: string; body: string; image: { src: string; alt: string; width: number; height: number } | null; imageRight: boolean }
+  | { type: "image"; image: { src: string; alt: string; width: number; height: number } | null; caption: string }
+  | { type: "button"; label: string; href: string; style: "primary" | "outline" };
+
+export const blockLabels: Record<PageBlock["type"], string> = {
+  text: "Texte",
+  imageText: "Image et texte",
+  image: "Grande image",
+  button: "Bouton",
+};
+
+/** Adresses déjà utilisées par le site : interdites pour une page personnalisée. */
+export const reservedSlugs = [
+  "a-propos", "objectifs", "projets", "formations", "actualites", "evenements", "galerie", "partenariat",
+  "s-engager", "faire-un-don", "transparence", "contact", "mentions-legales", "confidentialite", "connexion",
+  "mon-espace", "admin", "api", "auth", "de", "en", "fr", "sitemap", "robots",
+];
 
 export type Field = {
   name: string;
@@ -34,7 +56,7 @@ export type Field = {
 
 export type ContentType = {
   id: string;
-  table: "posts" | "events" | "projects" | "gallery_items" | "partners" | "testimonials" | "announcements";
+  table: "posts" | "events" | "projects" | "gallery_items" | "partners" | "testimonials" | "announcements" | "pages";
   label: string;
   singular: string;
   description: string;
@@ -53,6 +75,26 @@ const published: Field = { name: "published", label: "Publié sur le site", type
 const sortOrder: Field = { name: "sort_order", label: "Ordre d'affichage", type: "number", hint: "Les plus petits nombres s'affichent en premier." };
 
 export const contentTypes: ContentType[] = [
+  {
+    id: "pages",
+    table: "pages",
+    label: "Pages",
+    singular: "page",
+    description: "Nouvelles pages du site, construites par blocs, à ajouter ensuite au menu.",
+    permissions: ["pages.manage"],
+    titleField: "title",
+    orderBy: { column: "sort_order", ascending: true },
+    publicPath: (r) => `/${r.slug}`,
+    fields: [
+      { name: "title", label: "Titre de la page", type: "text", required: true, max: 160 },
+      { name: "slug", label: "Adresse de la page", type: "slug", required: true, hint: "La page sera visible à l'adresse www.ktgw.tg/adresse." },
+      { name: "description", label: "Introduction (et description pour Google)", type: "textarea", max: 300 },
+      { name: "hero_image", label: "Image d'en-tête", type: "image" },
+      { name: "blocks", label: "Contenu de la page", type: "blocks", required: true },
+      sortOrder,
+      published,
+    ],
+  },
   {
     id: "actualites",
     table: "posts",

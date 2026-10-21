@@ -35,6 +35,7 @@ export default async function AdminLayout({ children, params }: { children: Reac
     ...(contentTypes.some((t) => canEdit(t, staff.can))
       ? [{ href: "/admin/contenus", label: "Contenus du site", icon: "content", section: "Site web" } as const]
       : []),
+    ...(staff.can("pages.manage") ? [{ href: "/admin/site", label: "Apparence et textes", icon: "site", section: "Site web" } as const] : []),
     ...(staff.can("members.view") ? [{ href: "/admin/adhesions", label: "Adhésions", icon: "memberships", badge: memberships, section: "Membres" } as const] : []),
     ...(staff.can("documents.manage") ? [{ href: "/admin/documents", label: "Documents officiels", icon: "documents", section: "Membres" } as const] : []),
     ...(staff.presidency

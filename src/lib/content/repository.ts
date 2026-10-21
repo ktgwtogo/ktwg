@@ -9,6 +9,7 @@ import { partners as staticPartners, type Partner } from "@/content/partners";
 import { projects as staticProjects, type Project, type ProjectStatus } from "@/content/projects";
 import { testimonials as staticTestimonials, type Testimonial } from "@/content/testimonials";
 import type { Database } from "@/types/database";
+import type { PageBlock } from "./config";
 
 /**
  * Lecture des contenus du site depuis Supabase (modifiés dans /admin).
@@ -164,6 +165,27 @@ export const getAnnouncements = cached(
     ),
   [] as Announcement[]
 );
+
+export type CustomPage = { slug: string; title: string; description: string; heroImage: SiteImage | null; blocks: PageBlock[] };
+
+export const getPages = cached(
+  "pages",
+  async (db) =>
+    unwrap(await db.from("pages").select("*").eq("published", true).order("sort_order")).map(
+      (p): CustomPage => ({
+        slug: p.slug,
+        title: p.title,
+        description: p.description,
+        heroImage: (p.hero_image as SiteImage | null) ?? null,
+        blocks: (p.blocks as PageBlock[]) ?? [],
+      })
+    ),
+  [] as CustomPage[]
+);
+
+export async function getPage(slug: string) {
+  return (await getPages()).find((p) => p.slug === slug);
+}
 
 // ── Aides dérivées (mêmes règles que src/content) ──
 

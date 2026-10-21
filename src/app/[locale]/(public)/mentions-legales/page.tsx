@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { LegalPage } from "@/components/shared/legal-page";
-import { siteConfig } from "@/config/site";
+import { getSiteConfig } from "@/lib/site/settings";
 
 export const metadata: Metadata = { title: "Mentions légales", robots: { index: false } };
 
 export default async function LegalNoticePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const { togo, germany } = siteConfig;
+  const { togo, germany } = await getSiteConfig();
 
   return (
     <LegalPage title="Mentions légales" updated="octobre 2026">

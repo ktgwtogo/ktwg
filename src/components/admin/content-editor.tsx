@@ -6,7 +6,8 @@ import { ServerError } from "@/components/forms/fields";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "@/i18n/navigation";
 import { deleteContent, saveContent } from "@/lib/content/actions";
-import { getContentType, slugify, type Field } from "@/lib/content/config";
+import { getContentType, slugify, type Field, type PageBlock } from "@/lib/content/config";
+import { BlocksField } from "./blocks-field";
 import type { FormValues, ImageValue } from "@/lib/content/normalize";
 import { cn } from "@/lib/utils";
 import { ImageField, uploadImage } from "./image-field";
@@ -169,6 +170,9 @@ function FieldInput({
       break;
     case "images":
       input = <ImagesField value={(value as ImageValue[]) ?? []} onChange={onChange} folder={folder} />;
+      break;
+    case "blocks":
+      input = <BlocksField value={(value as PageBlock[]) ?? []} onChange={onChange} />;
       break;
     case "progress": {
       const p = (value ?? {}) as Record<string, unknown>;

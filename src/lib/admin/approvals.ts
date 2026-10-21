@@ -41,6 +41,15 @@ const executors: Record<string, Executor> = {
     return error ? error.message : null;
   },
 
+  /** Paramètre du site (coordonnées, menus, diaporama, textes), déjà validé. */
+  "settings.save": async (p, requestedBy) => {
+    const { error } = await createAdminClient()
+      .from("site_settings")
+      .upsert({ key: String(p.key), value: p.value as never, updated_by: requestedBy }, { onConflict: "key" });
+    if (!error) revalidateTag(CONTENT_TAG);
+    return error ? error.message : null;
+  },
+
   "content.delete": async (p) => {
     const type = getContentType(String(p.type));
     if (!type) return "Type de contenu inconnu.";
@@ -55,6 +64,7 @@ export const approvalKindLabels: Record<string, string> = {
   "document.publish": "Publication d'un document",
   "content.save": "Contenu du site",
   "content.delete": "Suppression d'un contenu",
+  "settings.save": "Paramètres du site",
 };
 
 const site = () => process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";

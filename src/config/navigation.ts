@@ -14,6 +14,11 @@ import {
   Target,
   Users,
   Wrench,
+  Link2,
+  FileText,
+  Calendar,
+  Newspaper,
+  Phone,
   type LucideIcon,
 } from "lucide-react";
 import { images, type ImageKey } from "@/content/images";
@@ -24,11 +29,40 @@ import { images, type ImageKey } from "@/content/images";
  * la description d'un sous-lien est la clé `Nav.desc.<key>`.
  */
 
+/** Icônes proposées pour les liens de sous-menu (désignées par leur nom pour être stockées en base). */
+export const navIcons = {
+  Users,
+  Target,
+  FileCheck2,
+  Images,
+  GraduationCap,
+  BedDouble,
+  Sun,
+  LayoutGrid,
+  Wrench,
+  Languages,
+  PenLine,
+  Heart,
+  Handshake,
+  HandHeart,
+  IdCard,
+  Link2,
+  FileText,
+  Calendar,
+  Newspaper,
+  Phone,
+} satisfies Record<string, LucideIcon>;
+export type NavIconName = keyof typeof navIcons;
+
 export type NavItem = { key: string; href: string };
-export type NavChild = NavItem & { icon: LucideIcon };
+/**
+ * Lien de sous-menu. `label` et `description` remplacent les traductions
+ * (liens ajoutés ou renommés depuis /admin → Menus).
+ */
+export type NavChild = { key?: string; label?: string; description?: string; href: string; icon: NavIconName };
 /** Encadré mis en avant dans un sous-menu (textes : `Nav.featured.<key>.*`). */
 export type NavFeatured = { image: ImageKey; href: string };
-export type NavEntry = NavItem & { children?: NavChild[]; featured?: NavFeatured };
+export type NavEntry = { key?: string; label?: string; href: string; children?: NavChild[]; featured?: NavFeatured };
 
 /** Menu principal du header, avec sous-menus (§6.2 du cahier des charges). */
 export const mainNav: NavEntry[] = [
@@ -36,10 +70,10 @@ export const mainNav: NavEntry[] = [
     key: "about",
     href: "/a-propos",
     children: [
-      { key: "whoWeAre", href: "/a-propos", icon: Users },
-      { key: "objectives", href: "/objectifs", icon: Target },
-      { key: "transparency", href: "/transparence", icon: FileCheck2 },
-      { key: "gallery", href: "/galerie", icon: Images },
+      { key: "whoWeAre", href: "/a-propos", icon: "Users" },
+      { key: "objectives", href: "/objectifs", icon: "Target" },
+      { key: "transparency", href: "/transparence", icon: "FileCheck2" },
+      { key: "gallery", href: "/galerie", icon: "Images" },
     ],
     featured: { image: "plantingPartners", href: "/a-propos" },
   },
@@ -47,10 +81,10 @@ export const mainNav: NavEntry[] = [
     key: "projects",
     href: "/projets",
     children: [
-      { key: "projectCefopexd", href: "/projets/cefopexd", icon: GraduationCap },
-      { key: "projectBoarding", href: "/projets/internat-jeunes-filles", icon: BedDouble },
-      { key: "projectSolar", href: "/projets/femmes-solaires", icon: Sun },
-      { key: "allProjects", href: "/projets", icon: LayoutGrid },
+      { key: "projectCefopexd", href: "/projets/cefopexd", icon: "GraduationCap" },
+      { key: "projectBoarding", href: "/projets/internat-jeunes-filles", icon: "BedDouble" },
+      { key: "projectSolar", href: "/projets/femmes-solaires", icon: "Sun" },
+      { key: "allProjects", href: "/projets", icon: "LayoutGrid" },
     ],
     featured: { image: "ribbon", href: "/faire-un-don?projet=internat-jeunes-filles" },
   },
@@ -58,9 +92,9 @@ export const mainNav: NavEntry[] = [
     key: "trainings",
     href: "/formations",
     children: [
-      { key: "ourCourses", href: "/formations#filieres", icon: Wrench },
-      { key: "germanClubs", href: "/formations#clubs-allemand", icon: Languages },
-      { key: "apply", href: "/formations#candidature", icon: PenLine },
+      { key: "ourCourses", href: "/formations#filieres", icon: "Wrench" },
+      { key: "germanClubs", href: "/formations#clubs-allemand", icon: "Languages" },
+      { key: "apply", href: "/formations#candidature", icon: "PenLine" },
     ],
     featured: { image: "speech", href: "/formations#candidature" },
   },
@@ -70,10 +104,10 @@ export const mainNav: NavEntry[] = [
     key: "getInvolved",
     href: "/s-engager",
     children: [
-      { key: "donate", href: "/faire-un-don", icon: Heart },
-      { key: "becomePartner", href: "/partenariat", icon: Handshake },
-      { key: "volunteer", href: "/s-engager#benevolat", icon: HandHeart },
-      { key: "join", href: "/s-engager#adhesion", icon: IdCard },
+      { key: "donate", href: "/faire-un-don", icon: "Heart" },
+      { key: "becomePartner", href: "/partenariat", icon: "Handshake" },
+      { key: "volunteer", href: "/s-engager#benevolat", icon: "HandHeart" },
+      { key: "join", href: "/s-engager#adhesion", icon: "IdCard" },
     ],
     featured: { image: "plantingHibiscus", href: "/faire-un-don" },
   },

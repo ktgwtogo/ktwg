@@ -6,7 +6,9 @@ import { useEffect, useState } from "react";
 import { ButtonLink } from "@/components/ui/button-link";
 import { Container } from "@/components/shared/section";
 import { Logo } from "@/components/shared/logo";
+import type { NavEntry } from "@/config/navigation";
 import { cn } from "@/lib/utils";
+import type { SiteConfigData } from "@/lib/site/types";
 import { DesktopNav } from "./desktop-nav";
 import { MobileNav } from "./mobile-nav";
 
@@ -15,7 +17,7 @@ import { MobileNav } from "./mobile-nav";
  * Légèrement translucide en haut de page, il devient opaque avec une ombre
  * dès que l'on fait défiler. Menu horizontal à partir de 1024 px, menu burger en dessous.
  */
-export function SiteHeader() {
+export function SiteHeader({ nav, config }: { nav: NavEntry[]; config: SiteConfigData }) {
   const t = useTranslations();
   const [scrolled, setScrolled] = useState(false);
 
@@ -38,7 +40,7 @@ export function SiteHeader() {
       <Container className="flex h-18 items-center justify-between gap-3 lg:h-20 lg:gap-2 lg:px-5 xl:h-22 xl:gap-3 xl:px-8">
         <Logo priority className="h-14 shrink-0 lg:h-16 xl:h-[4.5rem]" />
 
-        <DesktopNav />
+        <DesktopNav items={nav} />
 
         <div className="flex shrink-0 items-center gap-1.5 xl:gap-2">
           <ButtonLink
@@ -56,7 +58,7 @@ export function SiteHeader() {
             <span className="hidden sm:inline">{t("Common.donate")}</span>
             <span className="sr-only sm:hidden">{t("Common.donate")}</span>
           </ButtonLink>
-          <MobileNav />
+          <MobileNav items={nav} config={config} />
         </div>
       </Container>
     </header>

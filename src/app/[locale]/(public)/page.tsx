@@ -1,4 +1,5 @@
 import { setRequestLocale } from "next-intl/server";
+import { getHeroSlides } from "@/lib/site/settings";
 import { HeroSlider } from "@/components/sections/hero-slider";
 import { ImpactTestimonials, NewsletterSection, PresenceSection } from "@/components/sections/home-interactive";
 import {
@@ -20,7 +21,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
 
   return (
     <>
-      <HeroSlider />
+      <HeroSlider slides={await getHeroSlides()} />
       <StatsBand />
       <AboutPreview />
       <DomainsGrid />

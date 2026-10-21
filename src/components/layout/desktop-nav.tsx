@@ -4,7 +4,7 @@ import { ArrowRight, ChevronDown } from "lucide-react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
-import { featuredImage, isActivePath, mainNav } from "@/config/navigation";
+import { featuredImage, isActivePath, navIcons, type NavEntry } from "@/config/navigation";
 import { Link, usePathname } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 
@@ -14,9 +14,10 @@ import { cn } from "@/lib/utils";
  * - Souris : ouverture au survol (léger délai de fermeture pour traverser l'espace).
  * - Clavier : le chevron ouvre/ferme, Échap ferme et rend le focus au chevron.
  */
-export function DesktopNav() {
+export function DesktopNav({ items: mainNav }: { items: NavEntry[] }) {
   const t = useTranslations("Nav");
   const tHeader = useTranslations("Header");
+  const label = (item: { key?: string; label?: string }) => item.label || (item.key && t.has(item.key) ? t(item.key) : item.key ?? "");
   const pathname = usePathname();
   const [open, setOpen] = useState<string | null>(null);
   const closeTimer = useRef<number | undefined>(undefined);
@@ -46,16 +47,17 @@ export function DesktopNav() {
         {mainNav.map((item, index) => {
           const active =
             isActivePath(pathname, item.href) || !!item.children?.some((c) => isActivePath(pathname, c.href));
-          const isOpen = open === item.key;
-          const panelId = `submenu-${item.key}`;
+          const id = item.key ?? `menu-${index}`;
+          const isOpen = open === id;
+          const panelId = `submenu-${id}`;
           // Les derniers sous-menus s'alignent à droite pour ne pas sortir de l'écran
           const alignRight = index >= mainNav.length - 3;
 
           return (
             <li
-              key={item.key}
+              key={id}
               className="relative"
-              onMouseEnter={item.children ? () => enter(item.key) : undefined}
+              onMouseEnter={item.children ? () => enter(id) : undefined}
               onMouseLeave={item.children ? leave : undefined}
               onKeyDown={(e) => {
                 if (e.key === "Escape" && isOpen) {
@@ -79,15 +81,15 @@ export function DesktopNav() {
                     active || isOpen ? "text-ktgw-red" : "text-foreground/85 hover:text-ktgw-red"
                   )}
                 >
-                  {t(item.key)}
+                  {label(item)}
                 </Link>
                 {item.children && (
                   <button
                     type="button"
                     aria-expanded={isOpen}
                     aria-controls={panelId}
-                    aria-label={tHeader("submenu", { label: t(item.key) })}
-                    onClick={() => setOpen(isOpen ? null : item.key)}
+                    aria-label={tHeader("submenu", { label: label(item) })}
+                    onClick={() => setOpen(isOpen ? null : id)}
                     className={cn(
                       "mr-0.5 flex size-6 items-center justify-center rounded-full transition-colors xl:mr-1.5",
                       active || isOpen ? "text-ktgw-red" : "text-foreground/50 group-hover/item:text-ktgw-red"
@@ -125,7 +127,7 @@ export function DesktopNav() {
                   />
                   <div className="flex w-[min(40rem,calc(100vw-2rem))] overflow-hidden rounded-3xl border bg-popover text-popover-foreground shadow-2xl ring-1 ring-black/5">
                     <div className="flex-1 p-3">
-                      <p className="px-3 pt-2 pb-3 text-[11px] font-bold tracking-[0.2em] text-(--eyebrow) uppercase">{t(item.key)}</p>
+                      <p className="px-3 pt-2 pb-3 text-[11px] font-bold tracking-[0.2em] text-(--eyebrow) uppercase">{label(item)}</p>
                       <ul className="flex flex-col gap-0.5">
                         {item.children.map((child) => {
                           const childActive = pathname === child.href && !child.href.includes("#");
@@ -141,17 +143,20 @@ export function DesktopNav() {
                                 )}
                               >
                                 <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-accent text-ktgw-red transition-all duration-300 group-hover/link:scale-105 group-hover/link:bg-ktgw-red-strong group-hover/link:text-white">
-                                  <child.icon aria-hidden className="size-5" />
+                                  {(() => {
+                                    const Icon = navIcons[child.icon] ?? navIcons.Link2;
+                                    return <Icon aria-hidden className="size-5" />;
+                                  })()}
                                 </span>
                                 <span className="flex flex-col gap-0.5">
                                   <span className="flex items-center gap-1.5 text-sm font-bold transition-colors group-hover/link:text-ktgw-red">
-                                    {t(child.key)}
+                                    {label(child)}
                                     <ArrowRight
                                       aria-hidden
                                       className="size-3.5 -translate-x-1 opacity-0 transition-all group-hover/link:translate-x-0 group-hover/link:opacity-100"
                                     />
                                   </span>
-                                  <span className="text-xs leading-snug text-muted-foreground">{t(`desc.${child.key}`)}</span>
+                                  <span className="text-xs leading-snug text-muted-foreground">{child.description || (child.key && t.has(`desc.${child.key}`) ? t(`desc.${child.key}`) : "")}</span>
                                 </span>
                               </Link>
                             </li>
@@ -160,7 +165,7 @@ export function DesktopNav() {
                       </ul>
                     </div>
 
-                    {item.featured && (
+                    {item.featured && item.key && t.has(`featured.${item.key}.title`) && (
                       <Link
                         href={item.featured.href}
                         onClick={() => setOpen(null)}

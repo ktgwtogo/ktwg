@@ -1,4 +1,4 @@
-import type { ContentType, Field } from "./config";
+import { reservedSlugs, type ContentType, type Field, type PageBlock } from "./config";
 
 /**
  * Conversion entre les valeurs du formulaire d'édition (chaînes, cases, images)
@@ -46,7 +46,26 @@ export function toRow(type: ContentType, values: FormValues): { row: Record<stri
       }
       case "slug": {
         if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(s) || s.length > 80) fail(f, "Lettres minuscules, chiffres et tirets uniquement.");
+        else if (type.table === "pages" && reservedSlugs.includes(s)) fail(f, "Cette adresse est déjà une page du site : choisissez-en une autre.");
         row[f.name] = s;
+        break;
+      }
+      case "blocks": {
+        const list = Array.isArray(raw) ? (raw as Record<string, unknown>[]) : [];
+        const blocks: PageBlock[] = [];
+        for (const b of list) {
+          if (b.type === "text") blocks.push({ type: "text", heading: str(b.heading).slice(0, 160), body: str(b.body).slice(0, 10000) });
+          else if (b.type === "imageText")
+            blocks.push({ type: "imageText", heading: str(b.heading).slice(0, 160), body: str(b.body).slice(0, 10000), image: toImage(b.image), imageRight: Boolean(b.imageRight) });
+          else if (b.type === "image") blocks.push({ type: "image", image: toImage(b.image), caption: str(b.caption).slice(0, 300) });
+          else if (b.type === "button") {
+            const href = str(b.href);
+            if (!/^(\/[^/]|\/$|https:\/\/|mailto:|tel:)/.test(href)) fail(f, "Chaque bouton doit avoir un lien (« /page », « https://… », « mailto: » ou « tel: »).");
+            blocks.push({ type: "button", label: str(b.label).slice(0, 60) || "En savoir plus", href, style: b.style === "outline" ? "outline" : "primary" });
+          }
+        }
+        if (!blocks.length && f.required) fail(f, "Ajoutez au moins un bloc.");
+        row[f.name] = blocks;
         break;
       }
       case "paragraphs": {
@@ -186,8 +205,9 @@ export function toFormValues(type: ContentType, row: Record<string, unknown> | n
         break;
       case "image":
       case "images":
+      case "blocks":
       case "progress":
-        values[f.name] = v ?? (f.type === "images" ? [] : null);
+        values[f.name] = v ?? (f.type === "images" || f.type === "blocks" ? [] : null);
         break;
       default:
         values[f.name] = v ?? "";

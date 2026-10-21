@@ -2,6 +2,7 @@ import { FileText } from "lucide-react";
 import { setRequestLocale } from "next-intl/server";
 import { ApprovalDecision } from "@/components/admin/approval-decision";
 import { ContentPreview } from "@/components/admin/content-preview";
+import { SettingPreview } from "@/components/admin/setting-preview";
 import { PageHeading } from "@/components/admin/page-heading";
 import { Link, redirect } from "@/i18n/navigation";
 import { approvalKindLabels } from "@/lib/admin/approvals";
@@ -109,6 +110,7 @@ export default async function ValidationsPage({
                   </div>
                 )}
                 {r.kind === "content.save" && <ContentPreview payload={r.payload as never} />}
+                {r.kind === "settings.save" && <SettingPreview payload={r.payload as never} />}
                 {r.decision_note && <p className="text-sm">Message de la présidence : {r.decision_note}</p>}
                 {r.status === "en_attente" && staff.presidency && <ApprovalDecision id={r.id} title={r.title} />}
               </li>

@@ -8,7 +8,8 @@ import { PageHeader } from "@/components/shared/page-header";
 import { Section } from "@/components/shared/section";
 import { SectionTitle } from "@/components/shared/section-title";
 import { SocialLinks } from "@/components/shared/social-links";
-import { siteConfig, whatsappUrl } from "@/config/site";
+import { whatsappUrl } from "@/config/site";
+import { getSiteConfig } from "@/lib/site/settings";
 import { images } from "@/content/images";
 
 export const metadata: Metadata = {
@@ -19,7 +20,8 @@ export const metadata: Metadata = {
 export default async function ContactPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const { togo, germany } = siteConfig;
+  const config = await getSiteConfig();
+  const { togo, germany } = config;
 
   const cards = [
     {
@@ -163,7 +165,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
 
             <div className="rounded-2xl bg-card p-6 shadow-soft ring-1 ring-foreground/5">
               <h2 className="mb-3 text-lg font-bold">Suivez-nous</h2>
-              <SocialLinks itemClassName="bg-muted text-foreground/80 hover:bg-ktgw-red-strong hover:text-white" className="flex-wrap gap-2" />
+              <SocialLinks socials={config.socials} itemClassName="bg-muted text-foreground/80 hover:bg-ktgw-red-strong hover:text-white" className="flex-wrap gap-2" />
             </div>
           </aside>
         </div>

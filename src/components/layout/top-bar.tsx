@@ -2,7 +2,7 @@ import { Mail, MapPin, Phone } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Container } from "@/components/shared/section";
 import { SocialLinks } from "@/components/shared/social-links";
-import { siteConfig } from "@/config/site";
+import type { SiteConfigData } from "@/lib/site/types";
 import { LanguageSwitcher } from "./language-switcher";
 import { ThemeToggle } from "./theme-toggle";
 
@@ -11,10 +11,10 @@ import { ThemeToggle } from "./theme-toggle";
  * - Mobile : téléphone, icône e-mail et réseaux sociaux (langue et thème sont dans le menu burger).
  * - Tablette et plus : adresse e-mail complète, second numéro, langue et thème.
  */
-export function TopBar() {
+export function TopBar({ config }: { config: SiteConfigData }) {
   const t = useTranslations("TopBar");
-  const [phone, phone2] = siteConfig.togo.phones;
-  const { email, address } = siteConfig.togo;
+  const [phone, phone2] = config.togo.phones;
+  const { email, address } = config.togo;
 
   return (
     <div className="bg-ktgw-green-dark text-white dark:bg-[#0b3d1c]">
@@ -57,7 +57,7 @@ export function TopBar() {
 
         <div className="flex shrink-0 items-center gap-1 sm:gap-2">
           <span className="sr-only">{t("followUs")}</span>
-          <SocialLinks size="sm" className="gap-0" itemClassName="size-7 text-white/85 hover:bg-white/15 hover:text-ktgw-sun sm:size-8" />
+          <SocialLinks socials={config.socials} size="sm" className="gap-0" itemClassName="size-7 text-white/85 hover:bg-white/15 hover:text-ktgw-sun sm:size-8" />
           <span aria-hidden className="hidden h-4 w-px bg-white/20 md:block" />
           <LanguageSwitcher tone="inverted" className="hidden md:block" />
           <ThemeToggle className="hidden text-white/80 hover:bg-white/10 hover:text-white md:flex" />

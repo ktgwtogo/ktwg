@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { LegalPage } from "@/components/shared/legal-page";
-import { siteConfig } from "@/config/site";
+import { getSiteConfig } from "@/lib/site/settings";
 
 export const metadata: Metadata = { title: "Politique de confidentialité", robots: { index: false } };
 
 export default async function PrivacyPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const { email } = siteConfig.togo;
+  const { email } = (await getSiteConfig()).togo;
 
   return (
     <LegalPage title="Politique de confidentialité" updated="octobre 2026">

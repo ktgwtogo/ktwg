@@ -5,7 +5,8 @@ import { Container } from "@/components/shared/section";
 import { Logo } from "@/components/shared/logo";
 import { SocialLinks } from "@/components/shared/social-links";
 import { footerNav, type NavItem } from "@/config/navigation";
-import { siteConfig, whatsappUrl } from "@/config/site";
+import { whatsappUrl } from "@/config/site";
+import type { SiteConfigData } from "@/lib/site/types";
 import { Link } from "@/i18n/navigation";
 import { LanguageSwitcher } from "./language-switcher";
 import { MapEmbed } from "./map-embed";
@@ -35,9 +36,9 @@ function FooterColumn({ title, items }: { title: string; items: NavItem[] }) {
  * Pied de page (§8 du cahier des charges) : présentation, navigation,
  * engagement, coordonnées + carte, puis barre basse légale.
  */
-export function SiteFooter() {
+export function SiteFooter({ config }: { config: SiteConfigData }) {
   const t = useTranslations();
-  const { togo, germany } = siteConfig;
+  const { togo, germany } = config;
   const year = new Date().getFullYear();
 
   return (
@@ -68,7 +69,7 @@ export function SiteFooter() {
           <blockquote className="border-l-2 border-ktgw-sun pl-4 text-sm text-white italic">
             « {t("Common.motto")} »
           </blockquote>
-          <SocialLinks itemClassName="bg-white/5 text-white/80 hover:bg-ktgw-sun hover:text-ink" className="gap-2" />
+          <SocialLinks socials={config.socials} itemClassName="bg-white/5 text-white/80 hover:bg-ktgw-sun hover:text-ink" className="gap-2" />
         </div>
 
         {/* 2. Navigation */}

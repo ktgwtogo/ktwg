@@ -8,9 +8,10 @@ type Donation = Database["public"]["Tables"]["donation_declarations"]["Row"];
 
 /**
  * Reçu officiel KTGW, feuille A4 (210 × 297 mm) : affiché dans l'administration, l'espace membre
- * et à l'impression (« Enregistrer au format PDF » donne un PDF A4 d'une page).
+ * et à l'impression (« Enregistrer au format PDF » donne un PDF A4 d'une page). Le QR code mène
+ * à la page publique qui confirme l'authenticité du reçu.
  */
-export function ReceiptDocument({ d, locale, togo }: { d: Donation; locale: string; togo: SiteConfigData["togo"] }) {
+export function ReceiptDocument({ d, locale, togo, qrSvg }: { d: Donation; locale: string; togo: SiteConfigData["togo"]; qrSvg: string }) {
   const inKind = d.kind === "nature";
   return (
     <article className="flex min-h-[297mm] w-[210mm] shrink-0 flex-col bg-white p-[18mm] text-ink shadow-xl print:h-[296mm] print:min-h-0 print:overflow-hidden print:shadow-none">
@@ -91,7 +92,15 @@ export function ReceiptDocument({ d, locale, togo }: { d: Donation; locale: stri
         <p className="mt-6">Nous vous remercions chaleureusement pour votre soutien à l&apos;éducation et à la formation des jeunes au Togo.</p>
       </section>
 
-      <div className="mt-16 flex justify-end">
+      <div className="mt-16 flex items-end justify-between gap-8">
+        <div className="flex items-center gap-3">
+          <div className="size-[28mm] shrink-0 [&>svg]:h-full [&>svg]:w-full" dangerouslySetInnerHTML={{ __html: qrSvg }} />
+          <div className="max-w-[55mm] text-xs leading-snug text-neutral-600">
+            <p className="font-semibold text-ink">Reçu vérifiable</p>
+            <p>Scannez ce QR code pour confirmer l&apos;authenticité de ce reçu auprès de KTGW Togo.</p>
+            <p className="mt-1 font-semibold">N° {d.receipt_number}</p>
+          </div>
+        </div>
         <div className="text-center">
           <p className="text-sm text-neutral-600">Pour l&apos;association, la trésorerie</p>
           <div className="mt-14 w-56 border-t border-neutral-400" />

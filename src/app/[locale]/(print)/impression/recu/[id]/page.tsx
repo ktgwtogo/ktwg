@@ -5,6 +5,7 @@ import { ReceiptDocument } from "@/components/receipts/receipt-document";
 import { redirect } from "@/i18n/navigation";
 import { getStaff } from "@/lib/admin/staff";
 import { getMember } from "@/lib/member/session";
+import { receiptQrSvg } from "@/lib/receipts/qr";
 import { getSiteConfig } from "@/lib/site/settings";
 
 export const dynamic = "force-dynamic";
@@ -32,7 +33,7 @@ export default async function ReceiptPage({
   const { data: d } = await db.from("donation_declarations").select("*").eq("id", id).maybeSingle();
   if (!d || d.status !== "traite" || !d.receipt_number) notFound();
   if (!treasury && !d.receipt_sent_at) notFound();
-  const { togo } = await getSiteConfig();
+  const [{ togo }, qr] = await Promise.all([getSiteConfig(), receiptQrSvg(d.id)]);
 
   return (
     <main className="flex min-h-dvh flex-col items-center gap-6 bg-muted p-6 print:block print:min-h-0 print:bg-white print:p-0">
@@ -45,7 +46,7 @@ export default async function ReceiptPage({
         </p>
       </div>
       <div className="max-w-full overflow-x-auto print:overflow-visible">
-        <ReceiptDocument d={d} locale={locale} togo={togo} />
+        <ReceiptDocument d={d} locale={locale} togo={togo} qrSvg={qr} />
       </div>
     </main>
   );

@@ -7,6 +7,7 @@ import { ReceiptDocument } from "@/components/receipts/receipt-document";
 import { Link, redirect } from "@/i18n/navigation";
 import { getStaff } from "@/lib/admin/staff";
 import { formatDate } from "@/lib/format";
+import { receiptQrSvg } from "@/lib/receipts/qr";
 import { getSiteConfig } from "@/lib/site/settings";
 
 /** Reçu généré : consultation, téléchargement, puis envoi au donateur (e-mail + espace membre). */
@@ -19,7 +20,7 @@ export default async function AdminReceiptPage({ params }: { params: Promise<{ l
 
   const { data: d } = await staff.supabase.from("donation_declarations").select("*").eq("id", id).maybeSingle();
   if (!d || d.status !== "traite" || !d.receipt_number) notFound();
-  const { togo } = await getSiteConfig();
+  const [{ togo }, qr] = await Promise.all([getSiteConfig(), receiptQrSvg(d.id)]);
   const noEmail = d.email.endsWith("@ktgw.tg");
 
   return (
@@ -79,7 +80,7 @@ export default async function AdminReceiptPage({ params }: { params: Promise<{ l
 
       <div className="overflow-x-auto rounded-3xl bg-muted/60 p-4 sm:p-8">
         <div className="mx-auto w-fit">
-          <ReceiptDocument d={d} locale={locale} togo={togo} />
+          <ReceiptDocument d={d} locale={locale} togo={togo} qrSvg={qr} />
         </div>
       </div>
     </>

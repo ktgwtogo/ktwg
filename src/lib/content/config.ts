@@ -181,7 +181,8 @@ export const contentTypes: ContentType[] = [
         required: true,
         options: [
           { value: "en-preparation", label: "En préparation" },
-          { value: "en-cours", label: "En cours" },
+          { value: "operationnel", label: "Opérationnel (en activité)" },
+          { value: "en-cours", label: "En cours (réalisation)" },
           { value: "realise", label: "Réalisé" },
         ],
       },

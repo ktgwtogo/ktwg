@@ -50,7 +50,7 @@ export default async function ProjectPage({ params }: Props) {
         breadcrumbs={[{ label: "Projets", href: "/projets" }, { label: project.title }]}
       >
         <div className="flex flex-wrap items-center gap-3 text-sm">
-          <span className="rounded-full bg-ktgw-sun px-3 py-1 font-semibold text-ink">{statusLabels[project.status]}</span>
+          <span className={project.status === "operationnel" || project.status === "realise" ? "rounded-full bg-ktgw-green-strong px-3 py-1 font-semibold text-white" : "rounded-full bg-ktgw-sun px-3 py-1 font-semibold text-ink"}>{statusLabels[project.status]}</span>
           <span className="flex items-center gap-1.5 text-white/85">
             <MapPin aria-hidden className="size-4" />
             {project.location}

@@ -1494,7 +1494,7 @@ export type Database = {
       approval_status: "en_attente" | "approuvee" | "rejetee"
       membership_status: "aucune" | "en_attente" | "validee" | "refusee"
       membership_type: "adherent" | "membre" | "donateur"
-      project_status: "en-preparation" | "en-cours" | "realise"
+      project_status: "en-preparation" | "en-cours" | "realise" | "operationnel"
       submission_status: "nouveau" | "en_cours" | "traite" | "archive"
       user_role: "member" | "editor" | "admin" | "super_admin"
     }
@@ -1627,7 +1627,7 @@ export const Constants = {
       approval_status: ["en_attente", "approuvee", "rejetee"],
       membership_status: ["aucune", "en_attente", "validee", "refusee"],
       membership_type: ["adherent", "membre", "donateur"],
-      project_status: ["en-preparation", "en-cours", "realise"],
+      project_status: ["en-preparation", "en-cours", "realise", "operationnel"],
       submission_status: ["nouveau", "en_cours", "traite", "archive"],
       user_role: ["member", "editor", "admin", "super_admin"],
     },

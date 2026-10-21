@@ -29,7 +29,7 @@ export function ProjectCard({ project, priority }: { project: Project; priority?
         <span
           className={cn(
             "absolute top-4 left-4 rounded-full px-3 py-1 text-xs font-semibold shadow-soft",
-            project.status === "realise" ? "bg-ktgw-green-strong text-white" : "bg-ktgw-sun text-ink"
+            project.status === "realise" || project.status === "operationnel" ? "bg-ktgw-green-strong text-white" : "bg-ktgw-sun text-ink"
           )}
         >
           {statusLabels[project.status]}

@@ -1,6 +1,6 @@
 import { images, type SiteImage } from "./images";
 
-export type ProjectStatus = "en-cours" | "realise" | "en-preparation";
+export type ProjectStatus = "operationnel" | "en-cours" | "realise" | "en-preparation";
 
 export type Project = {
   slug: string;
@@ -23,6 +23,7 @@ export type Project = {
 };
 
 export const statusLabels: Record<ProjectStatus, string> = {
+  operationnel: "Opérationnel",
   "en-cours": "En cours",
   realise: "Réalisé",
   "en-preparation": "En préparation",
@@ -38,7 +39,7 @@ export const projects: Project[] = [
     title: "Internat pour jeunes filles",
     tagline: "Un toit sûr pour apprendre un métier",
     location: "Togo",
-    status: "en-cours",
+    status: "operationnel",
     image: images.ribbon,
     summary:
       "Un internat en blocs de terre comprimée pour héberger les apprenties venues de loin, afin qu'aucune jeune fille ne renonce à sa formation faute de logement.",
@@ -66,7 +67,7 @@ export const projects: Project[] = [
     title: "Centre de formation CEFOPEXD",
     tagline: "Apprendre un métier pour gagner sa vie",
     location: "Devikinme",
-    status: "en-cours",
+    status: "operationnel",
     image: images.speech,
     summary:
       "Le centre de formation de Devikinme offre aux jeunes sortis de l'école une formation professionnelle qui leur permet de gagner leur vie.",
@@ -88,7 +89,7 @@ export const projects: Project[] = [
     title: "Femmes solaires",
     tagline: "L'énergie du soleil entre les mains des femmes",
     location: "Togo",
-    status: "en-cours",
+    status: "operationnel",
     image: images.plantingWoman,
     summary:
       "Des femmes découvrent et maîtrisent la technologie solaire pour éclairer leur foyer, développer une activité et transmettre leur savoir.",

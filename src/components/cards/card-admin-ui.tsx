@@ -152,6 +152,32 @@ export function CardEditor({ cardId, userId, initial, active }: { cardId: string
   );
 }
 
+/** Bouton compact « Envoyer par e-mail » (liste des cartes). */
+export function QuickSendCard({ cardId, name }: { cardId: string; name: string }) {
+  const router = useRouter();
+  const [state, setState] = useState<"idle" | "sent" | "error">("idle");
+  const [pending, start] = useTransition();
+  return (
+    <button
+      type="button"
+      disabled={pending}
+      title={state === "error" ? "Échec de l'envoi" : undefined}
+      onClick={() =>
+        window.confirm(`Envoyer la carte de ${name} par e-mail ?`) &&
+        start(async () => {
+          const r = await sendCard(cardId);
+          setState(r.ok ? "sent" : "error");
+          router.refresh();
+        })
+      }
+      className="inline-flex h-8 items-center gap-1.5 rounded-lg border-2 border-border px-2.5 text-xs font-semibold hover:bg-muted disabled:opacity-60"
+    >
+      <Mail aria-hidden className="size-3.5" />
+      {pending ? "Envoi…" : state === "sent" ? "Envoyée ✓" : state === "error" ? "Échec" : "Envoyer"}
+    </button>
+  );
+}
+
 /** Envoi par e-mail et révocation d'une carte. */
 export function CardActions({ cardId, email, active }: { cardId: string; email: string; active: boolean }) {
   const router = useRouter();

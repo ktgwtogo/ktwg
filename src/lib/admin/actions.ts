@@ -7,6 +7,7 @@ import { sendTemplate } from "@/lib/email/send";
 import type { ActionResult } from "@/lib/member/actions";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { executeApproval, rejectApproval, requestApproval } from "./approvals";
+import { audienceText, categoryLabel, documentCategories, type DocumentCategory } from "./mailbox";
 import { audit, getStaff } from "./staff";
 
 const FORBIDDEN: ActionResult = { ok: false, error: "Cette action ne fait pas partie de votre poste." };
@@ -40,10 +41,13 @@ export async function decideMembership(applicationId: string, approve: boolean, 
 const documentSchema = z.object({
   title: z.string().trim().min(3, "Indiquez un titre.").max(160),
   description: z.string().trim().max(1000).optional(),
-  audience: z.enum(["members", "user"]),
+  body: z.string().trim().max(10000).optional(),
+  category: z.enum(documentCategories.map((c) => c.value) as [DocumentCategory, ...DocumentCategory[]]).default("document"),
+  audience: z.enum(["members", "user", "accounts"]),
   recipientId: z.string().uuid().optional(),
-  filePath: z.string().regex(/^[0-9a-f-]{36}\/[^/]+$/, "Fichier invalide."),
-  fileName: z.string().trim().min(1).max(200),
+  filePath: z.string().regex(/^[0-9a-f-]{36}\/[^/]+$/, "Fichier invalide.").optional(),
+  fileName: z.string().trim().min(1).max(200).optional(),
+  sendEmail: z.boolean().default(true),
 });
 
 /**
@@ -58,14 +62,15 @@ export async function publishDocument(raw: unknown): Promise<ActionResult & { pe
   if (!parsed.success) return { ok: false, error: parsed.error.issues[0]?.message ?? "Formulaire invalide." };
   const v = parsed.data;
   if (v.audience === "user" && !v.recipientId) return { ok: false, error: "Choisissez le ou la destinataire." };
-  const payload = { ...v, description: v.description || null };
+  if (!v.filePath && !v.body) return { ok: false, error: "Joignez un fichier ou rédigez un message." };
+  const payload = { ...v, description: v.description || null, body: v.body || null, filePath: v.filePath ?? null, fileName: v.fileName ?? null };
 
   if (!staff.presidency) {
     await requestApproval(
       staff,
       "document.publish",
-      `Document : ${v.title}`,
-      v.audience === "members" ? "Pour tous les membres validés" : "Pour une personne",
+      `${categoryLabel(v.category)} : ${v.title}`,
+      `${audienceText(v.audience)}${v.sendEmail ? " · espace membre + e-mail" : " · espace membre"}`,
       payload
     );
     refresh();
@@ -75,7 +80,7 @@ export async function publishDocument(raw: unknown): Promise<ActionResult & { pe
   const error = await executeApproval("document.publish", payload, staff.user.id);
   if (error) {
     console.error("[admin] document", error);
-    await createAdminClient().storage.from("documents").remove([v.filePath]);
+    if (v.filePath) await createAdminClient().storage.from("documents").remove([v.filePath]);
     return { ok: false, error: "La publication a échoué." };
   }
   await audit(staff, "document.publie", "documents", null, { title: v.title, audience: v.audience });
@@ -90,7 +95,7 @@ export async function deleteDocument(id: string): Promise<ActionResult> {
   const admin = createAdminClient();
   const { data: doc } = await admin.from("documents").select("file_path, title").eq("id", id).maybeSingle();
   if (!doc) return { ok: false, error: "Document introuvable." };
-  await admin.storage.from("documents").remove([doc.file_path]);
+  if (doc.file_path) await admin.storage.from("documents").remove([doc.file_path]);
   const { error } = await admin.from("documents").delete().eq("id", id);
   if (error) return { ok: false, error: "La suppression a échoué." };
   await audit(staff, "document.supprime", "documents", id, { title: doc.title });

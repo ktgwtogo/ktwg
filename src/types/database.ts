@@ -334,34 +334,43 @@ export type Database = {
       }
       documents: {
         Row: {
+          body: string | null
+          category: string
+          emailed_count: number
           audience: string
           created_at: string
           created_by: string | null
           description: string | null
-          file_name: string
-          file_path: string
+          file_name: string | null
+          file_path: string | null
           id: string
           recipient_id: string | null
           title: string
         }
         Insert: {
+          body?: string | null
+          category?: string
+          emailed_count?: number
           audience: string
           created_at?: string
           created_by?: string | null
           description?: string | null
-          file_name: string
-          file_path: string
+          file_name?: string | null
+          file_path?: string | null
           id?: string
           recipient_id?: string | null
           title: string
         }
         Update: {
+          body?: string | null
+          category?: string
+          emailed_count?: number
           audience?: string
           created_at?: string
           created_by?: string | null
           description?: string | null
-          file_name?: string
-          file_path?: string
+          file_name?: string | null
+          file_path?: string | null
           id?: string
           recipient_id?: string | null
           title?: string

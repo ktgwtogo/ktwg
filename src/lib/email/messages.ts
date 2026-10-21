@@ -239,6 +239,27 @@ export function cardMail(d: { firstName: string | null; cardNumber: string; type
   };
 }
 
+/** Document, annonce, événement… déposé dans l'espace membre : avis par e-mail. */
+export function mailboxMail(d: { category: string; title: string; description: string | null; body: string | null; hasFile: boolean }): Mail {
+  const paragraphs = [
+    d.hasFile
+      ? "Un nouveau document vous a été adressé par KTGW Togo. Il est disponible dans votre espace membre, rubrique « Documents »."
+      : "KTGW Togo vous adresse le message ci-dessous. Il est également disponible dans votre espace membre.",
+    ...(d.description ? [d.description] : []),
+    ...(d.body ? d.body.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean) : []),
+  ];
+  return {
+    subject: `${d.category} : ${short(d.title, 120)} — KTGW Togo`,
+    content: {
+      title: `${d.category} : ${short(d.title, 120)}`,
+      greeting: "Bonjour,",
+      paragraphs,
+      cta: { label: d.hasFile ? "Consulter et télécharger" : "Ouvrir mon espace", href: `${siteUrl()}/mon-espace/documents` },
+      note: "Pour des raisons de sécurité, les pièces jointes se téléchargent depuis votre espace membre, après connexion.",
+    },
+  };
+}
+
 export function staffAccountMail(name: string, position: string, email: string, password: string): Mail {
   return {
     subject: "Votre accès à l'administration — KTGW Togo",

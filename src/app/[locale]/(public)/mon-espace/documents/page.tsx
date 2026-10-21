@@ -2,6 +2,7 @@ import { Download, FileText, Lock } from "lucide-react";
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { Link, redirect } from "@/i18n/navigation";
+import { categoryLabel } from "@/lib/admin/mailbox";
 import { formatDate } from "@/lib/format";
 import { getMember } from "@/lib/member/session";
 
@@ -17,7 +18,7 @@ export default async function DocumentsPage({ params }: { params: Promise<{ loca
   // RLS : ne renvoie que les documents auxquels la personne a droit.
   const { data: documents } = await member.supabase
     .from("documents")
-    .select("id, title, description, file_name, audience, created_at")
+    .select("id, title, description, body, category, file_path, file_name, audience, created_at")
     .order("created_at", { ascending: false });
 
   const isMember = member.profile.membership_status === "validee";
@@ -25,7 +26,7 @@ export default async function DocumentsPage({ params }: { params: Promise<{ loca
   return (
     <section aria-labelledby="documents" className="flex flex-col gap-4">
       <h2 id="documents" className="text-2xl font-bold">
-        Documents officiels
+        Documents et messages de l&apos;association
       </h2>
       {!isMember && (
         <p className="flex items-start gap-3 rounded-2xl bg-muted p-5 text-sm text-muted-foreground">
@@ -47,13 +48,18 @@ export default async function DocumentsPage({ params }: { params: Promise<{ loca
               <div className="flex gap-3">
                 <FileText aria-hidden className="mt-0.5 size-6 shrink-0 text-ktgw-green" />
                 <div>
-                  <p className="font-semibold">{d.title}</p>
+                  <p className="font-semibold">
+                    <span className="mr-2 rounded-full bg-ktgw-green/10 px-2 py-0.5 text-xs text-ktgw-green-strong">{categoryLabel(d.category)}</span>
+                    {d.title}
+                  </p>
                   {d.description && <p className="text-sm text-muted-foreground">{d.description}</p>}
+                  {d.body && <p className="mt-2 text-sm whitespace-pre-line">{d.body}</p>}
                   <p className="mt-1 text-xs text-muted-foreground">
-                    {d.audience === "user" ? "Document personnel" : "Tous les membres"} · {formatDate(d.created_at, locale)}
+                    {d.audience === "user" ? "Adressé personnellement" : d.audience === "accounts" ? "Pour tous les inscrits" : "Pour tous les membres"} · {formatDate(d.created_at, locale)}
                   </p>
                 </div>
               </div>
+              {d.file_path && (
               <a
                 href={`/api/documents/${d.id}`}
                 className="inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-xl border-2 border-border px-4 text-sm font-semibold"
@@ -61,6 +67,7 @@ export default async function DocumentsPage({ params }: { params: Promise<{ loca
                 <Download aria-hidden className="size-4" />
                 Télécharger
               </a>
+              )}
             </li>
           ))}
         </ul>

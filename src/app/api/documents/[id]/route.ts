@@ -16,9 +16,9 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
   if (!user) return NextResponse.redirect(new URL("/connexion?next=/mon-espace/documents", request.url));
 
   const { data: doc } = await supabase.from("documents").select("file_path, file_name").eq("id", id).maybeSingle();
-  if (!doc) return new NextResponse("Document introuvable ou accès refusé.", { status: 404 });
+  if (!doc?.file_path) return new NextResponse("Document introuvable ou accès refusé.", { status: 404 });
 
-  const { data } = await createAdminClient().storage.from("documents").createSignedUrl(doc.file_path, 60, { download: doc.file_name });
+  const { data } = await createAdminClient().storage.from("documents").createSignedUrl(doc.file_path, 60, { download: doc.file_name ?? true });
   if (!data) return new NextResponse("Document indisponible.", { status: 500 });
   return NextResponse.redirect(data.signedUrl);
 }

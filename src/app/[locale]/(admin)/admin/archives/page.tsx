@@ -31,9 +31,13 @@ export default async function ArchivesPage({
 
   const docs = await (q ? db.from("documents").select("*").ilike("title", like) : db.from("documents").select("*")).order("created_at", { ascending: false }).limit(12);
   groups.push({
-    label: "Documents officiels",
+    label: "Documents et envois",
     icon: FileText,
-    hits: (docs.data ?? []).map((d) => ({ href: `/api/documents/${d.id}`, title: d.title, detail: d.file_name, date: d.created_at, external: true })),
+    hits: (docs.data ?? []).map((d) =>
+      d.file_path
+        ? { href: `/api/documents/${d.id}`, title: d.title, detail: d.file_name ?? "", date: d.created_at, external: true }
+        : { href: "/admin/documents", title: d.title, detail: d.description ?? "Message", date: d.created_at }
+    ),
   });
 
   if (staff.can("reports.view") || staff.can("reports.write")) {

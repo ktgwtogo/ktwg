@@ -1,6 +1,7 @@
-import { ArrowLeft, Download, FileText, HandCoins, IdCard, Receipt, UserRound } from "lucide-react";
+import { ArrowLeft, Download, FileText, HandCoins, IdCard, Receipt, Send, UserRound } from "lucide-react";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
+import { DocumentUpload } from "@/components/admin/document-upload";
 import { IssueCardButton } from "@/components/cards/card-admin-ui";
 import { Forbidden, PageHeading } from "@/components/admin/page-heading";
 import { Link, redirect } from "@/i18n/navigation";
@@ -138,7 +139,7 @@ export default async function MemberFilePage({ params }: { params: Promise<{ loc
           )}
         </Panel>
 
-        <Panel icon={FileText} title="Documents adressés personnellement">
+        <Panel icon={FileText} title="Documents et messages envoyés">
           {!documents.length ? (
             <p className="text-sm text-muted-foreground">Aucun document personnel.</p>
           ) : (
@@ -146,10 +147,14 @@ export default async function MemberFilePage({ params }: { params: Promise<{ loc
               {documents.map((d) => (
                 <li key={d.id} className="flex items-center justify-between gap-3 py-2.5 text-sm">
                   <span className="font-semibold">{d.title}</span>
-                  <a href={`/api/documents/${d.id}`} className="inline-flex items-center gap-1 text-ktgw-red">
-                    <Download aria-hidden className="size-4" />
-                    {formatDate(d.created_at, locale, "short")}
-                  </a>
+                  {d.file_path ? (
+                    <a href={`/api/documents/${d.id}`} className="inline-flex items-center gap-1 text-ktgw-red">
+                      <Download aria-hidden className="size-4" />
+                      {formatDate(d.created_at, locale, "short")}
+                    </a>
+                  ) : (
+                    <span className="text-xs text-muted-foreground">message · {formatDate(d.created_at, locale, "short")}</span>
+                  )}
                 </li>
               ))}
             </ul>
@@ -182,6 +187,17 @@ export default async function MemberFilePage({ params }: { params: Promise<{ loc
           </Panel>
         )}
       </div>
+
+      {staff.can("documents.manage") && (
+        <section className="rounded-3xl bg-card p-6 shadow-soft ring-1 ring-foreground/5">
+          <h2 className="mb-1 flex items-center gap-2 text-lg font-bold">
+            <Send aria-hidden className="size-5 text-ktgw-green" />
+            Envoyer à ce membre
+          </h2>
+          <p className="mb-4 text-sm text-muted-foreground">Document, statuts, règlement, convocation, annonce, événement… déposé dans son espace et envoyé à {p.email}.</p>
+          <DocumentUpload presidency={staff.presidency} recipient={{ id: p.id, label: `${name} (${p.email})` }} />
+        </section>
+      )}
     </>
   );
 }

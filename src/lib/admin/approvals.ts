@@ -2,7 +2,10 @@ import "server-only";
 import { revalidateTag } from "next/cache";
 import { getContentType } from "@/lib/content/config";
 import { CONTENT_TAG } from "@/lib/content/repository";
+import { mailboxMail } from "@/lib/email/messages";
 import { sendBatch, sendEmail } from "@/lib/email/send";
+import { renderEmail } from "@/lib/email/template";
+import { categoryLabel } from "./mailbox";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { audit, type Staff } from "./staff";
 
@@ -16,18 +19,44 @@ type Executor = (payload: Record<string, unknown>, requestedBy: string | null) =
 const executors: Record<string, Executor> = {
   /** Publication d'un document officiel déjà déposé dans le stockage privé. */
   "document.publish": async (p, requestedBy) => {
-    const { error } = await createAdminClient()
+    const admin = createAdminClient();
+    const audience = p.audience === "user" ? "user" : p.audience === "accounts" ? "accounts" : "members";
+    const { data: doc, error } = await admin
       .from("documents")
       .insert({
         title: String(p.title),
         description: (p.description as string | null) ?? null,
-        audience: p.audience === "user" ? "user" : "members",
-        recipient_id: p.audience === "user" ? String(p.recipientId) : null,
-        file_path: String(p.filePath),
-        file_name: String(p.fileName),
+        body: (p.body as string | null) ?? null,
+        category: String(p.category ?? "document"),
+        audience,
+        recipient_id: audience === "user" ? String(p.recipientId) : null,
+        file_path: (p.filePath as string | null) ?? null,
+        file_name: (p.fileName as string | null) ?? null,
         created_by: requestedBy,
+      })
+      .select("id")
+      .single();
+    if (error) return error.message;
+
+    // Avis par e-mail aux destinataires (en plus de la notification dans leur espace).
+    if (p.sendEmail !== false) {
+      let recipients: { email: string }[];
+      if (audience === "user") {
+        const { data } = await admin.from("profiles").select("email").eq("id", String(p.recipientId)).maybeSingle();
+        recipients = data ? [data] : [];
+      } else recipients = await resolveAudience(audience === "accounts" ? "comptes" : "membres");
+      const mail = mailboxMail({
+        category: categoryLabel(String(p.category ?? "document")),
+        title: String(p.title),
+        description: (p.description as string | null) ?? null,
+        body: (p.body as string | null) ?? null,
+        hasFile: Boolean(p.filePath),
       });
-    return error ? error.message : null;
+      const { html, text } = await renderEmail(mail.content);
+      const sent = await sendBatch(recipients.map((r) => ({ to: r.email, subject: mail.subject, text, html })));
+      await admin.from("documents").update({ emailed_count: sent }).eq("id", doc.id);
+    }
+    return null;
   },
 
   /** Création ou modification d'un contenu du site (ligne déjà validée par toRow). */
@@ -145,7 +174,7 @@ export async function resolveAudience(audience: string): Promise<{ email: string
 
 /** Libellés des types de demande, affichés dans la file de validation. */
 export const approvalKindLabels: Record<string, string> = {
-  "document.publish": "Publication d'un document",
+  "document.publish": "Envoi aux membres (document, annonce…)",
   "content.save": "Contenu du site",
   "content.delete": "Suppression d'un contenu",
   "settings.save": "Paramètres du site",

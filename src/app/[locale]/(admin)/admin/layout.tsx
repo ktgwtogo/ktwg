@@ -42,7 +42,7 @@ export default async function AdminLayout({ children, params }: { children: Reac
     ...when(staff.can("members.view"), { href: "/admin/membres", label: "Fichier des membres", icon: "members", section: "Membres" }),
     ...when(staff.can("cards.manage") || staff.can("members.view"), { href: "/admin/cartes", label: "Cartes de membre", icon: "cards", section: "Membres" }),
     ...when(staff.can("members.view"), { href: "/admin/adhesions", label: "Adhésions", icon: "memberships", badge: memberships, section: "Membres" }),
-    ...when(staff.can("documents.manage"), { href: "/admin/documents", label: "Documents officiels", icon: "documents", section: "Membres" }),
+    ...when(staff.can("documents.manage"), { href: "/admin/documents", label: "Documents et envois", icon: "documents", section: "Membres" }),
     ...when(inboxes.some((i) => staff.can(i.permission)), { href: "/admin/demandes", label: "Demandes reçues", icon: "inbox", section: "Membres" }),
     ...when(staff.can("donations.manage"), { href: "/admin/dons", label: "Dons et cotisations", icon: "donations", section: "Finances" }),
     ...when(staff.presidency, { href: "/admin/equipe", label: "Équipe et postes", icon: "team", section: "Présidence" }),

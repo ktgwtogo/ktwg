@@ -1,6 +1,7 @@
 import { ArrowLeft, Printer, ShieldCheck } from "lucide-react";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
+import { DocumentUpload } from "@/components/admin/document-upload";
 import { CardActions, CardEditor, IssueCardButton } from "@/components/cards/card-admin-ui";
 import { MemberCardView } from "@/components/cards/member-card-view";
 import { Forbidden, PageHeading } from "@/components/admin/page-heading";
@@ -94,6 +95,14 @@ export default async function CardPage({ params }: { params: Promise<{ locale: s
           )}
         </section>
       </div>
+
+      {staff.can("documents.manage") && (
+        <section className="rounded-3xl bg-card p-6 shadow-soft ring-1 ring-foreground/5">
+          <h2 className="mb-1 text-xl font-bold">Envoyer un document ou un message au titulaire</h2>
+          <p className="mb-4 text-sm text-muted-foreground">Déposé dans son espace membre et envoyé à {person?.email}.</p>
+          <DocumentUpload presidency={staff.presidency} recipient={{ id: card.user_id, label: `${card.full_name} (${person?.email ?? ""})` }} />
+        </section>
+      )}
     </>
   );
 }

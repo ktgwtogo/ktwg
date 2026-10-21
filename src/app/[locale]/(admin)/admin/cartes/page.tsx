@@ -1,5 +1,6 @@
 import { setRequestLocale } from "next-intl/server";
-import { IssueCardButton } from "@/components/cards/card-admin-ui";
+import { Pencil, Printer } from "lucide-react";
+import { IssueCardButton, QuickSendCard } from "@/components/cards/card-admin-ui";
 import { Forbidden, PageHeading } from "@/components/admin/page-heading";
 import { Link, redirect } from "@/i18n/navigation";
 import { getStaff } from "@/lib/admin/staff";
@@ -61,7 +62,7 @@ export default async function CardsPage({ params }: { params: Promise<{ locale: 
           <p className="rounded-3xl border border-dashed p-8 text-center text-muted-foreground">Aucune carte émise pour le moment.</p>
         ) : (
           <div className="overflow-x-auto rounded-3xl bg-card shadow-soft ring-1 ring-foreground/5">
-            <table className="w-full min-w-[640px] text-left text-sm">
+            <table className="w-full min-w-[860px] text-left text-sm">
               <thead className="border-b bg-muted/50 text-xs tracking-wide text-muted-foreground uppercase">
                 <tr>
                   <th scope="col" className="px-5 py-3">N° de carte</th>
@@ -69,6 +70,7 @@ export default async function CardsPage({ params }: { params: Promise<{ locale: 
                   <th scope="col" className="px-5 py-3">Qualité</th>
                   <th scope="col" className="px-5 py-3">Validité</th>
                   <th scope="col" className="px-5 py-3">État</th>
+                  <th scope="col" className="px-5 py-3">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y">
@@ -87,6 +89,21 @@ export default async function CardsPage({ params }: { params: Promise<{ locale: 
                       <td className="px-5 py-3">
                         <span className={cn("rounded-full px-2 py-0.5 text-xs font-semibold", tone)}>{label}</span>
                         {c.sent_at && <span className="ml-2 text-xs text-muted-foreground">envoyée</span>}
+                      </td>
+                      <td className="px-5 py-3">
+                        <div className="flex flex-wrap gap-1.5">
+                          <Link href={`/admin/cartes/${c.id}`} className="inline-flex h-8 items-center gap-1.5 rounded-lg bg-ktgw-green-strong px-2.5 text-xs font-semibold text-white">
+                            <Pencil aria-hidden className="size-3.5" />
+                            Voir / modifier
+                          </Link>
+                          {c.status === "active" && canManage && <QuickSendCard cardId={c.id} name={c.full_name} />}
+                          {c.status === "active" && (
+                            <a href={`/impression/carte/${c.id}`} target="_blank" rel="noopener" className="inline-flex h-8 items-center gap-1.5 rounded-lg border-2 border-border px-2.5 text-xs font-semibold hover:bg-muted">
+                              <Printer aria-hidden className="size-3.5" />
+                              PDF
+                            </a>
+                          )}
+                        </div>
                       </td>
                     </tr>
                   );

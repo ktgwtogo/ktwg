@@ -2,7 +2,7 @@ import "server-only";
 import { revalidateTag } from "next/cache";
 import { getContentType } from "@/lib/content/config";
 import { CONTENT_TAG } from "@/lib/content/repository";
-import { sendEmail } from "@/lib/email/send";
+import { sendBatch, sendEmail } from "@/lib/email/send";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { audit, type Staff } from "./staff";
 
@@ -57,7 +57,91 @@ const executors: Record<string, Executor> = {
     if (!error) revalidateTag(CONTENT_TAG);
     return error ? error.message : null;
   },
+
+  /** E-mail groupé préparé dans « Communication » : envoi individuel à chaque destinataire. */
+  "mailing.send": async (p) => {
+    const admin = createAdminClient();
+    const { data: mailing } = await admin.from("mailings").select("*").eq("id", String(p.mailingId)).maybeSingle();
+    if (!mailing || mailing.status !== "en_attente") return "Envoi introuvable ou déjà traité.";
+    const recipients = await resolveAudience(mailing.audience);
+    const sent = await sendBatch(
+      recipients.map((r) => ({
+        to: r.email,
+        subject: mailing.subject,
+        text: `${mailing.body}\n\n—\nKTGW Togo · ${site()}${
+          r.token ? `\nSe désinscrire de la newsletter : ${site()}/api/newsletter?action=unsubscribe&token=${r.token}` : ""
+        }`,
+      }))
+    );
+    await admin
+      .from("mailings")
+      .update({ status: sent > 0 || !recipients.length ? "envoye" : "echec", recipients_count: sent, sent_at: new Date().toISOString() })
+      .eq("id", mailing.id);
+    return recipients.length && !sent ? "Aucun e-mail n'a pu partir (vérifiez la clé Resend et EMAIL_FROM)." : null;
+  },
+
+  /** Rapport d'activité validé : diffusé aux postes destinataires (e-mail individuel + notification). */
+  "report.publish": async (p) => {
+    const admin = createAdminClient();
+    const { data: report } = await admin.from("reports").select("*").eq("id", String(p.reportId)).maybeSingle();
+    if (!report) return "Rapport introuvable.";
+    const { error } = await admin.from("reports").update({ status: "valide", validated_at: new Date().toISOString() }).eq("id", report.id);
+    if (error) return error.message;
+
+    let q = admin.from("profiles").select("id, email, full_name, position_id").neq("role", "member").eq("is_active", true);
+    if (report.audience.length) q = q.in("position_id", [...report.audience, "president"]);
+    const { data: readers } = await q;
+    const list = (readers ?? []).filter((r) => r.id !== report.author_id);
+    if (list.length) {
+      await admin.from("notifications").insert(
+        list.map((r) => ({ user_id: r.id, title: `Rapport : ${report.title}`, body: report.summary, link: "/admin/rapports" }))
+      );
+      await sendBatch(
+        list.map((r) => ({
+          to: r.email,
+          subject: `[KTGW] Rapport d'activité : ${report.title}`,
+          text: `Bonjour${r.full_name ? ` ${r.full_name}` : ""},\n\nUn rapport validé par la présidence est disponible${report.period ? ` (${report.period})` : ""}.\n\n${report.title}\n${report.summary}\n\nLe consulter : ${site()}/admin/rapports\n\nKTGW Togo`,
+        }))
+      );
+    }
+    return null;
+  },
 };
+
+/** Ce qui se passe quand la présidence refuse une demande (nettoyage, statut). */
+const rejecters: Record<string, (payload: Record<string, unknown>) => Promise<void>> = {
+  "document.publish": async (p) => {
+    if (p.filePath) await createAdminClient().storage.from("documents").remove([String(p.filePath)]);
+  },
+  "mailing.send": async (p) => {
+    await createAdminClient().from("mailings").update({ status: "refuse" }).eq("id", String(p.mailingId));
+  },
+  "report.publish": async (p) => {
+    await createAdminClient().from("reports").update({ status: "refuse" }).eq("id", String(p.reportId));
+  },
+};
+
+export async function rejectApproval(kind: string, payload: Record<string, unknown>) {
+  await rejecters[kind]?.(payload);
+}
+
+/** Destinataires d'un public d'e-mail groupé (avec jeton de désinscription pour la newsletter). */
+export async function resolveAudience(audience: string): Promise<{ email: string; token?: string }[]> {
+  const admin = createAdminClient();
+  if (audience === "newsletter") {
+    const { data } = await admin.from("newsletter_subscribers").select("email, token").not("confirmed_at", "is", null).is("unsubscribed_at", null);
+    return (data ?? []).map((r) => ({ email: r.email, token: r.token }));
+  }
+  let q = admin.from("profiles").select("email").eq("is_active", true);
+  if (audience === "bureau") q = q.neq("role", "member");
+  else if (audience.startsWith("membres")) {
+    q = q.eq("membership_status", "validee");
+    const type = audience.split(":")[1];
+    if (type) q = q.eq("membership_type", type as "adherent");
+  } else if (audience !== "comptes") return [];
+  const { data } = await q;
+  return [...new Set((data ?? []).map((r) => r.email))].map((email) => ({ email }));
+}
 
 /** Libellés des types de demande, affichés dans la file de validation. */
 export const approvalKindLabels: Record<string, string> = {
@@ -65,6 +149,8 @@ export const approvalKindLabels: Record<string, string> = {
   "content.save": "Contenu du site",
   "content.delete": "Suppression d'un contenu",
   "settings.save": "Paramètres du site",
+  "mailing.send": "E-mail groupé",
+  "report.publish": "Rapport d'activité",
 };
 
 const site = () => process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";

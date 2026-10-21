@@ -189,6 +189,10 @@ export type Database = {
       }
       donation_declarations: {
         Row: {
+          kind: string
+          receipt_number: string | null
+          received_at: string | null
+          recorded_by: string | null
           admin_notes: string | null
           amount_fcfa: number
           consent_at: string
@@ -207,6 +211,10 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
+          kind?: string
+          receipt_number?: string | null
+          received_at?: string | null
+          recorded_by?: string | null
           admin_notes?: string | null
           amount_fcfa: number
           consent_at?: string
@@ -225,6 +233,10 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
+          kind?: string
+          receipt_number?: string | null
+          received_at?: string | null
+          recorded_by?: string | null
           admin_notes?: string | null
           amount_fcfa?: number
           consent_at?: string
@@ -353,6 +365,42 @@ export type Database = {
           id?: string
           recipient_id?: string | null
           title?: string
+        }
+        Relationships: []
+      }
+      mailings: {
+        Row: {
+          audience: string
+          body: string
+          created_at: string
+          created_by: string | null
+          id: string
+          recipients_count: number
+          sent_at: string | null
+          status: string
+          subject: string
+        }
+        Insert: {
+          audience: string
+          body: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          recipients_count?: number
+          sent_at?: string | null
+          status?: string
+          subject: string
+        }
+        Update: {
+          audience?: string
+          body?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          recipients_count?: number
+          sent_at?: string | null
+          status?: string
+          subject?: string
         }
         Relationships: []
       }
@@ -1042,6 +1090,57 @@ export type Database = {
         Update: { hit_at?: string; key?: string }
         Relationships: []
       }
+      reports: {
+        Row: {
+          audience: string[]
+          author_id: string | null
+          body: string
+          category: string
+          created_at: string
+          file_name: string | null
+          file_path: string | null
+          id: string
+          period: string
+          status: string
+          summary: string
+          title: string
+          updated_at: string
+          validated_at: string | null
+        }
+        Insert: {
+          audience?: string[]
+          author_id?: string | null
+          body?: string
+          category?: string
+          created_at?: string
+          file_name?: string | null
+          file_path?: string | null
+          id?: string
+          period?: string
+          status?: string
+          summary?: string
+          title: string
+          updated_at?: string
+          validated_at?: string | null
+        }
+        Update: {
+          audience?: string[]
+          author_id?: string | null
+          body?: string
+          category?: string
+          created_at?: string
+          file_name?: string | null
+          file_path?: string | null
+          id?: string
+          period?: string
+          status?: string
+          summary?: string
+          title?: string
+          updated_at?: string
+          validated_at?: string | null
+        }
+        Relationships: []
+      }
       role_invitations: {
         Row: {
           created_at: string
@@ -1207,6 +1306,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      my_position: { Args: never; Returns: string }
       has_permission: { Args: { p_permission: string }; Returns: boolean }
       decide_membership: {
         Args: { p_application_id: string; p_approve: boolean; p_note?: string }

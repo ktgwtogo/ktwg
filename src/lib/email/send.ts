@@ -13,6 +13,38 @@ export const teamRecipients = () =>
     .filter(Boolean);
 
 /**
+ * Envoi groupé : un e-mail individuel par destinataire (personne ne voit les autres adresses),
+ * par lots de 100 via l'API batch de Resend. Renvoie le nombre d'e-mails acceptés.
+ */
+export async function sendBatch(messages: { to: string; subject: string; text: string }[]): Promise<number> {
+  const apiKey = process.env.RESEND_API_KEY;
+  const from = process.env.EMAIL_FROM;
+  if (!apiKey || !from || !messages.length) return 0;
+  let sent = 0;
+  for (let i = 0; i < messages.length; i += 100) {
+    const chunk = messages.slice(i, i + 100).map((m) => ({
+      from: `KTGW Togo <${from}>`,
+      to: [m.to],
+      subject: m.subject,
+      text: m.text,
+      html: `<div style="font-family:Arial,sans-serif;font-size:15px;line-height:1.6;color:#1a1a1a;white-space:pre-wrap">${escapeHtml(m.text)}</div>`,
+    }));
+    try {
+      const res = await fetch("https://api.resend.com/emails/batch", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+        body: JSON.stringify(chunk),
+      });
+      if (res.ok) sent += chunk.length;
+      else console.error("[email] lot refusé par Resend", res.status, await res.text());
+    } catch (error) {
+      console.error("[email] lot impossible", error);
+    }
+  }
+  return sent;
+}
+
+/**
  * Envoie un e-mail via l'API Resend. Sans RESEND_API_KEY, n'envoie rien et renvoie false.
  * Une erreur d'envoi n'interrompt jamais l'enregistrement d'une demande.
  */

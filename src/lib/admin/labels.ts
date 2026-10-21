@@ -18,6 +18,14 @@ const auditLabels: Record<string, string> = {
   "contenu.modifie": "a modifié un contenu du site",
   "contenu.supprime": "a supprimé un contenu du site",
   "parametre.modifie": "a modifié les paramètres du site",
+  "demande.traitee": "a traité une demande reçue",
+  "don.confirme": "a confirmé un paiement",
+  "don.rejete": "a écarté une déclaration de don",
+  "don.saisi": "a saisi un don ou une cotisation",
+  "envoi.groupe": "a envoyé un e-mail groupé",
+  "rapport.soumis": "a soumis un rapport",
+  "rapport.diffuse": "a diffusé un rapport au bureau",
+  export: "a exporté des données (Excel)",
 };
 
 export const auditLabel = (action: string) => auditLabels[action] ?? action;

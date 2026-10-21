@@ -5,7 +5,7 @@ import { z } from "zod";
 import { sendEmail } from "@/lib/email/send";
 import type { ActionResult } from "@/lib/member/actions";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { executeApproval, requestApproval } from "./approvals";
+import { executeApproval, rejectApproval, requestApproval } from "./approvals";
 import { audit, getStaff } from "./staff";
 
 const FORBIDDEN: ActionResult = { ok: false, error: "Cette action ne fait pas partie de votre poste." };
@@ -120,10 +120,9 @@ export async function decideApproval(id: string, approve: boolean, note: string)
       console.error("[admin] exécution validation", error);
       return { ok: false, error: "L'action validée n'a pas pu être exécutée. Réessayez." };
     }
-  } else if (req.kind === "document.publish") {
-    // Refus : le fichier déposé n'est pas conservé.
-    const path = (req.payload as { filePath?: string }).filePath;
-    if (path) await admin.storage.from("documents").remove([path]);
+  } else {
+    // Refus : nettoyage propre au type (fichier non conservé, envoi annulé, rapport refusé…).
+    await rejectApproval(req.kind, req.payload as Record<string, unknown>);
   }
 
   await admin

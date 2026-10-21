@@ -14,6 +14,48 @@ export type Database = {
   }
   public: {
     Tables: {
+      announcements: {
+        Row: {
+          body: string
+          created_at: string
+          ends_at: string | null
+          id: string
+          link_label: string | null
+          link_url: string | null
+          published: boolean
+          starts_at: string
+          title: string
+          tone: string
+          updated_at: string
+        }
+        Insert: {
+          body?: string
+          created_at?: string
+          ends_at?: string | null
+          id?: string
+          link_label?: string | null
+          link_url?: string | null
+          published?: boolean
+          starts_at?: string
+          title: string
+          tone?: string
+          updated_at?: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          ends_at?: string | null
+          id?: string
+          link_label?: string | null
+          link_url?: string | null
+          published?: boolean
+          starts_at?: string
+          title?: string
+          tone?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       approval_requests: {
         Row: {
           created_at: string

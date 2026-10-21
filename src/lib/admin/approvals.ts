@@ -1,4 +1,7 @@
 import "server-only";
+import { revalidateTag } from "next/cache";
+import { getContentType } from "@/lib/content/config";
+import { CONTENT_TAG } from "@/lib/content/repository";
 import { sendEmail } from "@/lib/email/send";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { audit, type Staff } from "./staff";
@@ -26,11 +29,32 @@ const executors: Record<string, Executor> = {
       });
     return error ? error.message : null;
   },
+
+  /** Création ou modification d'un contenu du site (ligne déjà validée par toRow). */
+  "content.save": async (p) => {
+    const type = getContentType(String(p.type));
+    if (!type) return "Type de contenu inconnu.";
+    const db = createAdminClient().from(type.table as "posts");
+    const row = p.row as never;
+    const { error } = p.id ? await db.update(row).eq("id", String(p.id)) : await db.insert(row);
+    if (!error) revalidateTag(CONTENT_TAG);
+    return error ? error.message : null;
+  },
+
+  "content.delete": async (p) => {
+    const type = getContentType(String(p.type));
+    if (!type) return "Type de contenu inconnu.";
+    const { error } = await createAdminClient().from(type.table as "posts").delete().eq("id", String(p.id));
+    if (!error) revalidateTag(CONTENT_TAG);
+    return error ? error.message : null;
+  },
 };
 
 /** Libellés des types de demande, affichés dans la file de validation. */
 export const approvalKindLabels: Record<string, string> = {
   "document.publish": "Publication d'un document",
+  "content.save": "Contenu du site",
+  "content.delete": "Suppression d'un contenu",
 };
 
 const site = () => process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";

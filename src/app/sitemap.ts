@@ -1,7 +1,5 @@
 import type { MetadataRoute } from "next";
-import { events } from "@/content/events";
-import { posts } from "@/content/news";
-import { projects } from "@/content/projects";
+import { getEvents, getPosts, getProjects } from "@/lib/content/repository";
 import { routing } from "@/i18n/routing";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
@@ -36,7 +34,8 @@ function entry(path: string, lastModified?: string): MetadataRoute.Sitemap[numbe
   };
 }
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const [projects, posts, events] = await Promise.all([getProjects(), getPosts(), getEvents()]);
   return [
     ...staticPaths.map((p) => entry(p)),
     ...projects.map((p) => entry(`/projets/${p.slug}`)),

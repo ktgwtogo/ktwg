@@ -7,12 +7,13 @@ import { Section } from "@/components/shared/section";
 import { SectionTitle } from "@/components/shared/section-title";
 import { images } from "@/content/images";
 import { cities } from "@/content/organization";
-import { testimonials } from "@/content/testimonials";
+import { getTestimonials } from "@/lib/content/repository";
 import { PresenceMap } from "./presence-map";
 import { TestimonialsCarousel } from "./testimonials-carousel";
 
 /** Impact & témoignages : photo de groupe + carrousel. */
-export function ImpactTestimonials() {
+export async function ImpactTestimonials() {
+  const testimonials = await getTestimonials();
   return (
     <section aria-labelledby="impact-title" className="relative isolate overflow-hidden bg-ink py-16 text-white sm:py-24">
       <Image src={images.workersGroup.src} alt="" fill sizes="100vw" className="-z-20 object-cover opacity-25 blur-[2px]" />

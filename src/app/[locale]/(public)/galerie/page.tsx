@@ -3,7 +3,7 @@ import { setRequestLocale } from "next-intl/server";
 import { GalleryGrid } from "@/components/sections/gallery-grid";
 import { PageHeader } from "@/components/shared/page-header";
 import { Section } from "@/components/shared/section";
-import { gallery } from "@/content/gallery";
+import { getGallery } from "@/lib/content/repository";
 import { images } from "@/content/images";
 
 export const metadata: Metadata = {
@@ -25,7 +25,7 @@ export default async function GalleryPage({ params }: { params: Promise<{ locale
         breadcrumbs={[{ label: "À propos", href: "/a-propos" }, { label: "Galerie" }]}
       />
       <Section>
-        <GalleryGrid items={gallery} />
+        <GalleryGrid items={await getGallery()} />
       </Section>
     </>
   );

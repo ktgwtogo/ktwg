@@ -6,20 +6,21 @@ import { EventRegistrationForm } from "@/components/forms/other-forms";
 import { SampleBadge } from "@/components/shared/badges";
 import { PageHeader } from "@/components/shared/page-header";
 import { Section } from "@/components/shared/section";
-import { events, getEvent } from "@/content/events";
+import { getEvent, getEvents } from "@/lib/content/repository";
 import { routing } from "@/i18n/routing";
 import { formatDate, formatTime } from "@/lib/format";
 import { icsDataUri } from "@/lib/ics";
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  const events = await getEvents();
   return routing.locales.flatMap((locale) => events.map((e) => ({ locale, slug: e.slug })));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const event = getEvent(slug);
+  const event = await getEvent(slug);
   if (!event) return {};
   return { title: event.title, description: event.summary, openGraph: { images: [{ url: event.image.src, alt: event.image.alt }] } };
 }
@@ -27,7 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function EventPage({ params }: Props) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
-  const event = getEvent(slug);
+  const event = await getEvent(slug);
   if (!event) notFound();
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";

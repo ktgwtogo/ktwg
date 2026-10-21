@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { AdminShell, type AdminNavItem } from "@/components/admin/admin-shell";
 import { redirect } from "@/i18n/navigation";
 import { getStaff } from "@/lib/admin/staff";
+import { canEdit, contentTypes } from "@/lib/content/config";
 
 /** Pages personnelles : toujours rendues à la demande, jamais mises en cache. */
 export const dynamic = "force-dynamic";
@@ -31,6 +32,9 @@ export default async function AdminLayout({ children, params }: { children: Reac
   const items: AdminNavItem[] = [
     { href: "/admin", label: "Vue d'ensemble", icon: "overview", section: "Pilotage" },
     { href: "/admin/validations", label: staff.presidency ? "Validations" : "Mes demandes", icon: "approvals", badge: approvals, section: "Pilotage" },
+    ...(contentTypes.some((t) => canEdit(t, staff.can))
+      ? [{ href: "/admin/contenus", label: "Contenus du site", icon: "content", section: "Site web" } as const]
+      : []),
     ...(staff.can("members.view") ? [{ href: "/admin/adhesions", label: "Adhésions", icon: "memberships", badge: memberships, section: "Membres" } as const] : []),
     ...(staff.can("documents.manage") ? [{ href: "/admin/documents", label: "Documents officiels", icon: "documents", section: "Membres" } as const] : []),
     ...(staff.presidency

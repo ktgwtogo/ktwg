@@ -8,7 +8,7 @@ import { Reveal } from "@/components/shared/reveal";
 import { Section } from "@/components/shared/section";
 import { SectionTitle } from "@/components/shared/section-title";
 import { images } from "@/content/images";
-import { partners } from "@/content/partners";
+import { getPartners } from "@/lib/content/repository";
 
 export const metadata: Metadata = {
   title: "Devenir partenaire",
@@ -90,7 +90,7 @@ export default async function PartnershipPage({ params }: { params: Promise<{ lo
             <div className="rounded-2xl bg-accent p-6">
               <h3 className="mb-4 font-bold">Ils sont déjà à nos côtés</h3>
               <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-                {partners.map((p) => (
+                {(await getPartners()).map((p) => (
                   <li key={p.name} className="flex items-center gap-3">
                     <PartnerMark partner={p} className="size-10 rounded-xl text-[10px]" />
                     <span className="text-sm font-semibold">{p.name}</span>

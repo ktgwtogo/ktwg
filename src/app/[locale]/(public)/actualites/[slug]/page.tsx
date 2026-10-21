@@ -8,19 +8,20 @@ import { ButtonLink } from "@/components/ui/button-link";
 import { PostCard } from "@/components/shared/cards";
 import { PageHeader } from "@/components/shared/page-header";
 import { Section } from "@/components/shared/section";
-import { getPost, posts } from "@/content/news";
+import { getPost, getPosts } from "@/lib/content/repository";
 import { routing } from "@/i18n/routing";
 import { formatDate } from "@/lib/format";
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  const posts = await getPosts();
   return routing.locales.flatMap((locale) => posts.map((p) => ({ locale, slug: p.slug })));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const post = getPost(slug);
+  const post = await getPost(slug);
   if (!post) return {};
   return {
     title: post.title,
@@ -32,7 +33,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function PostPage({ params }: Props) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
-  const post = getPost(slug);
+  const post = await getPost(slug);
   if (!post) notFound();
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
@@ -111,7 +112,7 @@ export default async function PostPage({ params }: Props) {
           À lire aussi
         </h2>
         <ul className="grid gap-6 sm:grid-cols-2">
-          {posts
+          {(await getPosts())
             .filter((p) => p.slug !== post.slug)
             .slice(0, 2)
             .map((p) => (

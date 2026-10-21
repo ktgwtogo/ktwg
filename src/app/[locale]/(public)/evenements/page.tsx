@@ -4,7 +4,7 @@ import { EventCard } from "@/components/shared/cards";
 import { PageHeader } from "@/components/shared/page-header";
 import { Section } from "@/components/shared/section";
 import { SectionTitle } from "@/components/shared/section-title";
-import { pastEvents, upcomingEvents } from "@/content/events";
+import { pastEvents, upcomingEvents } from "@/lib/content/repository";
 import { images } from "@/content/images";
 
 export const metadata: Metadata = {
@@ -18,8 +18,7 @@ export const revalidate = 3600;
 export default async function EventsPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const upcoming = upcomingEvents();
-  const past = pastEvents();
+  const [upcoming, past] = await Promise.all([upcomingEvents(), pastEvents()]);
 
   return (
     <>

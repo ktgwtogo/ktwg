@@ -14,6 +14,9 @@ const auditLabels: Record<string, string> = {
   "poste.attribue": "a attribué un poste",
   "poste.enregistre": "a enregistré un poste",
   "poste.supprime": "a supprimé un poste",
+  "contenu.cree": "a créé un contenu du site",
+  "contenu.modifie": "a modifié un contenu du site",
+  "contenu.supprime": "a supprimé un contenu du site",
 };
 
 export const auditLabel = (action: string) => auditLabels[action] ?? action;

@@ -9,19 +9,21 @@ import { ProjectCard } from "@/components/shared/cards";
 import { PageHeader } from "@/components/shared/page-header";
 import { Section } from "@/components/shared/section";
 import { SectionTitle } from "@/components/shared/section-title";
-import { getProject, projects, statusLabels } from "@/content/projects";
+import { statusLabels } from "@/content/projects";
+import { getProject, getProjects } from "@/lib/content/repository";
 import { routing } from "@/i18n/routing";
 import { formatDate } from "@/lib/format";
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  const projects = await getProjects();
   return routing.locales.flatMap((locale) => projects.map((p) => ({ locale, slug: p.slug })));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const project = getProject(slug);
+  const project = await getProject(slug);
   if (!project) return {};
   return {
     title: project.title,
@@ -33,10 +35,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ProjectPage({ params }: Props) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
-  const project = getProject(slug);
+  const project = await getProject(slug);
   if (!project) notFound();
 
-  const others = projects.filter((p) => p.slug !== project.slug);
+  const others = (await getProjects()).filter((p) => p.slug !== project.slug);
 
   return (
     <>

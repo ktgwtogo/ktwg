@@ -7,7 +7,7 @@ import { PostCard } from "@/components/shared/cards";
 import { PageHeader } from "@/components/shared/page-header";
 import { Section } from "@/components/shared/section";
 import { images } from "@/content/images";
-import { posts } from "@/content/news";
+import { getPosts } from "@/lib/content/repository";
 import { Link } from "@/i18n/navigation";
 import { formatDate } from "@/lib/format";
 
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 export default async function NewsPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const [featured, ...rest] = posts;
+  const [featured, ...rest] = await getPosts();
 
   return (
     <>

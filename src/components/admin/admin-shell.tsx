@@ -9,6 +9,7 @@ import {
   LayoutDashboard,
   LogOut,
   Menu,
+  Newspaper,
   UserRound,
   UsersRound,
   X,
@@ -21,6 +22,7 @@ import { cn } from "@/lib/utils";
 const icons = {
   overview: LayoutDashboard,
   approvals: ClipboardCheck,
+  content: Newspaper,
   memberships: BadgeCheck,
   documents: FileText,
   team: UsersRound,

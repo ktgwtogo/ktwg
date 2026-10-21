@@ -8,7 +8,7 @@ import { Reveal } from "@/components/shared/reveal";
 import { Section } from "@/components/shared/section";
 import { SectionTitle } from "@/components/shared/section-title";
 import { images } from "@/content/images";
-import { projects } from "@/content/projects";
+import { getProjects } from "@/lib/content/repository";
 
 export const metadata: Metadata = {
   title: "Nos projets",
@@ -41,7 +41,7 @@ export default async function ProjectsPage({ params }: { params: Promise<{ local
           Liste des projets
         </h2>
         <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {projects.map((p, i) => (
+          {(await getProjects()).map((p, i) => (
             <li key={p.slug} className={i === 2 ? "sm:col-span-2 lg:col-span-1" : undefined}>
               <Reveal delay={i * 100} className="h-full">
                 <ProjectCard project={p} priority={i === 0} />

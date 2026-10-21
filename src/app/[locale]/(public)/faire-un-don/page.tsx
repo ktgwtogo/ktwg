@@ -8,7 +8,7 @@ import { Section } from "@/components/shared/section";
 import { SectionTitle } from "@/components/shared/section-title";
 import { siteConfig, whatsappUrl } from "@/config/site";
 import { images } from "@/content/images";
-import { getProject } from "@/content/projects";
+import { getProject } from "@/lib/content/repository";
 
 export const metadata: Metadata = {
   title: "Faire un don",
@@ -22,7 +22,7 @@ export default async function DonatePage({ params, searchParams }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
   const { projet } = await searchParams;
-  const project = projet ? getProject(projet) : undefined;
+  const project = projet ? await getProject(projet) : undefined;
   const phone = siteConfig.togo.phones[0];
 
   return (

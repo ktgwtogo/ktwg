@@ -18,18 +18,17 @@ import { Reveal } from "@/components/shared/reveal";
 import { Section } from "@/components/shared/section";
 import { SectionTitle } from "@/components/shared/section-title";
 import { StatCounter } from "@/components/shared/stat-counter";
-import { upcomingEvents } from "@/content/events";
 import { images } from "@/content/images";
-import { posts } from "@/content/news";
 import { domains, keyFigures, objectives } from "@/content/organization";
-import { partners } from "@/content/partners";
-import { projects } from "@/content/projects";
+import type { Partner } from "@/content/partners";
+import { getPartners, getPosts, getProjects, upcomingEvents } from "@/lib/content/repository";
 import { Link } from "@/i18n/navigation";
 
 const figureIcons = { sprout: Sprout, map: MapPinned, target: Target, home: Home, handshake: Handshake, globe: Globe2 };
 
 /** Bandeau des chiffres clés (compteurs animés). */
-export function StatsBand() {
+export async function StatsBand() {
+  const partners = await getPartners();
   return (
     <section id="chiffres-cles" aria-labelledby="stats-title" className="relative bg-ktgw-green-dark py-16 text-white sm:py-20">
       <h2 id="stats-title" className="sr-only">
@@ -160,7 +159,8 @@ export function DomainsGrid() {
 }
 
 /** Projets phares. */
-export function FeaturedProjects() {
+export async function FeaturedProjects() {
+  const projects = await getProjects();
   return (
     <Section aria-labelledby="projects-title">
       <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
@@ -227,8 +227,8 @@ export function ObjectivesPreview() {
 }
 
 /** Prochains événements. */
-export function UpcomingEvents() {
-  const list = upcomingEvents().slice(0, 3);
+export async function UpcomingEvents() {
+  const list = (await upcomingEvents()).slice(0, 3);
   return (
     <Section aria-labelledby="events-title">
       <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
@@ -258,7 +258,8 @@ export function UpcomingEvents() {
 }
 
 /** Dernières actualités. */
-export function LatestNews() {
+export async function LatestNews() {
+  const posts = await getPosts();
   return (
     <Section tone="muted" aria-labelledby="news-title">
       <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
@@ -282,7 +283,8 @@ export function LatestNews() {
 }
 
 /** Partenaires : défilement infini + appel à partenariat. */
-export function PartnersSection() {
+export async function PartnersSection() {
+  const partners = await getPartners();
   const loop = [...partners, ...partners];
   return (
     <section aria-labelledby="partners-title" className="overflow-hidden py-16 sm:py-24">
@@ -338,7 +340,7 @@ export function PartnersSection() {
   );
 }
 
-function PartnerChip({ partner, tabbable }: { partner: (typeof partners)[number]; tabbable: boolean }) {
+function PartnerChip({ partner, tabbable }: { partner: Partner; tabbable: boolean }) {
   const content = (
     <>
       <PartnerMark partner={partner} />

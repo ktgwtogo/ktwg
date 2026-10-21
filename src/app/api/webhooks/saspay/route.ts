@@ -51,7 +51,8 @@ const lastDigits = (phone: string | null | undefined) => (phone ?? "").replace(/
 /**
  * Paiement reçu par le lien SasPay (bouton « Payer maintenant » de la page Faire un don) :
  * le don est enregistré automatiquement comme encaissé, et son reçu généré (envoi au donateur après contrôle).
- * Si le donateur a déjà déclaré ce don (même numéro et même montant), sa déclaration est complétée.
+ * Si le donateur a déjà déclaré ce don (même numéro et même montant), sa déclaration est complétée ;
+ * sinon, le don est rattaché au compte du site dont le numéro de téléphone correspond (dossier, « Mes reçus »).
  */
 export async function POST(request: Request) {
   const secret = process.env.SASPAY_WEBHOOK_SECRET;
@@ -101,6 +102,20 @@ export async function POST(request: Request) {
   const digits = lastDigits(t.msisdn);
   const match = digits ? (candidates ?? []).find((c) => lastDigits(c.phone) === digits) : undefined;
 
+  // Sans déclaration : compte du site dont le téléphone ou le WhatsApp correspond (un seul compte, sinon ambigu).
+  let account: { id: string; email: string; name: string } | null = null;
+  if (!match && digits) {
+    const { data: people } = await admin
+      .from("profiles")
+      .select("id, email, full_name, first_name, last_name, phone, whatsapp")
+      .or("phone.not.is.null,whatsapp.not.is.null");
+    const found = (people ?? []).filter((p) => lastDigits(p.phone) === digits || lastDigits(p.whatsapp) === digits);
+    if (found.length === 1) {
+      const p = found[0];
+      account = { id: p.id, email: p.email, name: [p.first_name, p.last_name].filter(Boolean).join(" ") || p.full_name || p.email };
+    }
+  }
+
   let id: string;
   if (match) {
     const { error } = await admin
@@ -114,8 +129,9 @@ export async function POST(request: Request) {
       .from("donation_declarations")
       .insert({
         kind: "don",
-        name: "Donateur Mobile Money",
-        email: NO_EMAIL,
+        name: account?.name ?? "Donateur Mobile Money",
+        email: account?.email ?? NO_EMAIL,
+        user_id: account?.id ?? null,
         phone: t.msisdn ? `+${t.msisdn.replace(/\D/g, "")}` : null,
         amount_fcfa: amount,
         method,
@@ -135,13 +151,13 @@ export async function POST(request: Request) {
     action: "don.saspay",
     entity: "donation_declarations",
     entity_id: id,
-    details: { title: `${amount} FCFA`, reference: t.reference, matched: Boolean(match) },
+    details: { title: `${amount} FCFA`, reference: t.reference, matched: Boolean(match), account: account?.id ?? null },
   });
   const site = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.ktgw.tg";
   await sendEmail({
     to: teamRecipients(),
     subject: `[Site KTGW] Don reçu par SasPay : ${amount.toLocaleString("fr-FR")} FCFA`,
-    text: `Un paiement de ${amount.toLocaleString("fr-FR")} FCFA (${method}) vient d'être reçu par le lien SasPay${t.msisdn ? ` depuis le +${t.msisdn}` : ""}.\n${match ? "Il correspond à une déclaration faite sur le site, qui a été complétée." : "Aucune déclaration correspondante : le don est enregistré au nom de « Donateur Mobile Money »."}\n\nLe reçu est généré : vérifiez-le puis envoyez-le ici : ${site}/admin/dons/recu/${id}`,
+    text: `Un paiement de ${amount.toLocaleString("fr-FR")} FCFA (${method}) vient d'être reçu par le lien SasPay${t.msisdn ? ` depuis le +${t.msisdn}` : ""}.\n${match ? "Il correspond à une déclaration faite sur le site, qui a été complétée." : account ? `Le numéro correspond au compte de ${account.name} : le don est rattaché à son dossier.` : "Aucune déclaration ni aucun compte ne correspond à ce numéro : le don est enregistré au nom de « Donateur Mobile Money »."}\n\nLe reçu est généré : vérifiez-le puis envoyez-le ici : ${site}/admin/dons/recu/${id}`,
   });
   revalidatePath("/[locale]/admin", "layout");
   return Response.json({ ok: true, id });

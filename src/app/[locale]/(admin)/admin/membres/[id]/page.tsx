@@ -170,6 +170,20 @@ export default async function MemberFilePage({ params }: { params: Promise<{ loc
 
         {staff.can("donations.manage") && (
           <Panel icon={HandCoins} title="Dons et cotisations">
+            {payments.some((d) => d.status === "traite") && (
+              <dl className="mb-3 grid grid-cols-3 gap-2 text-center">
+                {[
+                  ["Dons", payments.filter((d) => d.status === "traite" && d.kind === "don").reduce((s, d) => s + d.amount_fcfa, 0)],
+                  ["Cotisations", payments.filter((d) => d.status === "traite" && d.kind === "cotisation").reduce((s, d) => s + d.amount_fcfa, 0)],
+                  [`En ${new Date().getFullYear()}`, payments.filter((d) => d.status === "traite" && d.kind !== "nature" && (d.received_at ?? "").startsWith(String(new Date().getFullYear()))).reduce((s, d) => s + d.amount_fcfa, 0)],
+                ].map(([label, value]) => (
+                  <div key={label} className="rounded-xl bg-ktgw-green/10 p-2">
+                    <dt className="text-xs text-muted-foreground">{label}</dt>
+                    <dd className="text-sm font-bold text-ktgw-green-strong">{value.toLocaleString("fr-FR")} FCFA</dd>
+                  </div>
+                ))}
+              </dl>
+            )}
             {!payments.length ? (
               <p className="text-sm text-muted-foreground">Aucun paiement enregistré.</p>
             ) : (
@@ -177,7 +191,7 @@ export default async function MemberFilePage({ params }: { params: Promise<{ loc
                 {payments.map((d) => (
                   <li key={d.id} className="flex items-center justify-between gap-3 py-2.5 text-sm">
                     <span>
-                      <strong>{d.amount_fcfa.toLocaleString("fr-FR")} FCFA</strong> · {d.kind} · {formatDate(d.received_at ?? d.created_at, locale, "short")}
+                      <strong>{d.amount_fcfa.toLocaleString("fr-FR")} FCFA</strong> · {d.kind} · {d.method} · {formatDate(d.received_at ?? d.created_at, locale, "short")}
                     </span>
                     {d.receipt_number ? (
                       <a href={`/impression/recu/${d.id}`} target="_blank" rel="noopener" className="inline-flex items-center gap-1 text-ktgw-red">

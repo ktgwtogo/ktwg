@@ -30,6 +30,25 @@ export default async function MyReceiptsPage({ params }: { params: Promise<{ loc
       <h2 id="recus" className="text-2xl font-bold">
         Mes dons, cotisations et reçus
       </h2>
+      {rows?.some((d) => d.status === "traite") && (
+        <dl className="grid gap-3 sm:grid-cols-3">
+          {[
+            ["Total de mes dons", rows.filter((d) => d.status === "traite" && d.kind === "don").reduce((s, d) => s + d.amount_fcfa, 0)],
+            ["Total de mes cotisations", rows.filter((d) => d.status === "traite" && d.kind === "cotisation").reduce((s, d) => s + d.amount_fcfa, 0)],
+            [
+              `Versé en ${new Date().getFullYear()}`,
+              rows
+                .filter((d) => d.status === "traite" && d.kind !== "nature" && (d.received_at ?? "").startsWith(String(new Date().getFullYear())))
+                .reduce((s, d) => s + d.amount_fcfa, 0),
+            ],
+          ].map(([label, value]) => (
+            <div key={label} className="rounded-2xl bg-ktgw-green/10 p-4">
+              <dt className="text-sm text-muted-foreground">{label}</dt>
+              <dd className="text-xl font-extrabold text-ktgw-green-strong">{value.toLocaleString("fr-FR")} FCFA</dd>
+            </div>
+          ))}
+        </dl>
+      )}
       {!rows?.length ? (
         <div className="flex flex-col items-center gap-3 rounded-3xl border border-dashed p-8 text-center text-muted-foreground">
           <p>Aucun don ni cotisation enregistré pour le moment.</p>

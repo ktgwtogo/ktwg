@@ -1,11 +1,11 @@
 "use client";
 
-import { Check, Plus, Printer, Save, X } from "lucide-react";
+import { Check, Plus, Printer, Save, Send, X } from "lucide-react";
 import { useState, useTransition } from "react";
 import { ServerError } from "@/components/forms/fields";
 import { Button } from "@/components/ui/button";
 import { donationMethods, submissionStatuses } from "@/lib/admin/records";
-import { confirmDonation, recordPayment, updateSubmission } from "@/lib/admin/records-actions";
+import { confirmDonation, recordPayment, resendReceipt, updateSubmission } from "@/lib/admin/records-actions";
 
 const input =
   "h-10 w-full rounded-xl border border-input bg-card px-3 text-sm outline-none focus-visible:border-ktgw-orange focus-visible:ring-3 focus-visible:ring-ktgw-sun/40";
@@ -80,6 +80,7 @@ export function DonationActions({ id }: { id: string }) {
 
 /** Saisie d'un don ou d'une cotisation reçus directement. */
 export function PaymentForm() {
+  const [kind, setKind] = useState("cotisation");
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState(false);
   const [pending, start] = useTransition();
@@ -95,6 +96,7 @@ export function PaymentForm() {
       if (!r.ok) return setError(r.error);
       setDone(true);
       form.reset();
+      setKind("cotisation");
     });
   };
 
@@ -103,14 +105,15 @@ export function PaymentForm() {
       <div className="grid gap-3 sm:grid-cols-2">
         <label className="flex flex-col gap-1 text-xs font-semibold">
           Nature
-          <select name="kind" className={input} defaultValue="cotisation">
-            <option value="cotisation">Cotisation</option>
-            <option value="don">Don</option>
+          <select name="kind" className={input} value={kind} onChange={(e) => setKind(e.target.value)}>
+            <option value="cotisation">Cotisation (adhésion)</option>
+            <option value="don">Don en argent</option>
+            <option value="nature">Don en nature (objets, matériel…)</option>
           </select>
         </label>
         <label className="flex flex-col gap-1 text-xs font-semibold">
-          Montant (FCFA)
-          <input name="amount" type="number" min={1} required className={input} />
+          {kind === "nature" ? "Valeur estimée en FCFA (facultatif)" : "Montant (FCFA)"}
+          <input name="amount" type="number" min={kind === "nature" ? 0 : 1} required={kind !== "nature"} className={input} />
         </label>
         <label className="flex flex-col gap-1 text-xs font-semibold">
           Nom
@@ -141,8 +144,14 @@ export function PaymentForm() {
           <input name="project" className={input} />
         </label>
       </div>
+      {kind === "nature" && (
+        <label className="flex flex-col gap-1 text-xs font-semibold">
+          Objets / matériel reçus (quantités, état…)
+          <textarea name="items" required rows={3} className={`${input} h-auto py-2`} />
+        </label>
+      )}
       <ServerError message={error} />
-      {done && <p className="text-sm font-semibold text-ktgw-green-strong">Paiement enregistré : le reçu est disponible dans la liste.</p>}
+      {done && <p className="text-sm font-semibold text-ktgw-green-strong">Enregistré : le reçu est généré, envoyé par e-mail et disponible dans la liste.</p>}
       <div>
         <Button type="submit" size="lg" disabled={pending}>
           <Plus aria-hidden />
@@ -150,6 +159,29 @@ export function PaymentForm() {
         </Button>
       </div>
     </form>
+  );
+}
+
+/** Renvoie le reçu par e-mail et dans l'espace de la personne. */
+export function ResendReceiptButton({ id }: { id: string }) {
+  const [state, setState] = useState<"idle" | "ok" | "ko">("idle");
+  const [pending, start] = useTransition();
+  return (
+    <button
+      type="button"
+      disabled={pending}
+      title={state === "ko" ? "Envoi impossible (pas d'e-mail ni de compte)" : undefined}
+      onClick={() =>
+        start(async () => {
+          const r = await resendReceipt(id);
+          setState(r.ok ? "ok" : "ko");
+        })
+      }
+      className="inline-flex h-9 items-center gap-2 rounded-lg border-2 border-border px-3 text-sm font-semibold hover:bg-muted disabled:opacity-60"
+    >
+      <Send aria-hidden className="size-4" />
+      {pending ? "Envoi…" : state === "ok" ? "Envoyé ✓" : state === "ko" ? "Échec" : "Envoyer le reçu"}
+    </button>
   );
 }
 

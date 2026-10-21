@@ -189,6 +189,8 @@ export type Database = {
       }
       donation_declarations: {
         Row: {
+          item_description: string | null
+          receipt_sent_at: string | null
           kind: string
           receipt_number: string | null
           received_at: string | null
@@ -211,6 +213,8 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
+          item_description?: string | null
+          receipt_sent_at?: string | null
           kind?: string
           receipt_number?: string | null
           received_at?: string | null
@@ -233,6 +237,8 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
+          item_description?: string | null
+          receipt_sent_at?: string | null
           kind?: string
           receipt_number?: string | null
           received_at?: string | null
@@ -470,6 +476,45 @@ export type Database = {
           updated_at?: string
           user_id?: string
           verification_token?: string
+        }
+        Relationships: []
+      }
+      member_files: {
+        Row: {
+          category: string
+          created_at: string
+          file_name: string
+          file_path: string
+          id: string
+          notes: string | null
+          size_bytes: number | null
+          title: string
+          uploaded_by: string | null
+          user_id: string
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          file_name: string
+          file_path: string
+          id?: string
+          notes?: string | null
+          size_bytes?: number | null
+          title: string
+          uploaded_by?: string | null
+          user_id: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          file_name?: string
+          file_path?: string
+          id?: string
+          notes?: string | null
+          size_bytes?: number | null
+          title?: string
+          uploaded_by?: string | null
+          user_id?: string
         }
         Relationships: []
       }
@@ -752,6 +797,36 @@ export type Database = {
           token?: string
           unsubscribed_at?: string | null
           updated_at?: string
+        }
+        Relationships: []
+      }
+      page_views: {
+        Row: {
+          created_at: string
+          device: string | null
+          id: number
+          path: string
+          referrer: string | null
+          user_id: string | null
+          visitor: string
+        }
+        Insert: {
+          created_at?: string
+          device?: string | null
+          id?: number
+          path: string
+          referrer?: string | null
+          user_id?: string | null
+          visitor: string
+        }
+        Update: {
+          created_at?: string
+          device?: string | null
+          id?: number
+          path?: string
+          referrer?: string | null
+          user_id?: string | null
+          visitor?: string
         }
         Relationships: []
       }
@@ -1390,6 +1465,8 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      record_page_view: { Args: { p_path: string; p_visitor: string; p_referrer?: string | null; p_device?: string | null }; Returns: undefined }
+      site_stats: { Args: { p_days?: number }; Returns: Json }
       verify_member_card: {
         Args: { p_token: string }
         Returns: { full_name: string; card_number: string; membership_type: Database["public"]["Enums"]["membership_type"]; issued_at: string; expires_at: string; status: string }[]

@@ -1,7 +1,8 @@
 import { Download, Receipt } from "lucide-react";
 import { setRequestLocale } from "next-intl/server";
 import { Forbidden, PageHeading } from "@/components/admin/page-heading";
-import { DonationActions, PaymentForm } from "@/components/admin/records-ui";
+import { DonationActions, PaymentForm, ResendReceiptButton } from "@/components/admin/records-ui";
+import { receiptNature } from "@/lib/email/messages";
 import { Link, redirect } from "@/i18n/navigation";
 import { getStaff } from "@/lib/admin/staff";
 import { formatDate } from "@/lib/format";
@@ -41,7 +42,8 @@ export default async function DonationsPage({
   const totals = [
     { label: `Dons encaissés en ${year}`, value: fcfa(sum((r) => r.kind === "don")) },
     { label: `Cotisations encaissées en ${year}`, value: fcfa(sum((r) => r.kind === "cotisation")) },
-    { label: "Encaissé ce mois-ci", value: fcfa(sum((r) => (r.received_at ?? "").startsWith(month))) },
+    { label: "Encaissé ce mois-ci", value: fcfa(sum((r) => r.kind !== "nature" && (r.received_at ?? "").startsWith(month))) },
+    { label: `Dons en nature reçus en ${year}`, value: String((cashed ?? []).filter((r) => r.kind === "nature").length) },
   ];
 
   return (
@@ -55,7 +57,7 @@ export default async function DonationsPage({
         </a>
       </PageHeading>
 
-      <ul className="grid gap-4 sm:grid-cols-3">
+      <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {totals.map((t) => (
           <li key={t.label} className="rounded-3xl bg-card p-5 shadow-soft ring-1 ring-foreground/5">
             <p className="text-2xl font-extrabold tabular-nums">{t.value}</p>
@@ -85,24 +87,37 @@ export default async function DonationsPage({
                 <li key={d.id} className="flex flex-col gap-3 rounded-2xl bg-card p-4 ring-1 ring-foreground/5 sm:flex-row sm:items-center sm:justify-between">
                   <div>
                     <p className="font-semibold">
-                      {fcfa(d.amount_fcfa)} · <span className="capitalize">{d.kind}</span>
+                      {d.kind === "nature" ? (d.amount_fcfa ? `Valeur estimée ${fcfa(d.amount_fcfa)}` : "Don en nature") : fcfa(d.amount_fcfa)} ·{" "}
+                      <span className="rounded-full bg-ktgw-green/10 px-2 py-0.5 text-xs text-ktgw-green-strong">{receiptNature(d)}</span>
                     </p>
+                    {d.item_description && <p className="text-sm">{d.item_description}</p>}
                     <p className="text-sm text-muted-foreground">
-                      {d.name} · {d.method}
+                      {d.user_id ? (
+                        <Link href={`/admin/membres/${d.user_id}`} className="font-semibold underline-offset-2 hover:underline">
+                          {d.name}
+                        </Link>
+                      ) : (
+                        d.name
+                      )}{" "}
+                      · {d.email.endsWith("@ktgw.tg") ? "sans e-mail" : d.email} · {d.method}
                       {d.reference ? ` · réf. ${d.reference}` : ""}
                       {d.project ? ` · ${d.project}` : ""}
                     </p>
                     <p className="text-xs text-muted-foreground">
                       {d.receipt_number ? `Reçu ${d.receipt_number} · ` : ""}
+                      {d.receipt_sent_at ? `envoyé le ${formatDate(d.receipt_sent_at, locale, "short")} · ` : ""}
                       {formatDate(d.received_at ?? d.created_at, locale, "short")}
                     </p>
                   </div>
                   {d.status === "nouveau" && <DonationActions id={d.id} />}
                   {d.status === "traite" && (
-                    <a href={`/impression/recu/${d.id}`} target="_blank" rel="noopener" className="inline-flex h-9 items-center gap-2 rounded-lg border-2 border-border px-3 text-sm font-semibold">
-                      <Receipt aria-hidden className="size-4" />
-                      Reçu
-                    </a>
+                    <div className="flex flex-wrap gap-2">
+                      <a href={`/impression/recu/${d.id}`} target="_blank" rel="noopener" className="inline-flex h-9 items-center gap-2 rounded-lg bg-ktgw-green-strong px-3 text-sm font-semibold text-white">
+                        <Receipt aria-hidden className="size-4" />
+                        Voir / télécharger
+                      </a>
+                      <ResendReceiptButton id={d.id} />
+                    </div>
                   )}
                 </li>
               ))}
@@ -110,7 +125,8 @@ export default async function DonationsPage({
           )}
         </section>
         <section className="h-fit rounded-3xl bg-card p-6 shadow-soft ring-1 ring-foreground/5">
-          <h2 className="mb-4 text-xl font-bold">Enregistrer un paiement reçu</h2>
+          <h2 className="mb-1 text-xl font-bold">Enregistrer un paiement ou un don reçu</h2>
+          <p className="mb-4 text-sm text-muted-foreground">Cotisation, don en argent ou en nature : le reçu officiel est généré et envoyé automatiquement.</p>
           <PaymentForm />
         </section>
       </div>

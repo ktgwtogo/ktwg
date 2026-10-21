@@ -27,6 +27,8 @@ const auditLabels: Record<string, string> = {
   "rapport.diffuse": "a diffusé un rapport au bureau",
   export: "a exporté des données (Excel)",
   "recu.envoye": "a envoyé un reçu par e-mail",
+  "dossier.piece_ajoutee": "a classé une pièce dans un dossier de membre",
+  "dossier.piece_supprimee": "a supprimé une pièce d'un dossier de membre",
   "carte.creee": "a créé une carte de membre",
   "carte.modifiee": "a corrigé une carte de membre",
   "carte.revoquee": "a révoqué une carte de membre",

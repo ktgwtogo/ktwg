@@ -105,6 +105,19 @@ export function submissionAck(kind: FormKind, v: Values, ctx: FormContext & { ev
           rows: [["Filière souhaitée", short(v.track)], ["Niveau scolaire", short(v.level)], ["Besoin de l'internat", v.boarding ? "Oui" : "Non"], ...base],
         },
       };
+    case "donationInKind":
+      return {
+        subject: "Merci pour votre proposition de don en nature — KTGW Togo",
+        content: {
+          title: "Merci pour votre don en nature !",
+          greeting,
+          paragraphs: [
+            "Votre proposition de don en nature a bien été enregistrée. Merci de soutenir concrètement la formation des jeunes au Togo.",
+            "Notre équipe vous contactera pour organiser la remise. Dès réception, un reçu officiel vous sera adressé par e-mail.",
+          ],
+          rows: [["Objets / matériel", short(v.items, 120)], ["Mode de remise", short(v.delivery)], ...(v.estimatedValue ? ([["Valeur estimée", fcfa(Number(v.estimatedValue))]] as EmailRow[]) : []), ...base],
+        },
+      };
     case "donation":
       return {
         subject: "Merci pour votre don — KTGW Togo",
@@ -186,33 +199,46 @@ export type ReceiptData = {
   frequency: string;
   reference: string | null;
   project: string | null;
+  item_description?: string | null;
   received_at: string | null;
   created_at: string;
 };
 
-/** Reçu officiel envoyé automatiquement quand la trésorerie confirme un paiement. */
+/** Libellé de la nature d'un paiement ou d'un don. */
+export const receiptNature = (d: Pick<ReceiptData, "kind" | "frequency">) =>
+  d.kind === "cotisation" ? "Cotisation (adhésion)" : d.kind === "nature" ? "Don en nature" : `Don ${d.frequency.toLowerCase()}`;
+
+/** Reçu officiel envoyé quand la trésorerie confirme un paiement ou la réception d'un don en nature. */
 export function receiptMail(d: ReceiptData): Mail {
-  const nature = d.kind === "cotisation" ? "Cotisation (adhésion)" : `Don ${d.frequency.toLowerCase()}`;
+  const nature = receiptNature(d);
+  const inKind = d.kind === "nature";
   return {
     subject: `Votre reçu ${d.receipt_number} — KTGW Togo`,
     content: {
       title: `Reçu officiel n° ${d.receipt_number}`,
       greeting: safeName(d.name) ? `Bonjour ${safeName(d.name)},` : "Bonjour,",
       paragraphs: [
-        `KTGW Togo certifie avoir reçu de ${short(d.name, 60)} la somme indiquée ci-dessous, au titre de : ${nature.toLowerCase()}.`,
+        inKind
+          ? `KTGW Togo certifie avoir reçu de ${short(d.name, 60)} le don en nature décrit ci-dessous.`
+          : `KTGW Togo certifie avoir reçu de ${short(d.name, 60)} la somme indiquée ci-dessous, au titre de : ${nature.toLowerCase()}.`,
         "Nous vous remercions chaleureusement pour votre soutien à l'éducation et à la formation professionnelle des jeunes au Togo.",
       ],
-      highlight: { label: "Montant reçu", value: fcfa(d.amount_fcfa) },
+      highlight: inKind
+        ? { label: "Don en nature", value: short(d.item_description ?? "Objets et matériel", 90) }
+        : { label: "Montant reçu", value: fcfa(d.amount_fcfa) },
       rows: [
         ["N° de reçu", d.receipt_number],
         ["Date de réception", dateFr(d.received_at ?? d.created_at)],
         ["Nature", nature],
-        ["Moyen de paiement", d.method],
-        ...(d.reference ? ([["Référence de transaction", short(d.reference, 60)]] as EmailRow[]) : []),
+        ...(inKind
+          ? ((d.amount_fcfa > 0 ? [["Valeur estimée", fcfa(d.amount_fcfa)]] : []) as EmailRow[])
+          : ([["Moyen de paiement", d.method]] as EmailRow[])),
+        ...(d.reference && !inKind ? ([["Référence de transaction", short(d.reference, 60)]] as EmailRow[]) : []),
         ...(d.project ? ([["Affectation", short(d.project, 60)]] as EmailRow[]) : []),
         ["Émis par", "KTGW Togo — la trésorerie"],
       ],
-      note: "Ce reçu est émis électroniquement par KTGW Togo. Conservez cet e-mail comme justificatif de votre paiement.",
+      cta: { label: "Mes reçus dans mon espace", href: `${siteUrl()}/mon-espace/recus` },
+      note: "Ce reçu est émis électroniquement par KTGW Togo. Conservez cet e-mail comme justificatif ; il est aussi disponible dans votre espace membre si vous avez un compte.",
     },
   };
 }

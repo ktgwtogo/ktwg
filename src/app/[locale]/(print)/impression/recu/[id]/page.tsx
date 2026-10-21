@@ -7,6 +7,7 @@ import { getStaff } from "@/lib/admin/staff";
 import { formatDate } from "@/lib/format";
 import { getMember } from "@/lib/member/session";
 import { getSiteConfig } from "@/lib/site/settings";
+import { receiptNature } from "@/lib/email/messages";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Reçu", robots: { index: false } };
@@ -21,7 +22,8 @@ export default async function ReceiptPage({ params }: { params: Promise<{ locale
 
   const { data: d } = await db.from("donation_declarations").select("*").eq("id", id).maybeSingle();
   if (!d || d.status !== "traite" || !d.receipt_number) notFound();
-  if (!staff?.can("donations.manage") && d.user_id !== member.user.id) notFound();
+  // Hors trésorerie, la RLS ne renvoie que les dons de la personne (compte ou adresse e-mail).
+  const inKind = d.kind === "nature";
   const { togo } = await getSiteConfig();
 
   return (
@@ -48,20 +50,33 @@ export default async function ReceiptPage({ params }: { params: Promise<{ locale
 
         <section className="mt-8 flex flex-col gap-4 text-base">
           <p>
-            KTGW Togo certifie avoir reçu de <strong>{d.name}</strong> la somme de :
+            KTGW Togo certifie avoir reçu de <strong>{d.name}</strong> {inKind ? "le don en nature suivant :" : "la somme de :"}
           </p>
-          <p className="rounded-xl bg-ktgw-green/10 p-6 text-center text-3xl font-extrabold text-ktgw-green-strong">{d.amount_fcfa.toLocaleString("fr-FR")} FCFA</p>
+          {inKind ? (
+            <p className="rounded-xl bg-ktgw-green/10 p-6 text-center text-lg font-bold whitespace-pre-line text-ktgw-green-strong">{d.item_description ?? "Objets et matériel"}</p>
+          ) : (
+            <p className="rounded-xl bg-ktgw-green/10 p-6 text-center text-3xl font-extrabold text-ktgw-green-strong">{d.amount_fcfa.toLocaleString("fr-FR")} FCFA</p>
+          )}
           <table className="w-full text-sm">
             <tbody className="divide-y">
               <tr>
                 <th scope="row" className="py-2 text-left font-semibold">Nature</th>
-                <td className="py-2 capitalize">{d.kind === "cotisation" ? "Cotisation annuelle" : `Don ${d.frequency.toLowerCase()}`}</td>
+                <td className="py-2">{receiptNature(d)}</td>
               </tr>
-              <tr>
-                <th scope="row" className="py-2 text-left font-semibold">Moyen de paiement</th>
-                <td className="py-2">{d.method}</td>
-              </tr>
-              {d.reference && (
+              {inKind ? (
+                d.amount_fcfa > 0 && (
+                  <tr>
+                    <th scope="row" className="py-2 text-left font-semibold">Valeur estimée</th>
+                    <td className="py-2">{d.amount_fcfa.toLocaleString("fr-FR")} FCFA</td>
+                  </tr>
+                )
+              ) : (
+                <tr>
+                  <th scope="row" className="py-2 text-left font-semibold">Moyen de paiement</th>
+                  <td className="py-2">{d.method}</td>
+                </tr>
+              )}
+              {d.reference && !inKind && (
                 <tr>
                   <th scope="row" className="py-2 text-left font-semibold">Référence</th>
                   <td className="py-2">{d.reference}</td>

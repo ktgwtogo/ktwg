@@ -51,4 +51,4 @@ export const columnLabels: Record<string, string> = {
   locale: "Langue",
 };
 
-export const donationMethods = ["T-Money", "Moov Money (Flooz)", "Virement", "Espèces"] as const;
+export const donationMethods = ["T-Money", "Moov Money (Flooz)", "Virement", "Espèces", "Chèque", "Carte bancaire", "En nature"] as const;

@@ -7,6 +7,7 @@ import { NewsletterNotice } from "@/components/layout/newsletter-notice";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { TopBar } from "@/components/layout/top-bar";
+import { VisitTracker } from "@/components/layout/visit-tracker";
 
 /** Gabarit des pages publiques : top bar, header collant, contenu, footer. */
 export default async function PublicLayout({ children }: { children: React.ReactNode }) {
@@ -32,6 +33,7 @@ export default async function PublicLayout({ children }: { children: React.React
         <SiteConfigProvider value={config}>{children}</SiteConfigProvider>
       </main>
       <SiteFooter config={config} />
+      <VisitTracker />
     </>
   );
 }

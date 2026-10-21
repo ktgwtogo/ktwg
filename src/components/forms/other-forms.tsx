@@ -1,6 +1,6 @@
 "use client";
 
-import { Heart, Mail, Send, Ticket } from "lucide-react";
+import { Gift, Heart, Mail, Send, Ticket } from "lucide-react";
 import { useState } from "react";
 import {
   availabilityOptions,
@@ -8,6 +8,7 @@ import {
   schoolLevels,
   trainingTracks,
   type DonationDeclarationValues,
+  type DonationInKindValues,
   type EngagementValues,
   type EventRegistrationValues,
   type NewsletterValues,
@@ -218,6 +219,59 @@ export function DonationDeclarationForm({ project }: { project?: string }) {
         <SubmitButton pending={pending}>
           <Heart aria-hidden className="fill-current" />
           Déclarer mon don
+        </SubmitButton>
+      </div>
+    </form>
+  );
+}
+
+/** Proposition de don en nature (matériel, fournitures, vivres…). */
+export function DonationInKindForm({ project }: { project?: string }) {
+  const { form, outcome, onSubmit, reset, pending, serverError, errors } = useDeliveryForm<DonationInKindValues>({
+    kind: "donationInKind",
+    defaultValues: { consent: false, project: project ?? "", estimatedValue: "" },
+  });
+  const { register } = form;
+  if (outcome)
+    return (
+      <FormResult
+        outcome={outcome}
+        onReset={reset}
+        sentTitle="Merci pour votre don en nature !"
+        sentText="Nous vous contactons pour organiser la remise. Un reçu officiel vous sera envoyé dès réception."
+      />
+    );
+  return (
+    <form onSubmit={onSubmit} noValidate className="relative flex flex-col gap-6">
+      <Honeypot registration={register("website")} />
+      <TextAreaField
+        label="Que souhaitez-vous donner ?"
+        required
+        rows={4}
+        hint="Ex. 10 sacs de ciment, 2 ordinateurs portables, fournitures scolaires, outils de mécanique…"
+        registration={register("items")}
+        error={errors.items}
+      />
+      <div className="grid gap-5 sm:grid-cols-2">
+        <TextField label="Valeur estimée en FCFA (facultatif)" inputMode="numeric" registration={register("estimatedValue")} error={errors.estimatedValue} />
+        <SelectField
+          label="Remise"
+          required
+          options={["Je dépose au siège", "À récupérer chez moi", "Envoi / transport"]}
+          registration={register("delivery")}
+          error={errors.delivery}
+        />
+        <TextField label="Nom complet" required autoComplete="name" registration={register("name")} error={errors.name} />
+        <TextField label="E-mail" required type="email" autoComplete="email" registration={register("email")} error={errors.email} />
+        <TextField label="Téléphone" type="tel" autoComplete="tel" registration={register("phone")} error={errors.phone} />
+        <TextField label="Projet soutenu (facultatif)" registration={register("project")} error={errors.project} />
+      </div>
+      <ConsentField registration={register("consent")} error={errors.consent} />
+      <ServerError message={serverError} />
+      <div>
+        <SubmitButton pending={pending}>
+          <Gift aria-hidden />
+          Proposer mon don en nature
         </SubmitButton>
       </div>
     </form>

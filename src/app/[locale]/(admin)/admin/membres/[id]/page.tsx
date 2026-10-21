@@ -1,7 +1,8 @@
-import { ArrowLeft, Download, FileText, HandCoins, IdCard, Receipt, Send, UserRound } from "lucide-react";
+import { ArrowLeft, Download, FileText, FolderOpen, HandCoins, IdCard, Receipt, Send, UserRound } from "lucide-react";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import { DocumentUpload } from "@/components/admin/document-upload";
+import { MemberFiles } from "@/components/admin/member-files";
 import { IssueCardButton } from "@/components/cards/card-admin-ui";
 import { Forbidden, PageHeading } from "@/components/admin/page-heading";
 import { Link, redirect } from "@/i18n/navigation";
@@ -32,6 +33,8 @@ export default async function MemberFilePage({ params }: { params: Promise<{ loc
       : Promise.resolve([]),
     cardPhotoUrl(db, p.photo_path),
   ]);
+  const { data: files } = await db.from("member_files").select("*").eq("user_id", id).order("created_at", { ascending: false });
+  const fileDates = Object.fromEntries((files ?? []).map((f) => [f.id, formatDate(f.created_at, locale, "short")]));
   const name = [p.civility, p.first_name, p.last_name].filter(Boolean).join(" ") || p.full_name || p.email;
   const activeCard = cards.find((c) => c.status === "active");
 
@@ -118,6 +121,10 @@ export default async function MemberFilePage({ params }: { params: Promise<{ loc
               <IssueCardButton userId={p.id} />
             </div>
           )}
+        </Panel>
+
+        <Panel icon={FolderOpen} title={`Pièces du dossier (${files?.length ?? 0})`}>
+          <MemberFiles userId={p.id} files={files ?? []} dates={fileDates} canEdit={staff.can("members.manage") || staff.can("documents.manage")} />
         </Panel>
 
         <Panel icon={FileText} title="Demandes d'adhésion">

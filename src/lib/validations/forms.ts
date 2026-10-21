@@ -147,6 +147,19 @@ export const donationDeclarationSchema = z.object({
 });
 export type DonationDeclarationValues = z.infer<typeof donationDeclarationSchema>;
 
+export const donationInKindSchema = z.object({
+  name,
+  email,
+  phone: optionalPhone,
+  items: z.string().trim().min(5, "Décrivez ce que vous souhaitez donner.").max(2000),
+  estimatedValue: z.union([z.literal(""), z.string().regex(/^\d{1,9}$/, "Valeur en FCFA (chiffres uniquement).")]).optional(),
+  delivery: z.enum(["Je dépose au siège", "À récupérer chez moi", "Envoi / transport"], "Choisissez le mode de remise."),
+  project: z.string().trim().max(120).optional(),
+  consent,
+  website: honeypot,
+});
+export type DonationInKindValues = z.infer<typeof donationInKindSchema>;
+
 export const newsletterSchema = z.object({
   email,
   consent,

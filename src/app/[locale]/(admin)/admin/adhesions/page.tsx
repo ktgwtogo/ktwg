@@ -53,7 +53,11 @@ export default async function AdminMemberships({
 
   return (
     <div className="flex flex-col gap-6">
-      <PageHeading title="Adhésions" description="Demandes d'adhésion avec la fiche complète de chaque personne. La décision notifie la personne dans son espace et par e-mail." />
+      <PageHeading title="Adhésions" description="Demandes d'adhésion avec la fiche complète de chaque personne. La décision notifie la personne dans son espace et par e-mail.">
+        <Link href={{ pathname: "/admin/membres", query: { filtre: "membres" } }} className="inline-flex h-11 items-center gap-2 rounded-xl bg-ktgw-green-strong px-5 text-sm font-semibold text-white">
+          Membres validés et dossiers
+        </Link>
+      </PageHeading>
       <div role="tablist" aria-label="Statut des demandes" className="flex flex-wrap gap-2">
         {filters.map((f) => (
           <Link
@@ -95,6 +99,9 @@ export default async function AdminMemberships({
                       <h2 className="text-xl font-bold">{name}</h2>
                       <span className="rounded-full bg-ktgw-green/10 px-3 py-1 text-xs font-semibold text-ktgw-green-strong">{membershipTypeLabels[a.type]}</span>
                       <span className={cn("rounded-full px-3 py-1 text-xs font-semibold", membershipStatusTone[a.status])}>{membershipStatusLabels[a.status]}</span>
+                      <Link href={`/admin/membres/${a.user_id}`} className="rounded-full bg-ink px-3 py-1 text-xs font-semibold text-white dark:bg-white dark:text-ink">
+                        Ouvrir le dossier
+                      </Link>
                     </div>
                     <p className="mt-1 text-sm text-muted-foreground">
                       Demande du {formatDate(a.created_at, locale)}

@@ -2,7 +2,7 @@ import { ExternalLink, Gift, Globe2, Phone, ShieldCheck, Smartphone } from "luci
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { FaWhatsapp } from "react-icons/fa6";
-import { DonationDeclarationForm } from "@/components/forms/other-forms";
+import { DonationDeclarationForm, DonationInKindForm } from "@/components/forms/other-forms";
 import { PageHeader } from "@/components/shared/page-header";
 import { Section } from "@/components/shared/section";
 import { SectionTitle } from "@/components/shared/section-title";
@@ -129,12 +129,28 @@ export default async function DonatePage({ params, searchParams }: Props) {
             <div className="flex items-start gap-3 rounded-2xl bg-card p-5 shadow-soft ring-1 ring-foreground/5">
               <Gift aria-hidden className="size-6 shrink-0 text-ktgw-red" />
               <p className="text-sm text-muted-foreground">
-                Vous préférez offrir du matériel (outils, ordinateurs, panneaux solaires) ? Contactez-nous : les dons en nature sont aussi précieux.
+                Vous préférez offrir du matériel (outils, ordinateurs, panneaux solaires, fournitures) ? Utilisez le formulaire « Don en nature » ci-dessous : un reçu officiel vous sera remis.
               </p>
             </div>
           </div>
           <div className="rounded-3xl bg-card p-6 shadow-soft ring-1 ring-foreground/5 sm:p-10 lg:col-span-3">
             <DonationDeclarationForm project={project?.title} />
+          </div>
+        </div>
+      </Section>
+
+      <Section aria-labelledby="nature-title">
+        <div className="grid gap-12 lg:grid-cols-5">
+          <div className="lg:col-span-2">
+            <SectionTitle
+              id="nature-title"
+              eyebrow="Don en nature"
+              title="Offrir du matériel ou des fournitures"
+              description="Outils, ordinateurs, matériel solaire, fournitures scolaires, vivres pour l'internat… Décrivez votre don : nous organisons la remise et vous envoyons un reçu officiel."
+            />
+          </div>
+          <div className="rounded-3xl bg-card p-6 shadow-soft ring-1 ring-foreground/5 sm:p-10 lg:col-span-3">
+            <DonationInKindForm project={project?.title} />
           </div>
         </div>
       </Section>

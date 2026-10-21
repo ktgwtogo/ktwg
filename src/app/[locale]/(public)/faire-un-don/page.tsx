@@ -1,4 +1,4 @@
-import { ExternalLink, Gift, Globe2, ShieldCheck, Smartphone, Wallet } from "lucide-react";
+import { Bitcoin, ExternalLink, Gift, Globe2, ShieldCheck, Smartphone, Wallet } from "lucide-react";
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { FaWhatsapp } from "react-icons/fa6";
@@ -14,7 +14,7 @@ import { getProject } from "@/lib/content/repository";
 export const metadata: Metadata = {
   title: "Faire un don",
   description:
-    "Soutenez la formation des jeunes au Togo : don en ligne par Mobile Money (Yas ou Moov Money), montant libre, depuis le Togo, ou via kommTOGOgehweiter e.V. depuis l'international.",
+    "Soutenez la formation des jeunes au Togo : don en ligne, montant libre, par Mobile Money (Yas, Moov Money au Togo et dans d'autres pays) ou en cryptomonnaie, ou par virement via kommTOGOgehweiter e.V.",
 };
 
 type Props = { params: Promise<{ locale: string }>; searchParams: Promise<{ projet?: string }> };
@@ -55,12 +55,35 @@ export default async function DonatePage({ params, searchParams }: Props) {
               <Smartphone aria-hidden className="size-7" />
             </span>
             <h2 id="togo-title" className="text-2xl font-bold">
-              Depuis le Togo : Mobile Money
+              Paiement en ligne : Mobile Money et cryptomonnaie
             </h2>
+            <ul aria-label="Moyens de paiement disponibles" className="flex flex-col gap-2">
+              <li className="flex items-center gap-3 rounded-2xl bg-ktgw-sun/20 p-3 ring-1 ring-ktgw-sun/50">
+                <span aria-hidden className="text-2xl">🇹🇬</span>
+                <span className="flex-1">
+                  <span className="block font-bold">Togo</span>
+                  <span className="text-sm text-muted-foreground">Yas · Moov Money</span>
+                </span>
+              </li>
+              <li className="flex items-center gap-3 rounded-2xl bg-muted/60 p-3">
+                <Globe2 aria-hidden className="size-6 shrink-0 text-ktgw-green-strong" />
+                <span className="flex-1">
+                  <span className="block font-semibold">Autres pays</span>
+                  <span className="text-sm text-muted-foreground">Mobile Money : choisissez votre pays et votre opérateur sur la page de paiement</span>
+                </span>
+              </li>
+              <li className="flex items-center gap-3 rounded-2xl bg-muted/60 p-3">
+                <Bitcoin aria-hidden className="size-6 shrink-0 text-ktgw-orange" />
+                <span className="flex-1">
+                  <span className="block font-semibold">Cryptomonnaie</span>
+                  <span className="text-sm text-muted-foreground">Paiement en cryptomonnaie depuis le monde entier</span>
+                </span>
+              </li>
+            </ul>
             <ol className="flex flex-col gap-3 text-muted-foreground">
               {[
                 "Cliquez sur « Payer maintenant » : la page de paiement sécurisée SasPay de KTGW Togo s'ouvre.",
-                "Saisissez le montant de votre choix, choisissez Yas ou Moov Money et validez sur votre téléphone.",
+                "Saisissez le montant de votre choix, puis votre pays et votre moyen de paiement (Yas, Moov Money, autre opérateur ou cryptomonnaie).",
                 "Votre paiement nous parvient automatiquement. Pour recevoir un reçu à votre nom, déclarez votre don ci-dessous avec le même numéro de téléphone.",
               ].map((s, i) => (
                 <li key={i} className="flex gap-3">
@@ -80,7 +103,7 @@ export default async function DonatePage({ params, searchParams }: Props) {
                 Payer maintenant
                 <ExternalLink aria-hidden className="size-4" />
               </a>
-              <p className="text-sm font-semibold">Montant libre · Yas ou Moov Money</p>
+              <p className="text-sm font-semibold">Montant libre · Mobile Money · Cryptomonnaie</p>
               <a
                 href={whatsappUrl(phone.e164)}
                 target="_blank"

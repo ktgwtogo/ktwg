@@ -209,6 +209,8 @@ export function DonationDeclarationForm({ project }: { project?: string }) {
           options={[
             { value: "T-Money", label: "Yas (T-Money)" },
             { value: "Moov Money (Flooz)", label: "Moov Money (Flooz)" },
+            { value: "Mobile Money (autre pays)", label: "Mobile Money (autre pays)" },
+            { value: "Cryptomonnaie", label: "Cryptomonnaie" },
             { value: "Virement", label: "Virement" },
             { value: "Espèces", label: "Espèces" },
           ]}

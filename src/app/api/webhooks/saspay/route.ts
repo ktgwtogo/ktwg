@@ -32,7 +32,19 @@ function verify(raw: string, timestamp: string | null, signature: string | null,
   return a.length === b.length && timingSafeEqual(a, b);
 }
 
-const methodFor = (network = "") => (/moov|flooz/i.test(network) ? "Moov Money (Flooz)" : /card|visa|master/i.test(network) ? "Carte bancaire" : "T-Money");
+const CRYPTO = /crypto|usdt|usdc|btc|bitcoin|eth|trx|tron|bnb|sol/i;
+
+/** Moyen de paiement enregistré, d'après le réseau et le pays transmis par SasPay. */
+const methodFor = (network = "", country = "TG") =>
+  CRYPTO.test(network)
+    ? "Cryptomonnaie"
+    : /card|visa|master/i.test(network)
+      ? "Carte bancaire"
+      : country.toUpperCase() !== "TG"
+        ? "Mobile Money (autre pays)"
+        : /moov|flooz/i.test(network)
+          ? "Moov Money (Flooz)"
+          : "T-Money";
 
 const lastDigits = (phone: string | null | undefined) => (phone ?? "").replace(/\D/g, "").slice(-8);
 
@@ -71,7 +83,9 @@ export async function POST(request: Request) {
   const { data: existing } = await admin.from("donation_declarations").select("id").eq("reference", reference).maybeSingle();
   if (existing) return Response.json({ ok: true, duplicate: true });
 
-  const method = methodFor(t.network);
+  const method = methodFor(t.network, t.country);
+  // Montant hors FCFA (crypto, autre devise) : enregistré « à vérifier » pour que la trésorerie confirme la valeur.
+  const inXof = !t.currency || t.currency.toUpperCase() === "XOF";
   const note = `Paiement confirmé automatiquement par SasPay (réf. ${t.reference}${t.network ? `, ${t.network}` : ""}${t.charged ? `, payé ${t.charged} ${t.currency ?? ""}` : ""}${t.net_amount ? `, net reçu ${t.net_amount}` : ""}).`;
 
   // Déclaration faite par le donateur sur le site, en attente : même montant, même numéro, 7 derniers jours.
@@ -91,7 +105,7 @@ export async function POST(request: Request) {
   if (match) {
     const { error } = await admin
       .from("donation_declarations")
-      .update({ status: "traite", reference, method, admin_notes: [match.admin_notes, note].filter(Boolean).join("\n") })
+      .update({ status: inXof ? "traite" : "nouveau", reference, method, admin_notes: [match.admin_notes, note].filter(Boolean).join("\n") })
       .eq("id", match.id);
     if (error) return new Response(error.message, { status: 500 });
     id = match.id;
@@ -107,8 +121,8 @@ export async function POST(request: Request) {
         method,
         frequency: "Ponctuel",
         reference,
-        admin_notes: note,
-        status: "traite",
+        admin_notes: inXof ? note : `${note} Montant en ${t.currency} : vérifiez sa valeur en FCFA avant de confirmer.`,
+        status: inXof ? "traite" : "nouveau",
       })
       .select("id")
       .single();

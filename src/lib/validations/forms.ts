@@ -138,7 +138,7 @@ export const donationDeclarationSchema = z.object({
   email,
   phone: optionalPhone,
   amount: z.string().regex(/^\d{3,9}$/, "Indiquez le montant en FCFA (chiffres uniquement)."),
-  method: z.enum(["T-Money", "Moov Money (Flooz)", "Virement", "Espèces"], "Choisissez le moyen de paiement."),
+  method: z.enum(["T-Money", "Moov Money (Flooz)", "Mobile Money (autre pays)", "Cryptomonnaie", "Virement", "Espèces"], "Choisissez le moyen de paiement."),
   frequency: z.enum(["Ponctuel", "Mensuel"], "Choisissez la fréquence."),
   project: z.string().trim().max(120).optional(),
   reference: z.string().trim().max(80).optional(),

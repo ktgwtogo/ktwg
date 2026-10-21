@@ -61,7 +61,7 @@ export default async function DonatePage({ params, searchParams }: Props) {
               {[
                 "Cliquez sur « Payer maintenant » : la page de paiement sécurisée SasPay de KTGW Togo s'ouvre.",
                 "Saisissez le montant de votre choix, choisissez Yas ou Moov Money et validez sur votre téléphone.",
-                "Déclarez votre don ci-dessous avec la référence du SMS : nous vous envoyons un reçu.",
+                "Votre paiement nous parvient automatiquement. Pour recevoir un reçu à votre nom, déclarez votre don ci-dessous avec le même numéro de téléphone.",
               ].map((s, i) => (
                 <li key={i} className="flex gap-3">
                   <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-ktgw-red-strong text-sm font-bold text-white">{i + 1}</span>

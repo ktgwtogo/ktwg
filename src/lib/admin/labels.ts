@@ -22,6 +22,7 @@ const auditLabels: Record<string, string> = {
   "don.confirme": "a confirmé un paiement",
   "don.rejete": "a écarté une déclaration de don",
   "don.saisi": "a saisi un don ou une cotisation",
+  "don.saspay": "a reçu un don en ligne (SasPay)",
   "envoi.groupe": "a envoyé un e-mail groupé",
   "rapport.soumis": "a soumis un rapport",
   "rapport.diffuse": "a diffusé un rapport au bureau",

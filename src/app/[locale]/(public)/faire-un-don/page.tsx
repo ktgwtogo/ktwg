@@ -1,4 +1,4 @@
-import { ExternalLink, Gift, Globe2, Phone, ShieldCheck, Smartphone } from "lucide-react";
+import { ExternalLink, Gift, Globe2, ShieldCheck, Smartphone, Wallet } from "lucide-react";
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { FaWhatsapp } from "react-icons/fa6";
@@ -6,7 +6,7 @@ import { DonationDeclarationForm, DonationInKindForm } from "@/components/forms/
 import { PageHeader } from "@/components/shared/page-header";
 import { Section } from "@/components/shared/section";
 import { SectionTitle } from "@/components/shared/section-title";
-import { whatsappUrl } from "@/config/site";
+import { mobileMoneyPaymentUrl, whatsappUrl } from "@/config/site";
 import { getSiteConfig } from "@/lib/site/settings";
 import { images } from "@/content/images";
 import { getProject } from "@/lib/content/repository";
@@ -14,7 +14,7 @@ import { getProject } from "@/lib/content/repository";
 export const metadata: Metadata = {
   title: "Faire un don",
   description:
-    "Soutenez la formation des jeunes au Togo : don par Mobile Money (T-Money, Moov Money) depuis le Togo, ou via kommTOGOgehweiter e.V. depuis l'international.",
+    "Soutenez la formation des jeunes au Togo : don en ligne par Mobile Money (Yas ou Moov Money), montant libre, depuis le Togo, ou via kommTOGOgehweiter e.V. depuis l'international.",
 };
 
 type Props = { params: Promise<{ locale: string }>; searchParams: Promise<{ projet?: string }> };
@@ -59,8 +59,8 @@ export default async function DonatePage({ params, searchParams }: Props) {
             </h2>
             <ol className="flex flex-col gap-3 text-muted-foreground">
               {[
-                "Contactez-nous par téléphone ou WhatsApp pour obtenir le numéro marchand officiel T-Money ou Moov Money (Flooz).",
-                "Effectuez le transfert du montant de votre choix depuis votre téléphone.",
+                "Cliquez sur « Payer maintenant » : la page de paiement sécurisée SasPay de KTGW Togo s'ouvre.",
+                "Saisissez le montant de votre choix, choisissez Yas ou Moov Money et validez sur votre téléphone.",
                 "Déclarez votre don ci-dessous avec la référence du SMS : nous vous envoyons un reçu.",
               ].map((s, i) => (
                 <li key={i} className="flex gap-3">
@@ -69,24 +69,31 @@ export default async function DonatePage({ params, searchParams }: Props) {
                 </li>
               ))}
             </ol>
-            <div className="mt-auto flex flex-wrap gap-3">
-              <a href={`tel:${phone.e164}`} className="inline-flex h-12 items-center gap-2 rounded-xl bg-ink px-5 font-semibold text-white hover:opacity-90 dark:bg-white dark:text-ink">
-                <Phone aria-hidden className="size-4" />
-                {phone.display}
+            <div className="mt-auto flex flex-col gap-3">
+              <a
+                href={mobileMoneyPaymentUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex h-14 w-full items-center justify-center gap-3 rounded-2xl bg-ktgw-red-strong px-6 text-lg font-bold text-white shadow-soft hover:opacity-90 sm:w-fit"
+              >
+                <Wallet aria-hidden className="size-6" />
+                Payer maintenant
+                <ExternalLink aria-hidden className="size-4" />
               </a>
+              <p className="text-sm font-semibold">Montant libre · Yas ou Moov Money</p>
               <a
                 href={whatsappUrl(phone.e164)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex h-12 items-center gap-2 rounded-xl bg-[#25D366] px-5 font-semibold text-ink hover:opacity-90"
+                className="inline-flex w-fit items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground"
               >
-                <FaWhatsapp aria-hidden className="size-5" />
-                WhatsApp
+                <FaWhatsapp aria-hidden className="size-4 text-[#25D366]" />
+                Une question ? Écrivez-nous sur WhatsApp
               </a>
             </div>
             <p className="flex items-start gap-2 text-xs text-muted-foreground">
               <ShieldCheck aria-hidden className="size-4 shrink-0 text-ktgw-green" />
-              Pour votre sécurité, n&apos;envoyez de l&apos;argent qu&apos;au numéro communiqué par l&apos;équipe officielle de KTGW Togo.
+              Paiement sécurisé par SasPay, au profit de KTGW Togo.
             </p>
           </section>
 

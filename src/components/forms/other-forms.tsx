@@ -206,7 +206,12 @@ export function DonationDeclarationForm({ project }: { project?: string }) {
         <SelectField
           label="Moyen de paiement utilisé"
           required
-          options={["T-Money", "Moov Money (Flooz)", "Virement", "Espèces"]}
+          options={[
+            { value: "T-Money", label: "Yas (T-Money)" },
+            { value: "Moov Money (Flooz)", label: "Moov Money (Flooz)" },
+            { value: "Virement", label: "Virement" },
+            { value: "Espèces", label: "Espèces" },
+          ]}
           registration={register("method")}
           error={errors.method}
         />

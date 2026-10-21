@@ -56,4 +56,7 @@ export const siteConfig = {
 } as const;
 
 /** Lien WhatsApp à partir d'un numéro E.164 (« +228… » → « wa.me/228… »). */
+/** Lien de paiement SasPay (montant libre, Yas ou Moov Money) : bouton « Payer » de la page Faire un don. */
+export const mobileMoneyPaymentUrl = "https://link.saspay.me/srllewxi5q0";
+
 export const whatsappUrl = (e164: string) => `https://wa.me/${e164.replace(/\D/g, "")}`;

@@ -2,7 +2,7 @@
   "Metadata": {
     "title": "KTGW Togo — Former aujourd'hui les bâtisseurs du Togo de demain",
     "titleTemplate": "%s · KTGW Togo",
-    "description": "KommTogoGehWeiter Togo : éducation, formation professionnelle bilingue et autonomisation des jeunes, surtout des femmes, active depuis 2018 au Togo."
+    "description": "KommTogoGehWeiter Togo : éducation, formation professionnelle bilingue et autonomisation des jeunes, surtout des femmes, active depuis 2018 au Togo sous la présidence de M. Blaise-Pascal D'ALMEIDA."
   },
   "Common": {
     "orgName": "KommTogoGehWeiter Togo",
@@ -17,12 +17,13 @@
     "language": "Langue",
     "skipToContent": "Aller au contenu principal",
     "home": "Accueil KTGW Togo",
-    "opensInNewTab": "(s'ouvre dans un nouvel onglet)"
+    "opensInNewTab": "(s'ouvre dans un nouvel onglet)",
+    "presidentFounder": "Monsieur Blaise-Pascal D'ALMEIDA, Président-Fondateur de KTGW"
   },
   "Nav": {
     "home": "Accueil",
     "about": "À propos",
-    "objectives": "Objectifs",
+    "objectives": "Objectifs ODD",
     "projects": "Projets",
     "trainings": "Formations",
     "news": "Actualités",
@@ -48,18 +49,18 @@
     "germanClubs": "Clubs d'allemand",
     "apply": "Candidater à une formation",
     "desc": {
-      "whoWeAre": "Notre histoire, notre mission, notre équipe",
-      "objectives": "Les 13 engagements qui guident nos actions",
-      "transparency": "Statuts, rapports d'activité et comptes",
+      "whoWeAre": "Notre histoire, notre mission et notre Président-Fondateur",
+      "objectives": "Les 17 Objectifs de Développement Durable de l'ONU au Togo",
+      "transparency": "Statuts, rapports d'activité et comptes certifiés",
       "gallery": "Nos actions sur le terrain en images",
-      "projectCefopexd": "Former les jeunes à un métier, à Devikinme",
-      "projectBoarding": "Un toit sûr pour les apprenties",
+      "projectCefopexd": "Former les jeunes à un métier concret, à Dévikinmé",
+      "projectBoarding": "Un toit sûr pour les apprenties filles",
       "projectSolar": "L'énergie solaire entre les mains des femmes",
-      "allProjects": "Vue d'ensemble de nos projets",
-      "ourCourses": "Coutellerie, mécanique, comptabilité, solaire, informatique",
+      "allProjects": "Vue d'ensemble de tous nos projets",
+      "ourCourses": "Mécatronique industrielle, artisanat sur-mesure, agroalimentaire, mécanique, solaire, informatique",
       "germanClubs": "L'allemand et l'ouverture au monde à l'école",
       "apply": "Déposer une candidature en 2 minutes",
-      "donate": "Mobile Money ou don international",
+      "donate": "Mobile Money (Tmoney, Moov) ou don international",
       "becomePartner": "Entreprises, fondations, institutions",
       "volunteer": "Donner de son temps, au Togo ou à distance",
       "join": "Devenir membre de l'association"
@@ -77,12 +78,12 @@
       },
       "trainings": {
         "title": "Candidatures ouvertes",
-        "text": "Des formations bilingues français–allemand tournées vers l'emploi.",
+        "text": "Formations d'élite : Mécatronique avec bourse 65% (BAC obligatoire), artisanat sur-mesure, agroalimentaire.",
         "cta": "Candidater"
       },
       "getInvolved": {
         "title": "Chaque centime compte",
-        "text": "Votre don finance directement la formation des jeunes.",
+        "text": "Votre don finance directement la formation des jeunes du Togo.",
         "cta": "Faire un don"
       }
     }
@@ -114,23 +115,97 @@
     "whatsapp": "WhatsApp"
   },
   "Footer": {
-    "about": "ONG togolaise, branche de l'association kommTOGOgehweiter e.V. (Cologne). Active au Togo depuis 2018, nous formons les jeunes du Togo, surtout les femmes, à des métiers qui leur permettent de vivre dignement.",
+    "about": "ONG togolaise fondée sous la présidence de M. Blaise-Pascal D'ALMEIDA, branche de kommTOGOgehweiter e.V. (Cologne). Active depuis 2018 au Togo, nous formons les jeunes, et en particulier les femmes, aux métiers d'avenir.",
     "colNavigation": "Navigation",
     "colEngage": "S'engager",
-    "colFindUs": "Nous trouver",
-    "directions": "Itinéraire",
-    "showMap": "Afficher la carte",
-    "mapNotice": "La carte est fournie par Google Maps. En l'affichant, vous acceptez le dépôt de cookies par Google.",
-    "mapTitle": "Carte : siège de KTGW Togo à Lomé",
-    "germanyHQ": "Siège en Allemagne",
+    "colFindUs": "Siège & Localisation Togo",
+    "directions": "Itinéraire vers le siège à Tokoin",
+    "showMap": "Afficher la carte interactive",
+    "mapNotice": "Siège social situé à Tokoin Cébévito (non loin du CHU Sylvanus Olympio), Lomé, Togo.",
+    "mapTitle": "Carte : siège national de KTGW Togo à Lomé Tokoin",
+    "germanyHQ": "Partenaire en Allemagne",
     "rights": "© {year} KTGW Togo. Tous droits réservés.",
     "backToTop": "Retour en haut",
-    "phones": "Téléphones",
+    "phones": "Permanence téléphonique Togo",
     "whatsappWith": "WhatsApp au {number}"
   },
-  "Home": {
-    "heroTitle": "Former aujourd'hui les bâtisseurs du Togo de demain",
-    "heroSubtitle": "Éducation, formation professionnelle bilingue et autonomisation des jeunes, surtout des femmes, depuis 2018 au Togo.",
-    "wip": "Site en construction — Phase 2 (design system & layout)."
+  "HomeSections": {
+    "bourse": {
+      "badge": "Bourse 65% · 50 Places",
+      "dates": "Inscriptions jusqu'au 12 nov. · Rentrée le 16 nov. 2026",
+      "title": "Appel officiel à candidature : Formation d'élite en Mécatronique Industrielle & Systèmes Embarqués (09 mois + 03 mois stage). Admission uniquement avec le BAC. Internat sécurisé filles sur place.",
+      "cta": "Voir l'appel & postuler"
+    },
+    "about": {
+      "eyebrow": "Qui sommes-nous",
+      "titlePart1": "Une ONG togolaise, un pont avec ",
+      "titlePart2": "l'Allemagne",
+      "text1": "KommTogoGehWeiter Togo (KTGW Togo) est la branche togolaise de kommTOGOgehweiter e.V. (Cologne), portée avec dévouement par son Président-Fondateur Monsieur Blaise-Pascal D'ALMEIDA.",
+      "text2": "Bénévoles d'Allemagne, de France et du Togo, nous agissons activement à Lomé, Aného, Kpalimé, Atakpamé, Kara et Dapaong pour offrir aux jeunes, et tout particulièrement aux jeunes filles, des formations d'excellence.",
+      "quote": "Chaque centime investi dans l'éducation en Afrique protège des chemins dangereux vers l'Europe.",
+      "quoteAuthor": "Devise portée par M. Blaise-Pascal D'ALMEIDA et kommTOGOgehweiter e.V.",
+      "learnMore": "En savoir plus",
+      "ourObjectives": "Nos 17 ODD de l'ONU"
+    },
+    "domains": {
+      "eyebrow": "Nos domaines d'action",
+      "title": "Cinq leviers majeurs pour l'essor de la jeunesse togolaise",
+      "subtitle": "Formation d'excellence, entrepreneuriat, ouverture internationale, internat féminin et transition agro-écologique.",
+      "discover": "Découvrir"
+    },
+    "objectives": {
+      "eyebrow": "Cap Nations Unies",
+      "title": "Les 17 Objectifs de Développement Durable (ODD)",
+      "subtitle": "De l'éradication de la précarité à la transformation agroalimentaire et l'industrie moderne, nos programmes incarnent les ODD au Togo.",
+      "cta": "Explorer les 17 ODD"
+    },
+    "courses": {
+      "eyebrow": "Formations professionnelles",
+      "title": "Des filières d'avenir tournées vers l'emploi",
+      "subtitle": "Mécatronique industrielle, transformation agroalimentaire, artisanat sur-mesure, mécanique appliquée, énergies solaires.",
+      "mecatroniqueTitle": "Mécatronique Industrielle (Bourse 65%)",
+      "mecatroniqueText": "Électronique auto, diagnostic assisté par ordinateur, programmation, systèmes embarqués et allemand gratuit. Niveau BAC requis obligatoire.",
+      "artisanatTitle": "Formation artisanale sur-mesure",
+      "artisanatText": "Façonnage de métaux, menuiserie d'art et confection d'équipements sur-mesure répondant aux besoins du marché local.",
+      "agroTitle": "Transformation agroalimentaire & valorisation",
+      "agroText": "Séchage solaire, mouture saine, conserves et valorisation des récoltes togolaises.",
+      "mecaniqueTitle": "Mécanique appliquée & maintenance industrielle",
+      "mecaniqueText": "Maintenance préventive, révision moteur, électromécanique et sécurité industrielle.",
+      "cta": "Toutes nos filières"
+    },
+    "projects": {
+      "eyebrow": "Projets phares",
+      "title": "Des réalisations concrètes sur le terrain",
+      "subtitle": "Chaque projet répond directement aux défis de la jeunesse togolaise en synergie avec nos partenaires.",
+      "cta": "Tous nos projets"
+    },
+    "events": {
+      "eyebrow": "Agenda",
+      "title": "Prochains événements & rentrées",
+      "subtitle": "Participez aux sessions d'orientation, ateliers et lancements officiels au Togo.",
+      "cta": "Tout l'agenda",
+      "none": "Aucun événement public en ce moment. Les inscriptions à la Mécatronique restent ouvertes jusqu'au 12 novembre 2026 !"
+    },
+    "news": {
+      "eyebrow": "Actualités",
+      "title": "Dernières nouvelles du terrain",
+      "cta": "Toutes les actualités"
+    },
+    "partners": {
+      "eyebrow": "Partenariats solides",
+      "title": "Ils soutiennent nos actions au Togo",
+      "subtitle": "Institutions togolaises, allemandes et internationales engagées pour l'autonomie des jeunes.",
+      "bannerEyebrow": "Devenez notre partenaire",
+      "bannerTitle": "Construisons ensemble l'avenir de la jeunesse au Togo",
+      "bannerText": "Entreprise, ambassade, fondation ou collectivité : unissons nos forces pour créer des emplois durables.",
+      "propose": "Proposer un partenariat",
+      "contact": "Nous contacter"
+    },
+    "finalCta": {
+      "title": "Chaque centime pour l'éducation compte",
+      "subtitle": "Un don ou un engagement bénévole permet à un jeune togolais d'apprendre un métier noble et de vivre dignement dans son pays.",
+      "donate": "Faire un don",
+      "volunteer": "Devenir bénévole"
+    }
   }
 }

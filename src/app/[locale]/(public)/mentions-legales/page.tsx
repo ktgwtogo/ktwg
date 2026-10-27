@@ -17,15 +17,16 @@ export default async function LegalNoticePage({ params }: { params: Promise<{ lo
         <p>
           <strong>KommTogoGehWeiter Togo (KTGW Togo)</strong>, organisation non gouvernementale.
           <br />
-          {togo.address.street}, {togo.address.district}, {togo.address.city} – {togo.address.country}
+          <strong>Président-Fondateur :</strong> Monsieur Blaise-Pascal D&apos;ALMEIDA
+          <br />
+          <strong>Siège National :</strong> {togo.address.street}, {togo.address.district}, {togo.address.city} – {togo.address.country}
           <br />
           Téléphone : {togo.phones.map((p) => p.display).join(" · ")}
           <br />
           E-mail : <a href={`mailto:${togo.email}`}>{togo.email}</a>
         </p>
-        <p className="mt-3 rounded-xl bg-muted p-4 text-sm">
-          À compléter par l&apos;association : numéro d&apos;enregistrement / récépissé de l&apos;ONG, nom du directeur ou de la directrice de la
-          publication.
+        <p className="mt-3 rounded-xl bg-card p-4 text-sm ring-1 ring-foreground/10">
+          <strong>Directeur de la publication :</strong> Monsieur Blaise-Pascal D&apos;ALMEIDA, Président-Fondateur de KTGW.
         </p>
       </section>
       <section>

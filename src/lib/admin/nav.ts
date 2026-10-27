@@ -77,9 +77,9 @@ export const getAdminNav = cache(async (staff: Staff): Promise<AdminNavItem[]> =
         section: "Site web",
       },
     ),
-    ...when(staff.can("pages.manage"), {
+    ...when(staff.can("pages.manage") || staff.presidency, {
       href: "/admin/site",
-      label: "Apparence et textes",
+      label: "Gestion globale du site",
       icon: "site",
       section: "Site web",
     }),

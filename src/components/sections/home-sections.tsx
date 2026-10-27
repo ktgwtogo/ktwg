@@ -7,11 +7,13 @@ import {
   Home,
   MapPinned,
   Quote,
+  Sparkles,
   Sprout,
   Target,
   Users,
 } from "lucide-react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { ButtonLink } from "@/components/ui/button-link";
 import { PartnerMark } from "@/components/shared/badges";
 import { EventCard, PostCard, ProjectCard } from "@/components/shared/cards";
@@ -20,7 +22,7 @@ import { Section } from "@/components/shared/section";
 import { SectionTitle } from "@/components/shared/section-title";
 import { StatCounter } from "@/components/shared/stat-counter";
 import { images } from "@/content/images";
-import { domains, keyFigures, objectives } from "@/content/organization";
+import { domains, keyFigures, objectives, presidentFounder } from "@/content/organization";
 import type { Partner } from "@/content/partners";
 import { getPartners, getPostsFor, getProjects, upcomingEvents } from "@/lib/content/repository";
 import { Link } from "@/i18n/navigation";
@@ -29,9 +31,11 @@ const figureIcons = { sprout: Sprout, map: MapPinned, target: Target, home: Home
 
 /** Spotlight d'annonce Bourse Mécatronique affiché sur l'accueil. */
 export function BourseAnnouncementSpotlight() {
+  const t = useTranslations("HomeSections.bourse");
+
   return (
-    <aside aria-label="Appel à candidature Mécatronique" className="relative z-10 -mt-7 mx-auto max-w-6xl px-4 sm:px-6">
-      <div className="flex flex-col items-center justify-between gap-4 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-800 to-ktgw-red p-4 text-white shadow-2xl ring-1 ring-white/15 sm:flex-row sm:p-5">
+    <aside aria-label="Appel à candidature Mécatronique Industrielle" className="relative z-10 -mt-7 mx-auto max-w-6xl px-4 sm:px-6">
+      <div className="flex flex-col items-center justify-between gap-4 rounded-2xl bg-gradient-to-r from-slate-950 via-slate-900 to-ktgw-red p-4 text-white shadow-2xl ring-1 ring-white/15 sm:flex-row sm:p-5">
         <div className="flex items-center gap-4">
           <span className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-ktgw-red text-white shadow-lg animate-pulse">
             <Award className="size-6" />
@@ -39,12 +43,12 @@ export function BourseAnnouncementSpotlight() {
           <div className="flex flex-col">
             <div className="flex flex-wrap items-center gap-2">
               <span className="rounded-full bg-ktgw-sun px-2.5 py-0.5 text-xs font-black text-slate-950 uppercase tracking-wide">
-                Bourse 65% · 50 Places
+                {t("badge")}
               </span>
-              <span className="text-xs text-white/80">Rentrée le 16 nov. 2026 · Centre CEFOPEXD (Lacs 3)</span>
+              <span className="text-xs text-white/80">{t("dates")}</span>
             </div>
             <p className="mt-1 text-sm font-semibold text-white sm:text-base">
-              Appel à candidature officiel : Formation qualifiante en <span className="text-ktgw-sun font-bold">Mécatronique</span> (09 mois + 03 mois stage). Internat filles sur place.
+              {t("title")}
             </p>
           </div>
         </div>
@@ -53,7 +57,7 @@ export function BourseAnnouncementSpotlight() {
             href="/formations#bourse-mecatronique"
             className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-ktgw-red px-4 py-2.5 text-sm font-bold text-white shadow-md transition-all hover:bg-ktgw-red-strong sm:w-auto"
           >
-            Voir l&apos;appel &amp; postuler
+            {t("cta")}
             <ArrowRight className="size-4" />
           </Link>
         </div>
@@ -89,8 +93,10 @@ export async function StatsBand() {
   );
 }
 
-/** Qui sommes-nous : texte, photo et devise. */
+/** Qui sommes-nous : texte, photo, Président-Fondateur et devise. */
 export function AboutPreview() {
+  const t = useTranslations("HomeSections.about");
+
   return (
     <Section aria-labelledby="about-title">
       <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
@@ -104,10 +110,13 @@ export function AboutPreview() {
               className="object-cover"
             />
           </div>
-          <div className="absolute -right-2 -bottom-6 max-w-[16rem] rounded-2xl bg-card p-5 shadow-xl ring-1 ring-foreground/5 sm:-right-6">
+          <div className="absolute -right-2 -bottom-6 max-w-[17rem] rounded-2xl bg-card p-5 shadow-xl ring-1 ring-foreground/5 sm:-right-6">
             <p className="font-heading text-4xl font-extrabold text-ktgw-red">2018</p>
-            <p className="text-sm text-muted-foreground">
-              Active au Togo depuis 2018 (plus de {new Date().getFullYear() - 2018} ans d&apos;action au Togo).
+            <p className="text-xs font-semibold uppercase text-ktgw-green-strong">Depuis plus de {new Date().getFullYear() - 2018} ans au Togo</p>
+            <p className="mt-1 text-xs text-muted-foreground">
+              {presidentFounder.name}
+              <br />
+              <span className="font-bold text-foreground">{presidentFounder.title}</span>
             </p>
           </div>
           <div aria-hidden className="absolute -top-5 -left-5 -z-10 size-32 rounded-full bg-ktgw-sun/30 blur-2xl" />
@@ -116,35 +125,36 @@ export function AboutPreview() {
         <Reveal delay={120} className="flex flex-col gap-6">
           <SectionTitle
             id="about-title"
-            eyebrow="Qui sommes-nous"
+            eyebrow={t("eyebrow")}
             title={
               <>
-                Une ONG togolaise, un pont avec <span className="font-accent text-ktgw-red italic">l&apos;Allemagne</span>
+                {t("titlePart1")}
+                <span className="font-accent text-ktgw-red italic">{t("titlePart2")}</span>
               </>
             }
           />
           <p className="text-lg leading-relaxed text-muted-foreground">
-            KommTogoGehWeiter Togo (KTGW Togo) est la branche togolaise de <strong className="text-foreground">kommTOGOgehweiter e.V.</strong>, une
-            association d&apos;utilité publique fondée à Cologne. Elle est née lorsque le Togo s&apos;est qualifié pour la Coupe du monde 2006.
+            {t("text1")}
           </p>
           <p className="leading-relaxed text-muted-foreground">
-            Bénévoles d&apos;Allemagne, de France et du Togo, nous agissons à Lomé, Aného, Kpalimé, Atakpamé, Kara et Dapaong. Nous offrons aux
-            jeunes, et surtout aux jeunes filles, une formation qui leur permet de vivre dignement de leur métier.
+            {t("text2")}
           </p>
           <figure className="relative rounded-2xl border-l-4 border-ktgw-sun bg-accent p-6">
             <Quote aria-hidden className="absolute top-4 right-4 size-8 text-ktgw-sun/60" />
-            <blockquote className="font-accent text-xl leading-snug font-semibold italic">
-              « Chaque centime investi dans l&apos;éducation en Afrique protège des chemins dangereux vers l&apos;Europe. »
+            <blockquote className="font-accent text-xl leading-snug font-semibold italic text-foreground">
+              « {t("quote")} »
             </blockquote>
-            <figcaption className="mt-2 text-sm text-muted-foreground">Devise de kommTOGOgehweiter e.V.</figcaption>
+            <figcaption className="mt-2 text-xs font-medium text-muted-foreground">
+              {t("quoteAuthor")}
+            </figcaption>
           </figure>
           <div className="flex flex-wrap gap-3">
             <ButtonLink href="/a-propos" size="xl">
-              En savoir plus
+              {t("learnMore")}
               <ArrowRight aria-hidden />
             </ButtonLink>
             <ButtonLink href="/objectifs" size="xl" variant="outline">
-              Nos 13 objectifs
+              {t("ourObjectives")}
             </ButtonLink>
           </div>
         </Reveal>
@@ -155,13 +165,15 @@ export function AboutPreview() {
 
 /** Les 5 domaines d'action. */
 export function DomainsGrid() {
+  const t = useTranslations("HomeSections.domains");
+
   return (
     <Section tone="muted" aria-labelledby="domains-title">
       <SectionTitle
         id="domains-title"
-        eyebrow="Nos domaines d'action"
-        title="Cinq leviers pour l'avenir des jeunes"
-        description="Former, insérer, ouvrir au monde, autonomiser et préserver : nos actions se complètent pour un impact durable."
+        eyebrow={t("eyebrow")}
+        title={t("title")}
+        description={t("subtitle")}
         align="center"
       />
       <ul className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
@@ -182,7 +194,7 @@ export function DomainsGrid() {
                 <h3 className="text-lg leading-snug font-bold">{d.title}</h3>
                 <p className="text-sm leading-relaxed text-muted-foreground">{d.text}</p>
                 <span className="mt-auto inline-flex items-center gap-1 text-sm font-semibold text-ktgw-red">
-                  Découvrir
+                  {t("discover")}
                   <ArrowRight aria-hidden className="size-4 transition-transform group-hover:translate-x-1" />
                 </span>
               </Link>
@@ -204,7 +216,7 @@ export async function FeaturedProjects() {
           id="projects-title"
           eyebrow="Projets phares"
           title="Des projets concrets, des vies transformées"
-          description="Chaque projet répond à un besoin identifié sur le terrain, avec nos partenaires togolais et allemands."
+          description="Chaque projet répond à un besoin identifié sur le terrain au Togo, en étroite coopération avec nos partenaires."
         />
         <ButtonLink href="/projets" variant="outline" size="xl" className="shrink-0">
           Tous nos projets
@@ -224,37 +236,58 @@ export async function FeaturedProjects() {
   );
 }
 
-/** Aperçu des objectifs (6 sur 13). */
+/** Aperçu des 6 objectifs statutaires & ODD de l'ONU (avec Agroalimentaire au 6ème). */
 export function ObjectivesPreview() {
+  const t = useTranslations("HomeSections.objectives");
+
   return (
     <Section tone="green" aria-labelledby="objectives-title" className="relative overflow-hidden">
       <div aria-hidden className="pointer-events-none absolute -top-32 -right-32 size-96 rounded-full bg-ktgw-sun/15 blur-3xl" />
       <SectionTitle
         id="objectives-title"
-        eyebrow="Nos objectifs"
-        title="13 engagements pour le Togo"
-        description="De l'éducation à l'environnement, nos objectifs guident chacune de nos actions."
+        eyebrow={t("eyebrow")}
+        title={t("title")}
+        description={t("subtitle")}
         align="center"
         inverted
       />
       <ol className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {objectives.slice(0, 6).map((o, i) => (
           <li key={o.title}>
-            <Reveal delay={i * 70} className="flex h-full gap-4 rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-sm transition-colors hover:bg-white/10">
-              <span className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-ktgw-sun text-ink">
-                <o.icon aria-hidden className="size-6" />
-              </span>
-              <div>
-                <p className="font-heading text-sm font-bold text-ktgw-sun">{String(i + 1).padStart(2, "0")}</p>
-                <p className="font-medium leading-snug">{o.title}</p>
+            <Reveal delay={i * 70} className="flex h-full flex-col justify-between rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-sm transition-colors hover:bg-white/10">
+              <div className="flex gap-4">
+                <span className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-ktgw-sun text-ink shadow">
+                  <o.icon aria-hidden className="size-6" />
+                </span>
+                <div className="flex flex-col gap-1">
+                  <div className="flex items-center gap-2">
+                    <span className="font-heading text-xs font-bold text-ktgw-sun">{String(i + 1).padStart(2, "0")}</span>
+                    <span className="rounded bg-white/10 px-1.5 py-0.5 text-[10px] font-bold text-emerald-300">{o.odd}</span>
+                  </div>
+                  <p className="font-semibold leading-snug text-white">{o.title}</p>
+                </div>
               </div>
+              {i === 5 && (
+                <div className="relative mt-3 h-28 w-full overflow-hidden rounded-xl border border-white/15">
+                  <Image
+                    src={images.agroalimentaire.src}
+                    alt={images.agroalimentaire.alt}
+                    fill
+                    sizes="(min-width: 768px) 33vw, 100vw"
+                    className="object-cover"
+                  />
+                  <span className="absolute bottom-1 right-2 rounded bg-black/60 px-2 py-0.5 text-[10px] text-white backdrop-blur-sm">
+                    Atelier Agroalimentaire Togo
+                  </span>
+                </div>
+              )}
             </Reveal>
           </li>
         ))}
       </ol>
       <div className="mt-10 flex justify-center">
         <ButtonLink href="/objectifs" variant="sun" size="xl">
-          Voir les 13 objectifs
+          {t("cta")}
           <ArrowRight aria-hidden />
         </ButtonLink>
       </div>
@@ -264,13 +297,14 @@ export function ObjectivesPreview() {
 
 /** Prochains événements. */
 export async function UpcomingEvents() {
+  const t = useTranslations("HomeSections.events");
   const list = (await upcomingEvents()).slice(0, 3);
   return (
     <Section aria-labelledby="events-title">
       <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
-        <SectionTitle id="events-title" eyebrow="Agenda" title="Prochains événements" description="Rejoignez-nous sur le terrain ou en ligne." />
+        <SectionTitle id="events-title" eyebrow={t("eyebrow")} title={t("title")} description={t("subtitle")} />
         <ButtonLink href="/evenements" variant="outline" size="xl" className="shrink-0">
-          Tout l&apos;agenda
+          {t("cta")}
           <ArrowRight aria-hidden />
         </ButtonLink>
       </div>
@@ -286,7 +320,7 @@ export async function UpcomingEvents() {
         </ul>
       ) : (
         <p className="mt-10 rounded-2xl bg-muted p-8 text-center text-muted-foreground">
-          Aucun événement programmé pour le moment. Revenez bientôt !
+          {t("none")}
         </p>
       )}
     </Section>
@@ -295,14 +329,15 @@ export async function UpcomingEvents() {
 
 /** Dernières actualités. */
 export async function LatestNews() {
+  const t = useTranslations("HomeSections.news");
   const posts = await getPostsFor("accueil");
   if (!posts.length) return null;
   return (
     <Section tone="muted" aria-labelledby="news-title">
       <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
-        <SectionTitle id="news-title" eyebrow="Actualités" title="Les dernières nouvelles du terrain" />
+        <SectionTitle id="news-title" eyebrow={t("eyebrow")} title={t("title")} />
         <ButtonLink href="/actualites" variant="outline" size="xl" className="shrink-0">
-          Toutes les actualités
+          {t("cta")}
           <ArrowRight aria-hidden />
         </ButtonLink>
       </div>
@@ -321,6 +356,7 @@ export async function LatestNews() {
 
 /** Partenaires : défilement infini + appel à partenariat. */
 export async function PartnersSection() {
+  const t = useTranslations("HomeSections.partners");
   const partners = await getPartners();
   const loop = [...partners, ...partners];
   return (
@@ -328,9 +364,9 @@ export async function PartnersSection() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionTitle
           id="partners-title"
-          eyebrow="Ils nous font confiance"
-          title="Nos partenaires"
-          description="Institutions, associations et entreprises du Togo et d'Allemagne engagées à nos côtés."
+          eyebrow={t("eyebrow")}
+          title={t("title")}
+          description={t("subtitle")}
           align="center"
         />
       </div>
@@ -352,21 +388,20 @@ export async function PartnersSection() {
             <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-ink/70 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-ink" />
           </div>
           <div className="flex flex-col gap-5 p-8 sm:p-12">
-            <p className="text-sm font-semibold tracking-widest text-ktgw-sun uppercase">Devenez notre partenaire</p>
+            <p className="text-sm font-semibold tracking-widest text-ktgw-sun uppercase">{t("bannerEyebrow")}</p>
             <h3 className="text-3xl font-extrabold sm:text-4xl">
-              Construisons ensemble <span className="font-accent text-ktgw-sun italic">l&apos;avenir</span> des jeunes du Togo
+              {t("bannerTitle")}
             </h3>
             <p className="leading-relaxed text-white/80">
-              ONG, entreprise, fondation, institution ou ambassade : apportez un soutien financier, technique, matériel ou des compétences.
-              Votre demande nous parvient en 2 minutes.
+              {t("bannerText")}
             </p>
             <div className="flex flex-wrap gap-3">
               <ButtonLink href="/partenariat" size="xl" variant="sun">
                 <Handshake aria-hidden />
-                Proposer un partenariat
+                {t("propose")}
               </ButtonLink>
               <ButtonLink href="/contact" size="xl" variant="link" className="text-white hover:text-ktgw-sun">
-                Nous contacter
+                {t("contact")}
                 <ArrowRight aria-hidden />
               </ButtonLink>
             </div>
@@ -404,6 +439,8 @@ function PartnerChip({ partner, tabbable }: { partner: Partner; tabbable: boolea
 
 /** Bandeau d'appel final sur fond dégradé soleil. */
 export function FinalCta() {
+  const t = useTranslations("HomeSections.finalCta");
+
   return (
     <Section tone="sun" aria-labelledby="cta-title" className="relative overflow-hidden">
       <svg aria-hidden viewBox="0 0 200 200" className="pointer-events-none absolute -top-20 -right-20 size-80 text-white/25 motion-safe:animate-rays">
@@ -414,19 +451,19 @@ export function FinalCta() {
       <div className="relative mx-auto flex max-w-3xl flex-col items-center gap-6 text-center">
         <Heart aria-hidden className="size-12 fill-ktgw-red-strong text-ktgw-red-strong" />
         <h2 id="cta-title" className="text-3xl font-extrabold sm:text-5xl">
-          Chaque centime pour l&apos;éducation <span className="font-accent italic">compte</span>
+          {t("title")}
         </h2>
         <p className="text-lg text-ink/80">
-          Un don, du temps, des compétences : chaque engagement aide un jeune à apprendre un métier et à construire son avenir au Togo.
+          {t("subtitle")}
         </p>
         <div className="flex flex-wrap justify-center gap-3">
           <ButtonLink href="/faire-un-don" size="xl">
             <Heart aria-hidden className="fill-current" />
-            Faire un don
+            {t("donate")}
           </ButtonLink>
           <ButtonLink href="/s-engager#benevolat" size="xl" variant="white">
             <Users aria-hidden />
-            Devenir bénévole
+            {t("volunteer")}
           </ButtonLink>
         </div>
       </div>

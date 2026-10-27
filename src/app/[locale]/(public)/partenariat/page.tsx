@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 const reasons = [
   { icon: Eye, title: "Un impact visible", text: "Des projets concrets et mesurables : formation, insertion, internat, environnement." },
   { icon: BadgeCheck, title: "Transparence", text: "Suivi des actions, rapports réguliers et publication de nos comptes." },
-  { icon: Globe2, title: "Un réseau international", text: "Un pont entre le Togo, l'Allemagne et la France, depuis 2008." },
+  { icon: Globe2, title: "Un réseau international", text: "Un pont entre le Togo, l'Allemagne et la France, active depuis 2018 au Togo." },
 ];
 
 const contributions = [

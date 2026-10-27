@@ -2,7 +2,7 @@
   "Metadata": {
     "title": "KTGW Togo — Heute die Gestalter des Togo von morgen ausbilden",
     "titleTemplate": "%s · KTGW Togo",
-    "description": "KommTogoGehWeiter Togo: Bildung, zweisprachige Berufsausbildung und Stärkung junger Menschen, vor allem junger Frauen, seit 2008."
+    "description": "KommTogoGehWeiter Togo: Bildung, zweisprachige Berufsausbildung und Stärkung junger Menschen, vor allem junger Frauen, aktiv seit 2018 in Togo."
   },
   "Common": {
     "orgName": "KommTogoGehWeiter Togo",
@@ -66,7 +66,7 @@
     },
     "featured": {
       "about": {
-        "title": "Seit 2008",
+        "title": "Seit 2018",
         "text": "Eine togoische NGO, Zweig von kommTOGOgehweiter e.V. (Köln).",
         "cta": "Unsere Geschichte"
       },
@@ -114,7 +114,7 @@
     "whatsapp": "WhatsApp"
   },
   "Footer": {
-    "about": "Togoische NGO und Zweig des Vereins kommTOGOgehweiter e.V. (Köln). Seit 2008 bilden wir junge Menschen in Togo, vor allem Frauen, in Berufen aus, die ihnen ein Leben in Würde ermöglichen.",
+    "about": "Togoische NGO und Zweig des Vereins kommTOGOgehweiter e.V. (Köln). Seit 2018 in Togo aktiv, bilden wir junge Menschen in Togo, vor allem Frauen, in Berufen aus, die ihnen ein Leben in Würde ermöglichen.",
     "colNavigation": "Navigation",
     "colEngage": "Mitmachen",
     "colFindUs": "So finden Sie uns",
@@ -130,7 +130,7 @@
   },
   "Home": {
     "heroTitle": "Heute die Gestalter des Togo von morgen ausbilden",
-    "heroSubtitle": "Bildung, zweisprachige Berufsausbildung und Stärkung junger Menschen, vor allem junger Frauen, seit 2008.",
+    "heroSubtitle": "Bildung, zweisprachige Berufsausbildung und Stärkung junger Menschen, vor allem junger Frauen, seit 2018 in Togo.",
     "wip": "Website im Aufbau — Phase 2 (Designsystem & Layout)."
   }
 }

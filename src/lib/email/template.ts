@@ -98,7 +98,7 @@ export async function renderEmail(c: EmailContent): Promise<{ html: string; text
         </td></tr>
         <tr><td style="background:#1a1a1a;padding:20px 28px;color:#cbd2d9;font-size:12px;line-height:1.6">
           <strong style="color:#ffffff">KTGW Togo — KommTogoGehWeiter Togo</strong><br>
-          ONG d'éducation et de formation professionnelle, depuis 2008<br>
+          ONG d'éducation et de formation professionnelle, active depuis 2018 au Togo<br>
           ${escapeHtml(address)}<br>
           ${escapeHtml(phone)} · <a href="mailto:${escapeHtml(togo.email)}" style="color:${SUN};text-decoration:none">${escapeHtml(togo.email)}</a> · <a href="${site}" style="color:${SUN};text-decoration:none">${site.replace(/^https?:\/\//, "")}</a>
         </td></tr>

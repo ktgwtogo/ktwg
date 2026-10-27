@@ -51,7 +51,7 @@ export const objectives: { title: string; icon: LucideIcon; odd: string; tag?: s
     odd: "ODD 2 & 12",
     tag: "Agroalimentaire",
   },
-  { title: "Renforcer les capacités des jeunes artisans et artisanes en formation sur-mesure", icon: Hammer, odd: "ODD 8", tag: "Artisanat" },
+  { title: "Renforcer les capacités des jeunes artisans et artisanes en formation artisanale appliquée", icon: Hammer, odd: "ODD 8", tag: "Artisanat" },
   { title: "Assurer aux jeunes des activités génératrices de revenus", icon: Coins, odd: "ODD 1 & 8", tag: "Revenus" },
   { title: "Appuyer techniquement les jeunes entrepreneurs", icon: Wrench, odd: "ODD 9", tag: "Technique" },
   { title: "Encourager l'autopromotion à travers les PME/PMI", icon: Rocket, odd: "ODD 8 & 9", tag: "PME" },
@@ -98,7 +98,7 @@ export const unSdgs: {
 export const domains: { title: string; text: string; icon: LucideIcon; href: string }[] = [
   {
     title: "Formation professionnelle bilingue",
-    text: "Des formations de pointe en français et en allemand : mécatronique industrielle, artisanat sur-mesure, agroalimentaire, mécanique, énergies renouvelables, comptabilité et informatique.",
+    text: "Des formations de pointe en français et en allemand : mécatronique industrielle, formation artisanale appliquée, agroalimentaire, mécanique, énergies renouvelables, comptabilité et informatique.",
     icon: GraduationCap,
     href: "/formations",
   },
@@ -158,9 +158,9 @@ export const courses: {
     startDate: "16 Novembre 2026",
   },
   {
-    title: "Formation artisanale sur-mesure",
-    badge: "Savoir-faire d'excellence",
-    text: "Façonnage de métaux, menuiserie d'art, forge et confection artisanale d'équipements sur-mesure répondant aux commandes et besoins réels des communautés togolaises, sous le tutorat de maîtres artisans chevronnés.",
+    title: "Formation artisanale appliquée",
+    badge: "Savoir-faire pratique & emploi",
+    text: "Façonnage de métaux, menuiserie d'art, forge, ferronnerie et confection d'équipements pratiques adaptés répondant aux commandes et besoins réels des communautés et ateliers togolais, sous le tutorat de maîtres artisans chevronnés.",
     icon: Hammer,
   },
   {

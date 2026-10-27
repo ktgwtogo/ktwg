@@ -15,7 +15,7 @@ export const defaultHeroSlides: HeroSlide[] = [
     eyebrow: "Formation professionnelle bilingue",
     title: ["Un métier entre les mains,", "un avenir", "devant soi"],
     subtitle:
-      "Mécatronique industrielle, formation artisanale sur-mesure, transformation agroalimentaire, mécanique appliquée, énergies renouvelables : des formations d'excellence tournées vers l'emploi.",
+      "Mécatronique industrielle, formation artisanale appliquée, transformation agroalimentaire, mécanique appliquée, énergies renouvelables : des formations d'excellence tournées vers l'emploi.",
   },
   {
     image: images.plantingEmbassy,

@@ -110,12 +110,13 @@ export type EngagementValues = z.infer<typeof engagementSchema>;
 
 export const schoolLevels = ["Primaire", "Collège (BEPC)", "Lycée", "Baccalauréat", "Études supérieures", "Autre"] as const;
 export const trainingTracks = [
-  "Mécatronique (avec Bourse)",
-  "Coutellerie",
-  "Comptabilité",
-  "Mécanique",
-  "Énergies renouvelables",
-  "Informatique",
+  "Mécatronique Industrielle (Bourse 65% - BAC obligatoire)",
+  "Formation artisanale sur-mesure",
+  "Transformation agroalimentaire & valorisation locale",
+  "Mécanique appliquée & maintenance industrielle",
+  "Énergies renouvelables & solaire",
+  "Comptabilité & gestion",
+  "Informatique & outils numériques",
   "Je ne sais pas encore",
 ] as const;
 

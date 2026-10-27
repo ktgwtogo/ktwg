@@ -2,7 +2,7 @@
   "Metadata": {
     "title": "KTGW Togo — Heute die Gestalter des Togo von morgen ausbilden",
     "titleTemplate": "%s · KTGW Togo",
-    "description": "KommTogoGehWeiter Togo: Bildung, zweisprachige Berufsausbildung und Stärkung junger Menschen, vor allem junger Frauen, aktiv seit 2018 in Togo."
+    "description": "KommTogoGehWeiter Togo: Bildung, zweisprachige Berufsausbildung und Stärkung junger Menschen, vor allem junger Frauen, aktiv seit 2018 in Togo unter der Leitung von M. Blaise-Pascal D'ALMEIDA."
   },
   "Common": {
     "orgName": "KommTogoGehWeiter Togo",
@@ -17,12 +17,13 @@
     "language": "Sprache",
     "skipToContent": "Zum Hauptinhalt springen",
     "home": "KTGW Togo Startseite",
-    "opensInNewTab": "(öffnet in neuem Tab)"
+    "opensInNewTab": "(öffnet in neuem Tab)",
+    "presidentFounder": "Herr Blaise-Pascal D'ALMEIDA, Präsident und Gründer von KTGW"
   },
   "Nav": {
     "home": "Startseite",
     "about": "Über uns",
-    "objectives": "Ziele",
+    "objectives": "SDG-Ziele",
     "projects": "Projekte",
     "trainings": "Ausbildung",
     "news": "Aktuelles",
@@ -44,19 +45,19 @@
     "projectBoarding": "Mädcheninternat",
     "projectSolar": "Solarfrauen",
     "allProjects": "Alle Projekte",
-    "ourCourses": "Unsere Fachrichtungen",
+    "ourCourses": "Fachrichtungen",
     "germanClubs": "Deutschclubs",
     "apply": "Für eine Ausbildung bewerben",
     "desc": {
-      "whoWeAre": "Unsere Geschichte, Mission und unser Team",
-      "objectives": "Die 13 Ziele, die unser Handeln leiten",
-      "transparency": "Satzung, Tätigkeits- und Finanzberichte",
+      "whoWeAre": "Unsere Geschichte, Mission und unser Präsident-Gründer",
+      "objectives": "Die 17 Ziele für nachhaltige Entwicklung der UN in Togo",
+      "transparency": "Satzung, Tätigkeits- und geprüfte Finanzberichte",
       "gallery": "Unsere Arbeit vor Ort in Bildern",
-      "projectCefopexd": "Berufsausbildung für junge Menschen in Devikinme",
+      "projectCefopexd": "Berufsausbildung für junge Menschen in Dévikinmé",
       "projectBoarding": "Ein sicheres Zuhause für Auszubildende",
       "projectSolar": "Solarenergie in Frauenhand",
       "allProjects": "Alle Projekte im Überblick",
-      "ourCourses": "Messerschmiede, Mechanik, Buchhaltung, Solar, IT",
+      "ourCourses": "Industrielle Mechatronik, Maßhandwerk, Lebensmittelverarbeitung, Mechanik, Solar, IT",
       "germanClubs": "Deutsch und Weltoffenheit an Schulen",
       "apply": "In 2 Minuten bewerben",
       "donate": "Mobile Money oder internationale Spende",
@@ -72,18 +73,18 @@
       },
       "projects": {
         "title": "Mädcheninternat",
-        "text": "Seit Ende 2025 Platz für 24 Auszubildende.",
+        "text": "24 Plätze für Auszubildende seit Ende 2025.",
         "cta": "Projekt unterstützen"
       },
       "trainings": {
-        "title": "Bewerbungen offen",
-        "text": "Zweisprachige Ausbildung Französisch–Deutsch mit Blick auf den Beruf.",
-        "cta": "Jetzt bewerben"
+        "title": "Bewerbungen geöffnet",
+        "text": "Spitzenausbildung: Mechatronik mit 65% Stipendium (Abitur/BAC erforderlich), Maßhandwerk, Agrarverarbeitung.",
+        "cta": "Bewerben"
       },
       "getInvolved": {
         "title": "Jeder Cent zählt",
-        "text": "Ihre Spende finanziert direkt die Ausbildung junger Menschen.",
-        "cta": "Spenden"
+        "text": "Ihre Spende finanziert direkt die Ausbildung togoischer Jugendlicher.",
+        "cta": "Jetzt spenden"
       }
     }
   },
@@ -96,14 +97,14 @@
     "contactUs": "Kontakt aufnehmen"
   },
   "TopBar": {
-    "call": "{number} anrufen",
-    "writeTo": "E-Mail an {email}",
+    "call": "Anrufen: {number}",
+    "writeTo": "Schreiben an {email}",
     "followUs": "Folgen Sie uns"
   },
   "Theme": {
-    "toggle": "Design wechseln",
-    "toLight": "Zum hellen Modus wechseln",
-    "toDark": "Zum dunklen Modus wechseln"
+    "toggle": "Design anpassen",
+    "toLight": "Heller Modus",
+    "toDark": "Dunkler Modus"
   },
   "Social": {
     "facebook": "Facebook",
@@ -114,23 +115,97 @@
     "whatsapp": "WhatsApp"
   },
   "Footer": {
-    "about": "Togoische NGO und Zweig des Vereins kommTOGOgehweiter e.V. (Köln). Seit 2018 in Togo aktiv, bilden wir junge Menschen in Togo, vor allem Frauen, in Berufen aus, die ihnen ein Leben in Würde ermöglichen.",
+    "about": "Togoische NGO, gegründet unter der Präsidentschaft von Herrn Blaise-Pascal D'ALMEIDA, Zweig von kommTOGOgehweiter e.V. (Köln). Aktiv seit 2018 in Togo bilden wir junge Menschen, insbesondere junge Frauen, für zukunftsfähige Berufe aus.",
     "colNavigation": "Navigation",
     "colEngage": "Mitmachen",
-    "colFindUs": "So finden Sie uns",
-    "directions": "Route",
-    "showMap": "Karte anzeigen",
-    "mapNotice": "Die Karte wird von Google Maps bereitgestellt. Mit dem Anzeigen stimmen Sie dem Setzen von Cookies durch Google zu.",
-    "mapTitle": "Karte: Sitz von KTGW Togo in Lomé",
-    "germanyHQ": "Sitz in Deutschland",
+    "colFindUs": "Hauptsitz & Standort Togo",
+    "directions": "Anfahrt zum Hauptsitz in Tokoin",
+    "showMap": "Interaktive Karte anzeigen",
+    "mapNotice": "Hauptsitz in Tokoin Cébévito (nahe CHU Sylvanus Olympio), Lomé, Togo.",
+    "mapTitle": "Karte: Hauptsitz von KTGW Togo in Lomé Tokoin",
+    "germanyHQ": "Partnerverein in Deutschland",
     "rights": "© {year} KTGW Togo. Alle Rechte vorbehalten.",
     "backToTop": "Nach oben",
-    "phones": "Telefon",
+    "phones": "Telefonzentrale Togo",
     "whatsappWith": "WhatsApp an {number}"
   },
-  "Home": {
-    "heroTitle": "Heute die Gestalter des Togo von morgen ausbilden",
-    "heroSubtitle": "Bildung, zweisprachige Berufsausbildung und Stärkung junger Menschen, vor allem junger Frauen, seit 2018 in Togo.",
-    "wip": "Website im Aufbau — Phase 2 (Designsystem & Layout)."
+  "HomeSections": {
+    "bourse": {
+      "badge": "65% Stipendium · 50 Plätze",
+      "dates": "Bewerbung bis 12. Nov. · Ausbildungsbeginn 16. Nov. 2026",
+      "title": "Offizielle Ausschreibung: Qualifizierende Ausbildung in Industrieller Mechatronik (09 Monate + 03 Monate Praktikum). Zulassung nur mit Abitur (BAC). Sicheres Mädcheninternat vor Ort.",
+      "cta": "Ausschreibung ansehen & bewerben"
+    },
+    "about": {
+      "eyebrow": "Wer wir sind",
+      "titlePart1": "Eine togoische NGO, eine Brücke nach ",
+      "titlePart2": "Deutschland",
+      "text1": "KommTogoGehWeiter Togo (KTGW Togo) ist die togoische Vertretung von kommTOGOgehweiter e.V. (Köln), engagiert geführt vom Präsidenten und Gründer Herrn Blaise-Pascal D'ALMEIDA.",
+      "text2": "Freiwillige aus Deutschland, Frankreich und Togo wirken gemeinsam in Lomé, Aného, Kpalimé, Atakpamé, Kara und Dapaong, um Jugendlichen qualifizierte Perspektiven zu eröffnen.",
+      "quote": "Jeder Cent, der in Bildung in Afrika investiert wird, schützt vor gefährlichen Wegen nach Europa.",
+      "quoteAuthor": "Leitgedanke von Herrn Blaise-Pascal D'ALMEIDA und kommTOGOgehweiter e.V.",
+      "learnMore": "Mehr erfahren",
+      "ourObjectives": "Unsere 17 UN-Ziele"
+    },
+    "domains": {
+      "eyebrow": "Unsere Wirkungsbereiche",
+      "title": "Fünf Hebel für die Zukunft togoischer Jugendlicher",
+      "subtitle": "Exzellente Ausbildung, Unternehmertum, internationale Begegnung, Mädcheninternat und ökologischer Wandel.",
+      "discover": "Entdecken"
+    },
+    "objectives": {
+      "eyebrow": "UN-Nachhaltigkeitsziele",
+      "title": "Die 17 Ziele für nachhaltige Entwicklung (SDG)",
+      "subtitle": "Von der Armutsbekämpfung bis zur lokalen Lebensmittelverarbeitung und modernen Industrie verwirklichen wir die SDGs in Togo.",
+      "cta": "Alle 17 SDGs entdecken"
+    },
+    "courses": {
+      "eyebrow": "Berufsausbildung",
+      "title": "Zukunftsorientierte Ausbildungszweige",
+      "subtitle": "Industrielle Mechatronik, Lebensmittelverarbeitung, Maßhandwerk, angewandte Mechanik und Solarenergie.",
+      "mecatroniqueTitle": "Industrielle Mechatronik (65% Stipendium)",
+      "mecatroniqueText": "Fahrzeugelektronik, computergestützte Diagnose, Programmierung, Embedded Systems und kostenloser Deutschunterricht. Abitur (BAC) zwingend erforderlich.",
+      "artisanatTitle": "Maßgeschneidertes Kunsthandwerk",
+      "artisanatText": "Metallverarbeitung, Kunstschreinerei und bedarfsgerechte Fertigung unter Anleitung erfahrener Meister.",
+      "agroTitle": "Lebensmittelverarbeitung & Veredelung",
+      "agroText": "Solartrocknung lokaler Früchte, Getreideverarbeitung, Konserven und Vermarktung togoischer Erzeugnisse.",
+      "mecaniqueTitle": "Angewandte Mechanik & Industriewartung",
+      "mecaniqueText": "Vorbeugende Wartung, Motorinstandsetzung, Elektromechanik und Arbeitssicherheit.",
+      "cta": "Alle Fachrichtungen"
+    },
+    "projects": {
+      "eyebrow": "Schlüsselprojekte",
+      "title": "Konkrete Vorhaben vor Ort in Togo",
+      "subtitle": "Jedes Projekt reagiert gezielt auf die Herausforderungen der togoischen Jugend.",
+      "cta": "Alle Projekte ansehen"
+    },
+    "events": {
+      "eyebrow": "Termine",
+      "title": "Kommende Veranstaltungen & Ausbildungsstarts",
+      "subtitle": "Nehmen Sie an Orientierungstagen, Workshops und offiziellen Starts in Togo teil.",
+      "cta": "Gesamter Kalender",
+      "none": "Derzeit keine öffentlichen Termine. Bewerbungen für Mechatronik laufen bis zum 12. November 2026!"
+    },
+    "news": {
+      "eyebrow": "Aktuelles",
+      "title": "Neueste Berichte aus der Praxis",
+      "cta": "Alle Neuigkeiten"
+    },
+    "partners": {
+      "eyebrow": "Starke Partnerschaften",
+      "title": "Partner, die unsere Mission unterstützen",
+      "subtitle": "Institutionen aus Togo, Deutschland und Europa engagieren sich für die Zukunft junger Menschen.",
+      "bannerEyebrow": "Werden Sie Partner",
+      "bannerTitle": "Gestalten wir gemeinsam die Zukunft togoischer Jugendlicher",
+      "bannerText": "Unternehmen, Botschaften, Stiftungen oder Verbände: Schaffen wir gemeinsam nachhaltige Arbeitsplätze.",
+      "propose": "Partnerschaft vorschlagen",
+      "contact": "Kontakt aufnehmen"
+    },
+    "finalCta": {
+      "title": "Jeder Cent für Bildung zählt",
+      "subtitle": "Eine Spende oder ehrenamtlicher Einsatz ermöglicht jungen Togolesen einen Beruf zu erlernen und in ihrer Heimat eine Zukunft aufzubauen.",
+      "donate": "Spenden",
+      "volunteer": "Ehrenamtlich mitwirken"
+    }
   }
 }

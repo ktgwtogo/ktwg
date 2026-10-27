@@ -2,7 +2,7 @@
   "Metadata": {
     "title": "KTGW Togo — Training today the builders of tomorrow's Togo",
     "titleTemplate": "%s · KTGW Togo",
-    "description": "KommTogoGehWeiter Togo: education, bilingual vocational training and empowerment of young people, especially women, active since 2018 in Togo."
+    "description": "KommTogoGehWeiter Togo: education, bilingual vocational training and empowerment of youth, especially young women, active since 2018 in Togo under the leadership of Mr. Blaise-Pascal D'ALMEIDA."
   },
   "Common": {
     "orgName": "KommTogoGehWeiter Togo",
@@ -17,12 +17,13 @@
     "language": "Language",
     "skipToContent": "Skip to main content",
     "home": "KTGW Togo home",
-    "opensInNewTab": "(opens in a new tab)"
+    "opensInNewTab": "(opens in a new tab)",
+    "presidentFounder": "Mr. Blaise-Pascal D'ALMEIDA, President & Founder of KTGW"
   },
   "Nav": {
     "home": "Home",
     "about": "About us",
-    "objectives": "Objectives",
+    "objectives": "UN SDGs",
     "projects": "Projects",
     "trainings": "Training",
     "news": "News",
@@ -48,21 +49,21 @@
     "germanClubs": "German clubs",
     "apply": "Apply for training",
     "desc": {
-      "whoWeAre": "Our story, mission and team",
-      "objectives": "The 13 commitments that guide our work",
-      "transparency": "Statutes, activity and financial reports",
-      "gallery": "Our work in the field, in pictures",
-      "projectCefopexd": "Vocational training for young people in Devikinme",
+      "whoWeAre": "Our story, mission and our President-Founder",
+      "objectives": "The 17 UN Sustainable Development Goals in Togo",
+      "transparency": "Statutes, activity and audited financial reports",
+      "gallery": "Our work on the ground in pictures",
+      "projectCefopexd": "Practical vocational training for youth in Dévikinmé",
       "projectBoarding": "A safe home for female apprentices",
       "projectSolar": "Solar energy in women's hands",
       "allProjects": "Overview of all our projects",
-      "ourCourses": "Cutlery, mechanics, accounting, solar, IT",
-      "germanClubs": "German and openness to the world at school",
+      "ourCourses": "Industrial mechatronics, custom craftsmanship, food processing, mechanics, solar, IT",
+      "germanClubs": "German and global awareness at school",
       "apply": "Apply in 2 minutes",
       "donate": "Mobile Money or international donation",
       "becomePartner": "Companies, foundations, institutions",
       "volunteer": "Give your time, in Togo or remotely",
-      "join": "Become a member of the association"
+      "join": "Become an association member"
     },
     "featured": {
       "about": {
@@ -72,18 +73,18 @@
       },
       "projects": {
         "title": "Girls' boarding house",
-        "text": "24 places for female apprentices since late 2025.",
+        "text": "24 places for apprentices since late 2025.",
         "cta": "Support this project"
       },
       "trainings": {
         "title": "Applications open",
-        "text": "Bilingual French–German training geared towards employment.",
+        "text": "Elite training: Mechatronics with 65% scholarship (High School Diploma / BAC required), custom craft, agro-processing.",
         "cta": "Apply now"
       },
       "getInvolved": {
         "title": "Every cent counts",
-        "text": "Your donation directly funds training for young people.",
-        "cta": "Donate"
+        "text": "Your donation directly funds the education of youth in Togo.",
+        "cta": "Donate now"
       }
     }
   },
@@ -92,16 +93,16 @@
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
     "menu": "Menu",
-    "submenu": "{label} submenu",
+    "submenu": "Submenu {label}",
     "contactUs": "Contact us"
   },
   "TopBar": {
     "call": "Call {number}",
-    "writeTo": "Email {email}",
+    "writeTo": "Write to {email}",
     "followUs": "Follow us"
   },
   "Theme": {
-    "toggle": "Toggle theme",
+    "toggle": "Switch theme",
     "toLight": "Switch to light mode",
     "toDark": "Switch to dark mode"
   },
@@ -114,23 +115,97 @@
     "whatsapp": "WhatsApp"
   },
   "Footer": {
-    "about": "Togolese NGO and branch of the kommTOGOgehweiter e.V. association (Cologne). Active in Togo since 2018, we train young people, especially women, in trades that let them earn a decent living.",
+    "about": "Togolese NGO founded under the presidency of Mr. Blaise-Pascal D'ALMEIDA, branch of kommTOGOgehweiter e.V. (Cologne). Active since 2018 in Togo, we empower youth, especially women, through modern vocational trades.",
     "colNavigation": "Navigation",
     "colEngage": "Get involved",
-    "colFindUs": "Find us",
-    "directions": "Directions",
-    "showMap": "Show map",
-    "mapNotice": "The map is provided by Google Maps. By showing it, you accept cookies set by Google.",
-    "mapTitle": "Map: KTGW Togo headquarters in Lomé",
-    "germanyHQ": "Headquarters in Germany",
+    "colFindUs": "Headquarters & Togo Location",
+    "directions": "Directions to Tokoin headquarters",
+    "showMap": "Show interactive map",
+    "mapNotice": "Headquarters located in Tokoin Cébévito (near CHU Sylvanus Olympio), Lomé, Togo.",
+    "mapTitle": "Map: KTGW Togo national headquarters in Lomé Tokoin",
+    "germanyHQ": "Partner branch in Germany",
     "rights": "© {year} KTGW Togo. All rights reserved.",
     "backToTop": "Back to top",
-    "phones": "Phone",
+    "phones": "Phone line Togo",
     "whatsappWith": "WhatsApp {number}"
   },
-  "Home": {
-    "heroTitle": "Training today the builders of tomorrow's Togo",
-    "heroSubtitle": "Education, bilingual vocational training and empowerment of young people, especially women, since 2018 in Togo.",
-    "wip": "Website under construction — Phase 2 (design system & layout)."
+  "HomeSections": {
+    "bourse": {
+      "badge": "65% Scholarship · 50 Places",
+      "dates": "Registration deadline: Nov 12 · Classes start: Nov 16, 2026",
+      "title": "Official Call for Applications: Advanced Training in Industrial Mechatronics & Embedded Systems (09 months + 03 months internship). High School Diploma (BAC) strictly required. Secure girls' boarding on-site.",
+      "cta": "View call & apply"
+    },
+    "about": {
+      "eyebrow": "Who we are",
+      "titlePart1": "A Togolese NGO, a bridge with ",
+      "titlePart2": "Germany",
+      "text1": "KommTogoGehWeiter Togo (KTGW Togo) is the Togolese branch of kommTOGOgehweiter e.V. (Cologne), passionately led by its President & Founder Mr. Blaise-Pascal D'ALMEIDA.",
+      "text2": "Volunteers from Germany, France and Togo act together in Lomé, Aného, Kpalimé, Atakpamé, Kara and Dapaong to provide young people, especially young women, with high quality education.",
+      "quote": "Every cent invested in education in Africa protects against dangerous journeys to Europe.",
+      "quoteAuthor": "Motto shared by Mr. Blaise-Pascal D'ALMEIDA and kommTOGOgehweiter e.V.",
+      "learnMore": "Learn more",
+      "ourObjectives": "Our 17 UN SDGs"
+    },
+    "domains": {
+      "eyebrow": "Our areas of action",
+      "title": "Five major drivers for Togo's youth development",
+      "subtitle": "Excellence in training, entrepreneurship, global interculturality, girls' boarding and ecological transition.",
+      "discover": "Discover"
+    },
+    "objectives": {
+      "eyebrow": "UN Global Goals",
+      "title": "The 17 Sustainable Development Goals (SDGs)",
+      "subtitle": "From poverty eradication to agricultural processing and modern industry, our programs champion the UN SDGs in Togo.",
+      "cta": "Explore the 17 SDGs"
+    },
+    "courses": {
+      "eyebrow": "Vocational Training",
+      "title": "Future-proof programs geared towards employment",
+      "subtitle": "Industrial mechatronics, food transformation, tailored craftsmanship, applied mechanics, solar systems.",
+      "mecatroniqueTitle": "Industrial Mechatronics (65% Scholarship)",
+      "mecatroniqueText": "Automotive electronics, computerized diagnostics, programming, embedded systems and free German tuition. High school diploma (BAC) required.",
+      "artisanatTitle": "Customized Artisanal Craftsmanship",
+      "artisanatText": "Metal shaping, fine woodwork, and tailored equipment manufacturing to meet real local community needs.",
+      "agroTitle": "Food Processing & Local Value Creation",
+      "agroText": "Solar fruit drying, grain processing, sanitary packaging and commercialization of high-value Togolese goods.",
+      "mecaniqueTitle": "Applied Mechanics & Industrial Maintenance",
+      "mecaniqueText": "Preventive maintenance, engine overhaul, electromechanics and industrial workshop safety standards.",
+      "cta": "All our courses"
+    },
+    "projects": {
+      "eyebrow": "Key Projects",
+      "title": "Tangible achievements on the ground",
+      "subtitle": "Each project responds directly to the needs of Togolese youth alongside our German and local partners.",
+      "cta": "All our projects"
+    },
+    "events": {
+      "eyebrow": "Agenda",
+      "title": "Upcoming events & session starts",
+      "subtitle": "Join orientation days, technical workshops and official launches across Togo.",
+      "cta": "Full calendar",
+      "none": "No public events scheduled right now. Applications for Mechatronics are open until November 12, 2026!"
+    },
+    "news": {
+      "eyebrow": "News",
+      "title": "Latest updates from the field",
+      "cta": "All news"
+    },
+    "partners": {
+      "eyebrow": "Trusted Partnerships",
+      "title": "Supporting our mission across Togo",
+      "subtitle": "Institutions, companies and foundations in Togo, Germany and Europe dedicated to youth autonomy.",
+      "bannerEyebrow": "Become our partner",
+      "bannerTitle": "Let's build together the future of youth in Togo",
+      "bannerText": "Companies, embassies, foundations and organizations: let us join forces to foster sustainable employment.",
+      "propose": "Propose a partnership",
+      "contact": "Contact us"
+    },
+    "finalCta": {
+      "title": "Every cent for education matters",
+      "subtitle": "A donation or volunteer time empowers a Togolese youth to master a noble trade and thrive in their own country.",
+      "donate": "Donate",
+      "volunteer": "Become a volunteer"
+    }
   }
 }

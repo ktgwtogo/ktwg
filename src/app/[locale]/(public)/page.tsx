@@ -14,8 +14,9 @@ import {
   StatsBand,
   UpcomingEvents,
 } from "@/components/sections/home-sections";
+import { PresidentFounderMessageSection } from "@/components/sections/president-message-section";
 
-/** Page d'accueil (ordre des sections : §6 du cahier des charges). */
+/** Page d'accueil avec Mot Officiel du Président-Fondateur M. Blaise-Pascal D'ALMEIDA. */
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
@@ -26,6 +27,8 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       <BourseAnnouncementSpotlight />
       <StatsBand />
       <AboutPreview />
+      {/* Tribune & Mot Solennel du Président-Fondateur */}
+      <PresidentFounderMessageSection />
       <DomainsGrid />
       <FeaturedProjects />
       <ObjectivesPreview />

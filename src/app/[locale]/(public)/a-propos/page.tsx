@@ -143,6 +143,41 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
         </div>
       </Section>
 
+      {/* Mot du Président-Fondateur */}
+      <Section width="default">
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-slate-950 via-slate-900 to-ktgw-green-dark p-8 text-white shadow-2xl sm:p-12">
+          <div className="relative z-10 grid gap-8 lg:grid-cols-12 lg:items-center">
+            <div className="flex flex-col gap-4 lg:col-span-8">
+              <span className="inline-flex w-fit items-center gap-2 rounded-full bg-ktgw-sun/20 px-3 py-1 text-xs font-bold text-ktgw-sun ring-1 ring-ktgw-sun/40">
+                Direction &amp; Présidence Fondatrice
+              </span>
+              <h2 className="font-heading text-3xl font-extrabold sm:text-4xl text-white">
+                Monsieur Blaise-Pascal D&apos;ALMEIDA
+              </h2>
+              <p className="text-lg font-semibold text-ktgw-sun">
+                Président-Fondateur de KTGW
+              </p>
+              <blockquote className="border-l-4 border-ktgw-sun pl-4 text-base italic text-white/90 sm:text-lg">
+                « Chaque centime investi dans l&apos;éducation en Afrique protège des chemins dangereux vers l&apos;Europe. Notre mission est de donner aux jeunes du Togo les compétences concrètes et la fierté de réussir dans leur pays. »
+              </blockquote>
+              <p className="text-sm text-white/75">
+                Sous son impulsion, KTGW Togo déploie des formations d&apos;excellence, l&apos;internat des jeunes filles au centre CEFOPEXD, l&apos;agroalimentaire et la nouvelle filière en mécatronique industrielle.
+              </p>
+            </div>
+            <div className="flex flex-col items-center justify-center rounded-2xl border border-white/10 bg-white/5 p-6 text-center backdrop-blur-sm lg:col-span-4">
+              <span className="flex size-20 items-center justify-center rounded-2xl bg-ktgw-red text-white shadow-xl">
+                <Users className="size-10" />
+              </span>
+              <p className="mt-4 font-heading text-lg font-bold text-white">M. Blaise-Pascal D&apos;ALMEIDA</p>
+              <p className="text-xs text-ktgw-sun font-medium">Président-Fondateur</p>
+              <span className="mt-3 rounded-full bg-white/10 px-3 py-1 text-[11px] text-white/80">
+                Lomé · Cologne · Devikinmé
+              </span>
+            </div>
+          </div>
+        </div>
+      </Section>
+
       {/* Gouvernance */}
       <Section tone="muted" aria-labelledby="gov-title">
         <SectionTitle

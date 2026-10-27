@@ -57,6 +57,12 @@ export const images = {
     576,
     1024
   ),
+  agroalimentaire: photo(
+    "agroalimentaire.jpg",
+    "Atelier de transformation agroalimentaire locale au Togo : séchage de mangues, farines locales et confitures artisanales",
+    1600,
+    1200
+  ),
 } satisfies Record<string, SiteImage>;
 
 export type ImageKey = keyof typeof images;

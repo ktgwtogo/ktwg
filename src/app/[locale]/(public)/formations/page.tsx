@@ -26,6 +26,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { setRequestLocale } from "next-intl/server";
 import { TrainingApplicationForm } from "@/components/forms/other-forms";
+import { MecatroniqueApplicationForm } from "@/components/forms/mecatronique-application-form";
 import { ButtonLink } from "@/components/ui/button-link";
 import { PageHeader } from "@/components/shared/page-header";
 import { Reveal } from "@/components/shared/reveal";
@@ -35,9 +36,9 @@ import { images } from "@/content/images";
 import { courses } from "@/content/organization";
 
 export const metadata: Metadata = {
-  title: "Formations professionnelles bilingues · Mécatronique avec Bourse",
+  title: "Formations professionnelles bilingues · Mécatronique Industrielle (Bourse 65%)",
   description:
-    "Formation d'excellence en Mécatronique avec bourse de 65%, coutellerie, comptabilité, mécanique, énergies renouvelables, informatique : formations professionnelles bilingues français–allemand au Togo.",
+    "Formation qualifiante d'excellence en Mécatronique Industrielle avec bourse de 65% (BAC obligatoire), formation artisanale sur-mesure, transformation agroalimentaire, mécanique appliquée : formations bilingues français–allemand au Togo.",
 };
 
 const approach = [
@@ -109,10 +110,10 @@ export default async function TrainingsPage({ params }: { params: Promise<{ loca
 
             <div className="flex flex-col gap-2">
               <h2 className="font-heading text-2xl font-extrabold text-foreground sm:text-3xl lg:text-4xl">
-                Formation Professionnelle Qualifiante en <span className="text-ktgw-red">Mécatronique</span>
+                Formation Professionnelle Qualifiante en <span className="text-ktgw-red">Mécatronique Industrielle &amp; Systèmes Embarqués</span>
               </h2>
               <p className="max-w-3xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-                Organisée conjointement par <strong>l&apos;ONG KommTogoGehweiter</strong>, <strong>KTGW-TOGO</strong>, le centre de formation professionnelle <strong>CEFOPEXD</strong> et leurs partenaires allemands. Une opportunité unique pour acquérir les compétences les plus recherchées de l&apos;industrie et de l&apos;automobile moderne.
+                Organisée conjointement par <strong>l&apos;ONG KommTogoGehweiter</strong> sous la présidence de son <strong>Président-Fondateur Monsieur Blaise-Pascal D&apos;ALMEIDA</strong>, <strong>KTGW-TOGO</strong>, le centre de formation professionnelle <strong>CEFOPEXD</strong> et leurs partenaires allemands. Une opportunité unique pour acquérir les compétences d&apos;avenir les plus recherchées de l&apos;industrie, de l&apos;automatisation et de l&apos;automobile moderne.
               </p>
             </div>
           </div>
@@ -125,7 +126,7 @@ export default async function TrainingsPage({ params }: { params: Promise<{ loca
                 <div className="relative aspect-[9/14] w-full">
                   <Image
                     src="/images/affiche-bourse-mecatronique-2026.jpg"
-                    alt="Affiche officielle Appel à candidature Formation Mécatronique avec Bourse CEFOPEXD"
+                    alt="Affiche officielle Appel à candidature Formation Mécatronique Industrielle avec Bourse CEFOPEXD"
                     fill
                     sizes="(min-width: 1024px) 40vw, 100vw"
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
@@ -134,10 +135,21 @@ export default async function TrainingsPage({ params }: { params: Promise<{ loca
                 <div className="absolute top-3 left-3 rounded-full bg-ktgw-red/90 px-3 py-1 text-xs font-bold text-white shadow backdrop-blur-sm">
                   Rentrée : 16 Novembre 2026
                 </div>
+                <div className="absolute bottom-3 right-3 rounded-full bg-ktgw-sun px-3 py-1 text-xs font-black text-slate-950 shadow">
+                  Clôture : 12 Novembre 2026
+                </div>
               </div>
 
               {/* Actions rapides sous l'affiche */}
               <div className="flex flex-col gap-2.5">
+                <a
+                  href="#candidature-mecatronique"
+                  className="flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-ktgw-red via-rose-600 to-ktgw-red-strong px-5 py-3.5 text-sm font-extrabold text-white shadow-xl ring-2 ring-ktgw-sun transition-all hover:scale-105 active:scale-95"
+                >
+                  <Award aria-hidden className="size-5" />
+                  POSTULER EN LIGNE (BOURSE 65%)
+                  <ArrowRight aria-hidden className="size-4" />
+                </a>
                 <a
                   href="https://wa.me/22896975353?text=Bonjour,%20je%20souhaite%20candidater%20%C3%A0%20la%20formation%20en%20M%C3%A9catronique%20avec%20Bourse%20au%20CEFOPEXD"
                   target="_blank"
@@ -210,33 +222,33 @@ export default async function TrainingsPage({ params }: { params: Promise<{ loca
               </div>
 
               {/* Alerte Féminine & Internat */}
-              <div className="flex items-start gap-4 rounded-2xl bg-gradient-to-r from-ktgw-red to-ktgw-red-strong p-5 text-white shadow-md">
-                <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-white/20">
-                  <Venus aria-hidden className="size-6 text-white" />
+              <div className="flex items-start gap-4 rounded-2xl bg-gradient-to-r from-ktgw-red via-ktgw-red-strong to-slate-900 p-5 text-white shadow-md">
+                <div className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-white/20">
+                  <Venus aria-hidden className="size-7 text-white" />
                 </div>
                 <div>
-                  <h4 className="font-heading font-bold uppercase tracking-wide">
+                  <h4 className="font-heading font-bold uppercase tracking-wide text-ktgw-sun">
                     Candidatures féminines prioritaires &amp; Internat sur place
                   </h4>
-                  <p className="mt-1 text-sm leading-relaxed text-white/90">
-                    Les candidatures féminines sont vivement encouragées ! <strong>Possibilité d&apos;hébergement complet dans l&apos;Internat pour les filles</strong> au sein même du centre CEFOPEXD à Dévikinmé. <em>Les garçons sont également les bienvenus.</em>
+                  <p className="mt-1 text-sm leading-relaxed text-white/95">
+                    Les candidatures féminines sont vivement encouragées ! <strong>Hébergement sécurisé garanti dans l&apos;Internat pour les filles</strong> au sein même du centre CEFOPEXD à Dévikinmé. Les garçons sont également les bienvenus.
                   </p>
                 </div>
               </div>
 
               {/* Grille Conditions & Tarifs */}
               <div className="grid gap-4 sm:grid-cols-2">
-                <div className="flex flex-col gap-2 rounded-2xl bg-card p-4 shadow-sm ring-1 ring-foreground/5">
+                <div className="flex flex-col gap-2 rounded-2xl border-2 border-ktgw-red/30 bg-card p-4 shadow-sm ring-1 ring-foreground/5">
                   <h5 className="flex items-center gap-2 text-sm font-bold text-foreground">
-                    <GraduationCap aria-hidden className="size-4 text-ktgw-green" />
-                    Conditions d&apos;accès
+                    <GraduationCap aria-hidden className="size-4 text-ktgw-red" />
+                    Conditions d&apos;accès strictes
                   </h5>
                   <ul className="flex flex-col gap-1.5 text-xs text-muted-foreground">
-                    <li>• <strong>Niveau :</strong> BAC, BAC+, étudiants</li>
+                    <li className="font-bold text-ktgw-red">• Niveau requis : BAC impératif (Admission uniquement à partir du BAC)</li>
                     <li>• <strong>Âge :</strong> 18 à 28 ans</li>
-                    <li>• <strong>Public :</strong> Filles et garçons</li>
-                    <li>• <strong>Rentrée :</strong> 16 novembre 2026</li>
-                    <li>• <strong>Date limite :</strong> 20 octobre 2026 à 17h00</li>
+                    <li>• <strong>Public :</strong> Filles (prioritaires) et garçons</li>
+                    <li>• <strong>Fin des inscriptions :</strong> 12 novembre 2026 à 17h00</li>
+                    <li>• <strong>Début des cours :</strong> 16 novembre 2026</li>
                   </ul>
                 </div>
 
@@ -249,7 +261,7 @@ export default async function TrainingsPage({ params }: { params: Promise<{ loca
                     <li>• <strong>Bourse de 65% :</strong> Pour les 50 premiers inscrits</li>
                     <li>• <strong>Inscription :</strong> 35.000 F (tenue et outils inclus)</li>
                     <li>• <strong>Frais avec bourse :</strong> 65.000 F (en 3 tranches)</li>
-                    <li>• <strong>Internat filles :</strong> Disponible sur place</li>
+                    <li>• <strong>Internat pour filles :</strong> Disponible sur place</li>
                   </ul>
                 </div>
               </div>
@@ -261,9 +273,9 @@ export default async function TrainingsPage({ params }: { params: Promise<{ loca
                   Composition du dossier (format PDF) :
                 </h5>
                 <ol className="mt-2 flex flex-col gap-1 text-xs text-foreground/90 sm:text-sm">
-                  <li>1. Une lettre de demande d&apos;inscription adressée au Président de l&apos;ONG KommTogoGehweiter</li>
-                  <li>2. Une copie simple du relevé de notes du BAC</li>
-                  <li>3. Une copie simple d&apos;acte de naissance ou une pièce d&apos;identité</li>
+                  <li>1. Une lettre de demande d&apos;inscription adressée au <strong>Président-Fondateur de l&apos;ONG KommTogoGehweiter, M. Blaise-Pascal D&apos;ALMEIDA</strong></li>
+                  <li>2. Une copie simple et légalisée du diplôme ou relevé de notes du BAC</li>
+                  <li>3. Une copie simple d&apos;acte de naissance ou une pièce d&apos;identité officielle</li>
                 </ol>
                 <div className="mt-3 flex flex-wrap items-center gap-4 text-xs font-semibold text-muted-foreground">
                   <span className="flex items-center gap-1.5 text-foreground">
@@ -281,6 +293,11 @@ export default async function TrainingsPage({ params }: { params: Promise<{ loca
                 </div>
               </div>
             </div>
+          </div>
+
+          {/* Formulaire officiel de candidature directe avec pièces jointes */}
+          <div id="candidature-mecatronique" className="mt-10 scroll-mt-28">
+            <MecatroniqueApplicationForm />
           </div>
         </div>
       </Section>

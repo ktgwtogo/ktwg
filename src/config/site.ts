@@ -12,6 +12,11 @@ export const siteConfig = {
   name: "KTGW Togo",
   fullName: "KommTogoGehWeiter Togo",
   foundedYear: 2018,
+  presidentFounder: {
+    fullName: "Monsieur Blaise-Pascal D'ALMEIDA",
+    title: "Président-Fondateur de KTGW",
+    organization: "KommTogoGehweiter",
+  },
 
   togo: {
     address: {

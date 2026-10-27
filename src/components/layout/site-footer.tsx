@@ -82,27 +82,35 @@ export function SiteFooter({ config }: { config: SiteConfigData }) {
           <FooterColumn title={t("Footer.colEngage")} items={footerNav.engage} />
         </div>
 
-        {/* 4. Nous trouver */}
-        <div className="flex flex-col gap-4 md:col-span-2 lg:col-span-4">
-          <h2 className="font-heading text-sm font-bold tracking-wider text-white uppercase">
-            {t("Footer.colFindUs")}
-          </h2>
+        {/* 4. Nous trouver — Accentuation prioritaire sur le Togo */}
+        <div className="flex flex-col gap-5 md:col-span-2 lg:col-span-4">
+          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-2">
+            <h2 className="flex items-center gap-2 font-heading text-sm font-bold tracking-wider text-ktgw-sun uppercase">
+              <span className="flex size-2 rounded-full bg-ktgw-red animate-ping" />
+              Siège National au Togo
+            </h2>
+            <span className="rounded-full bg-emerald-500/20 px-2.5 py-0.5 text-[11px] font-bold text-emerald-300 ring-1 ring-emerald-500/30">
+              Lomé · Tokoin
+            </span>
+          </div>
 
-          <address className="flex flex-col gap-3 text-sm not-italic">
+          <address className="flex flex-col gap-3.5 text-sm not-italic rounded-2xl border border-white/10 bg-white/[0.04] p-4">
             <p className="flex gap-3">
-              <MapPin aria-hidden className="mt-0.5 size-4 shrink-0 text-ktgw-sun" />
-              <span>
+              <MapPin aria-hidden className="mt-0.5 size-5 shrink-0 text-ktgw-sun" />
+              <span className="leading-relaxed">
+                <strong className="text-white">Siège Social KTGW Togo :</strong>
+                <br />
                 {togo.address.street}
                 <br />
-                {togo.address.district}, {togo.address.city} – {togo.address.country}
+                <span className="text-ktgw-sun font-semibold">{togo.address.district}</span>, {togo.address.city} – {togo.address.country}
               </span>
             </p>
             <div className="flex gap-3">
-              <Phone aria-hidden className="mt-0.5 size-4 shrink-0 text-ktgw-sun" />
-              <ul aria-label={t("Footer.phones")} className="flex flex-col gap-1.5">
+              <Phone aria-hidden className="mt-0.5 size-5 shrink-0 text-ktgw-sun" />
+              <ul aria-label={t("Footer.phones")} className="flex flex-col gap-2">
                 {togo.phones.map((p) => (
                   <li key={p.e164} className="flex items-center gap-2">
-                    <a href={`tel:${p.e164}`} className="hover:text-ktgw-sun">
+                    <a href={`tel:${p.e164}`} className="font-semibold text-white hover:text-ktgw-sun">
                       {p.display}
                     </a>
                     {p.whatsapp && (
@@ -111,9 +119,10 @@ export function SiteFooter({ config }: { config: SiteConfigData }) {
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label={t("Footer.whatsappWith", { number: p.display })}
-                        className="flex size-6 items-center justify-center rounded-full bg-[#25D366]/15 text-[#25D366] hover:bg-[#25D366] hover:text-white"
+                        className="inline-flex items-center gap-1.5 rounded-full bg-[#25D366] px-2.5 py-0.5 text-xs font-bold text-slate-950 transition-transform hover:scale-105"
                       >
                         <FaWhatsapp aria-hidden className="size-3.5" />
+                        WhatsApp
                       </a>
                     )}
                   </li>
@@ -121,54 +130,49 @@ export function SiteFooter({ config }: { config: SiteConfigData }) {
               </ul>
             </div>
             <p className="flex gap-3">
-              <Mail aria-hidden className="mt-0.5 size-4 shrink-0 text-ktgw-sun" />
-              <a href={`mailto:${togo.email}`} className="break-all hover:text-ktgw-sun">
+              <Mail aria-hidden className="mt-0.5 size-5 shrink-0 text-ktgw-sun" />
+              <a href={`mailto:${togo.email}`} className="break-all font-medium text-white/90 hover:text-ktgw-sun">
                 {togo.email}
               </a>
             </p>
           </address>
 
-          <MapEmbed src={togo.mapsEmbedUrl} />
-          <a
-            href={togo.mapsUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex h-10 w-fit items-center gap-2 rounded-xl bg-white px-4 text-sm font-semibold text-ink transition-colors hover:bg-ktgw-sun"
-          >
-            <Navigation aria-hidden className="size-4" />
-            {t("Footer.directions")}
-            <span className="sr-only">{t("Common.opensInNewTab")}</span>
-          </a>
+          {/* Focalisation Google Maps Tokoin Lomé */}
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center justify-between text-xs text-white/70">
+              <span className="flex items-center gap-1.5 font-semibold text-white">
+                <Navigation aria-hidden className="size-3.5 text-ktgw-sun" />
+                Localisation Google Maps (Tokoin)
+              </span>
+              <a
+                href={togo.mapsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-ktgw-sun hover:underline"
+              >
+                Ouvrir dans Maps &rarr;
+              </a>
+            </div>
+            <MapEmbed src={togo.mapsEmbedUrl} immediate={true} />
+            <a
+              href={togo.mapsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-xl bg-ktgw-sun px-4 text-sm font-bold text-ink shadow-md transition-all hover:bg-ktgw-sun-light hover:shadow-lg"
+            >
+              <Navigation aria-hidden className="size-4" />
+              Itinéraire vers le siège à Tokoin (Lomé)
+              <span className="sr-only">{t("Common.opensInNewTab")}</span>
+            </a>
+          </div>
 
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-sm">
-            <p className="mb-2 font-semibold text-white">
-              {t("Footer.germanyHQ")} : {germany.city}
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-3.5 text-xs">
+            <p className="font-semibold text-white/90">
+              {t("Footer.germanyHQ")} : {germany.city} ({germany.name})
             </p>
-            <p className="text-white/70">{germany.name}</p>
-            <ul className="mt-2 flex flex-col gap-1">
-              <li>
-                <a href={`tel:${germany.phone.e164}`} className="hover:text-ktgw-sun">
-                  {germany.phone.display}
-                </a>
-              </li>
-              <li>
-                <a href={`mailto:${germany.email}`} className="hover:text-ktgw-sun">
-                  {germany.email}
-                </a>
-              </li>
-              <li>
-                <a
-                  href={germany.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 hover:text-ktgw-sun"
-                >
-                  <Globe aria-hidden className="size-3.5" />
-                  kommtogogehweiter.de
-                  <span className="sr-only">{t("Common.opensInNewTab")}</span>
-                </a>
-              </li>
-            </ul>
+            <p className="mt-1 text-white/60">
+              Association partenaire en Allemagne · Tél : <a href={`tel:${germany.phone.e164}`} className="hover:text-ktgw-sun text-white/80">{germany.phone.display}</a>
+            </p>
           </div>
         </div>
       </Container>

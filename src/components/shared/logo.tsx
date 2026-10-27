@@ -15,8 +15,8 @@ export function Logo({ className, priority }: { className?: string; priority?: b
       <Image
         src="/images/logo-ktgw.png"
         alt={t("home")}
-        width={867}
-        height={552}
+        width={861}
+        height={544}
         priority={priority}
         sizes="200px"
         className="h-full w-auto"

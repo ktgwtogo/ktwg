@@ -103,7 +103,16 @@ export default async function InboxPage({
                 </dl>
               </details>
               <div className="mt-3">
-                <SubmissionControls inbox={inbox.id} id={String(r.id)} status={String(r.status)} notes={(r.admin_notes as string | null) ?? null} />
+                <SubmissionControls
+                  inbox={inbox.id}
+                  id={String(r.id)}
+                  status={String(r.status)}
+                  notes={(r.admin_notes as string | null) ?? null}
+                  applicantName={typeof r.name === "string" ? r.name : typeof r.contact_name === "string" ? r.contact_name : undefined}
+                  applicantEmail={typeof r.email === "string" ? r.email : undefined}
+                  applicantPhone={typeof r.phone === "string" ? r.phone : undefined}
+                  trackName={typeof r.track === "string" ? r.track : undefined}
+                />
               </div>
             </li>
           ))}

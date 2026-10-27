@@ -26,6 +26,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { setRequestLocale } from "next-intl/server";
 import { TrainingApplicationForm } from "@/components/forms/other-forms";
+import { MecatroniqueApplicationForm } from "@/components/forms/mecatronique-application-form";
 import { ButtonLink } from "@/components/ui/button-link";
 import { PageHeader } from "@/components/shared/page-header";
 import { Reveal } from "@/components/shared/reveal";
@@ -141,6 +142,14 @@ export default async function TrainingsPage({ params }: { params: Promise<{ loca
 
               {/* Actions rapides sous l'affiche */}
               <div className="flex flex-col gap-2.5">
+                <a
+                  href="#candidature-mecatronique"
+                  className="flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-ktgw-red via-rose-600 to-ktgw-red-strong px-5 py-3.5 text-sm font-extrabold text-white shadow-xl ring-2 ring-ktgw-sun transition-all hover:scale-105 active:scale-95"
+                >
+                  <Award aria-hidden className="size-5" />
+                  POSTULER EN LIGNE (BOURSE 65%)
+                  <ArrowRight aria-hidden className="size-4" />
+                </a>
                 <a
                   href="https://wa.me/22896975353?text=Bonjour,%20je%20souhaite%20candidater%20%C3%A0%20la%20formation%20en%20M%C3%A9catronique%20avec%20Bourse%20au%20CEFOPEXD"
                   target="_blank"
@@ -284,6 +293,11 @@ export default async function TrainingsPage({ params }: { params: Promise<{ loca
                 </div>
               </div>
             </div>
+          </div>
+
+          {/* Formulaire officiel de candidature directe avec pièces jointes */}
+          <div id="candidature-mecatronique" className="mt-10 scroll-mt-28">
+            <MecatroniqueApplicationForm />
           </div>
         </div>
       </Section>

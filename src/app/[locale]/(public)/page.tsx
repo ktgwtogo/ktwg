@@ -4,6 +4,7 @@ import { HeroSlider } from "@/components/sections/hero-slider";
 import { ImpactTestimonials, NewsletterSection, PresenceSection } from "@/components/sections/home-interactive";
 import {
   AboutPreview,
+  BourseAnnouncementSpotlight,
   DomainsGrid,
   FeaturedProjects,
   FinalCta,
@@ -22,6 +23,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   return (
     <>
       <HeroSlider slides={await getHeroSlides()} />
+      <BourseAnnouncementSpotlight />
       <StatsBand />
       <AboutPreview />
       <DomainsGrid />

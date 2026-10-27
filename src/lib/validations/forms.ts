@@ -110,6 +110,7 @@ export type EngagementValues = z.infer<typeof engagementSchema>;
 
 export const schoolLevels = ["Primaire", "Collège (BEPC)", "Lycée", "Baccalauréat", "Études supérieures", "Autre"] as const;
 export const trainingTracks = [
+  "Mécatronique (avec Bourse)",
   "Coutellerie",
   "Comptabilité",
   "Mécanique",

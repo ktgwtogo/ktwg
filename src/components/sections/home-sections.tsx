@@ -1,5 +1,6 @@
 import {
   ArrowRight,
+  Award,
   Globe2,
   Handshake,
   Heart,
@@ -25,6 +26,41 @@ import { getPartners, getPostsFor, getProjects, upcomingEvents } from "@/lib/con
 import { Link } from "@/i18n/navigation";
 
 const figureIcons = { sprout: Sprout, map: MapPinned, target: Target, home: Home, handshake: Handshake, globe: Globe2 };
+
+/** Spotlight d'annonce Bourse Mécatronique affiché sur l'accueil. */
+export function BourseAnnouncementSpotlight() {
+  return (
+    <aside aria-label="Appel à candidature Mécatronique" className="relative z-10 -mt-7 mx-auto max-w-6xl px-4 sm:px-6">
+      <div className="flex flex-col items-center justify-between gap-4 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-800 to-ktgw-red p-4 text-white shadow-2xl ring-1 ring-white/15 sm:flex-row sm:p-5">
+        <div className="flex items-center gap-4">
+          <span className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-ktgw-red text-white shadow-lg animate-pulse">
+            <Award className="size-6" />
+          </span>
+          <div className="flex flex-col">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="rounded-full bg-ktgw-sun px-2.5 py-0.5 text-xs font-black text-slate-950 uppercase tracking-wide">
+                Bourse 65% · 50 Places
+              </span>
+              <span className="text-xs text-white/80">Rentrée le 16 nov. 2026 · Centre CEFOPEXD (Lacs 3)</span>
+            </div>
+            <p className="mt-1 text-sm font-semibold text-white sm:text-base">
+              Appel à candidature officiel : Formation qualifiante en <span className="text-ktgw-sun font-bold">Mécatronique</span> (09 mois + 03 mois stage). Internat filles sur place.
+            </p>
+          </div>
+        </div>
+        <div className="flex w-full shrink-0 flex-wrap items-center justify-end gap-2 sm:w-auto">
+          <Link
+            href="/formations#bourse-mecatronique"
+            className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-ktgw-red px-4 py-2.5 text-sm font-bold text-white shadow-md transition-all hover:bg-ktgw-red-strong sm:w-auto"
+          >
+            Voir l&apos;appel &amp; postuler
+            <ArrowRight className="size-4" />
+          </Link>
+        </div>
+      </div>
+    </aside>
+  );
+}
 
 /** Bandeau des chiffres clés (compteurs animés). */
 export async function StatsBand() {

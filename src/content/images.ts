@@ -51,6 +51,12 @@ export const images = {
     "benediction-plantation.webp",
     "Bénédiction de la plantation par un prêtre, devant les ouvriers et les invités"
   ),
+  flyerMecatronique: photo(
+    "affiche-bourse-mecatronique-2026.jpg",
+    "Affiche officielle Appel à candidature Formation Mécatronique avec Bourse de 65% au centre CEFOPEXD",
+    576,
+    1024
+  ),
 } satisfies Record<string, SiteImage>;
 
 export type ImageKey = keyof typeof images;

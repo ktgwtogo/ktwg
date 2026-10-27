@@ -24,6 +24,25 @@ export type KtgwEvent = {
  */
 export const events: KtgwEvent[] = [
   {
+    slug: "rentree-mecatronique-bourse-2026",
+    title: "Rentrée de la promotion Mécatronique (avec Bourse 65%)",
+    start: "2026-11-16T08:00",
+    end: "2026-11-16T17:00",
+    venue: "Centre CEFOPEXD, Dévikinmé (Commune des Lacs 3)",
+    city: "Devikinme",
+    format: "presentiel",
+    capacity: 50,
+    registered: 0,
+    image: images.flyerMecatronique,
+    summary:
+      "Rentrée officielle des 50 premiers boursiers en Mécatronique : remise des tenues et caisses à outils, accueil des apprenantes à l'internat.",
+    body: [
+      "Le 16 novembre 2026 marque le lancement officiel de la formation professionnelle qualifiante en Mécatronique avec bourse de 65% au centre CEFOPEXD.",
+      "Au programme : accueil des lauréats admis, remise des équipements complets (tenues et outillage de pointe inclus), installation des apprenties hébergées dans l'internat du centre, et démarrage des premiers modules techniques et cours d'allemand.",
+      "Informations et inscriptions auprès du centre : +228 96 97 53 53 / cefopexd@gmail.com.",
+    ],
+  },
+  {
     slug: "portes-ouvertes-cefopexd",
     title: "Journée portes ouvertes du CEFOPEXD",
     start: "2026-11-14T09:00",

@@ -22,6 +22,28 @@ export type Post = {
 /** Actualités, de la plus récente à la plus ancienne. Faits issus du cahier des charges. */
 export const posts: Post[] = [
   {
+    slug: "bourse-formation-mecatronique-cefopexd-2026",
+    title: "Appel à candidature : Formation d'Excellence en Mécatronique avec Bourse de 65%",
+    date: "2026-10-20",
+    category: "Formations & Bourses",
+    pinned: true,
+    image: images.flyerMecatronique,
+    excerpt:
+      "L'ONG KommTogoGehweiter, KTGW-TOGO, le centre CEFOPEXD et leurs partenaires allemands lancent une formation professionnelle qualifiante en Mécatronique avec 50 bourses de 65%. Rentrée le 16 novembre 2026.",
+    body: [
+      "L'ONG KommTogoGehweiter, KTGW-TOGO, le centre de formation professionnelle CEFOPEXD et leurs partenaires allemands organisent une formation professionnelle qualifiante de haut niveau avec BOURSE en MÉCATRONIQUE.",
+      "Le programme s'articule autour de 8 compétences de pointe : Électronique automobile, Diagnostic automobile assisté par ordinateur, Mécanique appliquée, Programmation, Systèmes embarqués, Systèmes Réseaux et Sécurité, Domotique, ainsi que des Cours d'Allemand gratuit pour favoriser les échanges avec l'artisanat et les entreprises d'Allemagne.",
+      "Durée de la formation : 09 mois de formation intensive théorique et pratique en ateliers équipés + 03 mois de stage professionnel garanti en entreprise. Une bourse exceptionnelle de 65% est offerte aux 50 premiers inscrits (frais de formation réduits à seulement 65.000 FCFA payables en 3 tranches ; inscription 35.000 FCFA comprenant tenue de travail et boîte à outils complètes).",
+      "Conditions d'admission : Niveau BAC, BAC+ ou étudiants, âgés de 18 à 28 ans. Les candidatures féminines sont vivement encouragées avec possibilité d'hébergement complet dans l'Internat pour les filles au sein même du centre CEFOPEXD à Dévikinmé (Commune des Lacs 3). Les garçons sont également les bienvenus.",
+      "Composition du dossier : 1) Une lettre de demande d'inscription adressée au Président de l'ONG KommTogoGehweiter, 2) Une copie simple du relevé de notes du BAC, 3) Une copie simple d'acte de naissance ou pièce d'identité.",
+      "Dépôt des candidatures : Envoyez votre dossier en fichiers PDF par e-mail à cefopexd@gmail.com ou par WhatsApp au +228 96 97 53 53. Clôture des candidatures le 20 octobre 2026 à 17h00. Rentrée officielle le 16 novembre 2026.",
+    ],
+    links: [
+      { label: "Postuler via WhatsApp (+228 96 97 53 53)", url: "https://wa.me/22896975353" },
+      { label: "Consulter la page Formations", url: "/formations#bourse-mecatronique" },
+    ],
+  },
+  {
     slug: "premier-bloc-internat-acheve",
     title: "Internat des jeunes filles : le premier bloc est achevé",
     date: "2025-12-01",

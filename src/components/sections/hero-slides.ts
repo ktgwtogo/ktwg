@@ -15,7 +15,7 @@ export const defaultHeroSlides: HeroSlide[] = [
     eyebrow: "Formation professionnelle bilingue",
     title: ["Un métier entre les mains,", "un avenir", "devant soi"],
     subtitle:
-      "Coutellerie, mécanique, comptabilité, énergies renouvelables, informatique : des formations en français et en allemand, tournées vers l'emploi.",
+      "Mécatronique, coutellerie, mécanique, comptabilité, énergies renouvelables, informatique : des formations en français et en allemand, tournées vers l'emploi.",
   },
   {
     image: images.plantingEmbassy,

@@ -1,4 +1,27 @@
-import { ArrowRight, BedDouble, BookOpen, Briefcase, Globe2, Languages, Users, Wrench } from "lucide-react";
+import {
+  ArrowRight,
+  Award,
+  BedDouble,
+  BookOpen,
+  Briefcase,
+  Calendar,
+  CheckCircle2,
+  Coins,
+  Cpu,
+  ExternalLink,
+  FileCheck,
+  Globe2,
+  GraduationCap,
+  Languages,
+  Mail,
+  MapPin,
+  MessageCircle,
+  Phone,
+  Sparkles,
+  Users,
+  Venus,
+  Wrench,
+} from "lucide-react";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { setRequestLocale } from "next-intl/server";
@@ -12,9 +35,9 @@ import { images } from "@/content/images";
 import { courses } from "@/content/organization";
 
 export const metadata: Metadata = {
-  title: "Formations professionnelles bilingues",
+  title: "Formations professionnelles bilingues · Mécatronique avec Bourse",
   description:
-    "Coutellerie, comptabilité, mécanique, énergies renouvelables, informatique : des formations professionnelles bilingues français–allemand au Togo. Clubs d'allemand et candidature en ligne.",
+    "Formation d'excellence en Mécatronique avec bourse de 65%, coutellerie, comptabilité, mécanique, énergies renouvelables, informatique : formations professionnelles bilingues français–allemand au Togo.",
 };
 
 const approach = [
@@ -22,6 +45,17 @@ const approach = [
   { icon: Languages, title: "Bilingue français–allemand", text: "Un atout pour les échanges avec les partenaires et l'ouverture internationale." },
   { icon: Briefcase, title: "Cap sur l'emploi", text: "Accompagnement vers l'emploi, l'installation à son compte et la création de PME." },
   { icon: BedDouble, title: "Internat pour les filles", text: "Les apprenties venues de loin peuvent être hébergées en sécurité." },
+];
+
+const mecatroniqueModules = [
+  { icon: Wrench, title: "Électronique automobile" },
+  { icon: Cpu, title: "Diagnostic automobile" },
+  { icon: Wrench, title: "Mécanique appliquée" },
+  { icon: Cpu, title: "Programmation" },
+  { icon: Cpu, title: "Systèmes embarqués" },
+  { icon: Globe2, title: "Systèmes, Réseaux et Sécurité" },
+  { icon: Sparkles, title: "Domotique" },
+  { icon: Languages, title: "Cours d'Allemand gratuit" },
 ];
 
 export default async function TrainingsPage({ params }: { params: Promise<{ locale: string }> }) {
@@ -32,7 +66,7 @@ export default async function TrainingsPage({ params }: { params: Promise<{ loca
     <>
       <PageHeader
         image={images.workersGroup}
-        eyebrow="Formations"
+        eyebrow="Formations professionnelles"
         title={
           <>
             Apprendre un métier, <span className="font-accent text-ktgw-sun italic">en deux langues</span>
@@ -42,15 +76,214 @@ export default async function TrainingsPage({ params }: { params: Promise<{ loca
         breadcrumbs={[{ label: "Formations" }]}
       >
         <div className="flex flex-wrap gap-3">
-          <ButtonLink href="/formations#candidature" size="xl">
-            Candidater
+          <ButtonLink href="/formations#bourse-mecatronique" size="xl" variant="default" className="bg-ktgw-red text-white shadow-lg">
+            <Award aria-hidden className="size-5" />
+            Bourse Mécatronique (65%)
             <ArrowRight aria-hidden />
+          </ButtonLink>
+          <ButtonLink href="/formations#candidature" size="xl" variant="white">
+            Candidater en ligne
           </ButtonLink>
           <ButtonLink href="/formations#filieres" size="xl" variant="white">
             Voir les filières
           </ButtonLink>
         </div>
       </PageHeader>
+
+      {/* ============ SECTION VEDETTE : BOURSE EN MÉCATRONIQUE ============ */}
+      <Section id="bourse-mecatronique" className="scroll-mt-28 bg-gradient-to-b from-card to-background">
+        <div className="rounded-3xl bg-gradient-to-br from-card via-card to-ktgw-sun/5 p-6 shadow-xl ring-1 ring-foreground/10 sm:p-10 lg:p-12">
+          {/* Header Bourse */}
+          <div className="flex flex-col gap-4 text-center sm:text-left">
+            <div className="flex flex-wrap items-center justify-center gap-2 sm:justify-start">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-ktgw-red/10 px-3.5 py-1 text-xs font-extrabold uppercase tracking-wide text-ktgw-red ring-1 ring-ktgw-red/25">
+                <Award aria-hidden className="size-4" /> Bourse 65% de réduction
+              </span>
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-ktgw-green/10 px-3.5 py-1 text-xs font-bold text-ktgw-green-dark ring-1 ring-ktgw-green/25">
+                <CheckCircle2 aria-hidden className="size-4" /> 50 premiers inscrits
+              </span>
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-500/10 px-3.5 py-1 text-xs font-bold text-blue-700 ring-1 ring-blue-500/25">
+                <Globe2 aria-hidden className="size-4" /> Partenariat Allemagne–Togo
+              </span>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <h2 className="font-heading text-2xl font-extrabold text-foreground sm:text-3xl lg:text-4xl">
+                Formation Professionnelle Qualifiante en <span className="text-ktgw-red">Mécatronique</span>
+              </h2>
+              <p className="max-w-3xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+                Organisée conjointement par <strong>l&apos;ONG KommTogoGehweiter</strong>, <strong>KTGW-TOGO</strong>, le centre de formation professionnelle <strong>CEFOPEXD</strong> et leurs partenaires allemands. Une opportunité unique pour acquérir les compétences les plus recherchées de l&apos;industrie et de l&apos;automobile moderne.
+              </p>
+            </div>
+          </div>
+
+          {/* Grille principale */}
+          <div className="mt-8 grid gap-8 lg:grid-cols-12 lg:gap-10">
+            {/* Colonne Affiche Visuelle */}
+            <div className="flex flex-col gap-4 lg:col-span-5">
+              <div className="group relative overflow-hidden rounded-2xl bg-slate-900 shadow-xl ring-2 ring-ktgw-red/30">
+                <div className="relative aspect-[9/14] w-full">
+                  <Image
+                    src="/images/affiche-bourse-mecatronique-2026.jpg"
+                    alt="Affiche officielle Appel à candidature Formation Mécatronique avec Bourse CEFOPEXD"
+                    fill
+                    sizes="(min-width: 1024px) 40vw, 100vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                </div>
+                <div className="absolute top-3 left-3 rounded-full bg-ktgw-red/90 px-3 py-1 text-xs font-bold text-white shadow backdrop-blur-sm">
+                  Rentrée : 16 Novembre 2026
+                </div>
+              </div>
+
+              {/* Actions rapides sous l'affiche */}
+              <div className="flex flex-col gap-2.5">
+                <a
+                  href="https://wa.me/22896975353?text=Bonjour,%20je%20souhaite%20candidater%20%C3%A0%20la%20formation%20en%20M%C3%A9catronique%20avec%20Bourse%20au%20CEFOPEXD"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-3 font-semibold text-white shadow-md transition-all hover:bg-emerald-700 hover:shadow-lg"
+                >
+                  <MessageCircle aria-hidden className="size-5" />
+                  Postuler via WhatsApp (+228 96 97 53 53)
+                </a>
+                <a
+                  href="mailto:cefopexd@gmail.com?subject=Candidature%20Formation%20M%C3%A9catronique%20avec%20Bourse&body=Bonjour,%20veuillez%20trouver%20ci-joint%20mon%20dossier%20de%20candidature%20en%20fichiers%20PDF%20pour%20la%20formation%20en%20M%C3%A9catronique..."
+                  className="flex items-center justify-center gap-2 rounded-xl bg-card px-4 py-2.5 text-sm font-semibold text-foreground ring-1 ring-foreground/10 transition-colors hover:bg-muted"
+                >
+                  <Mail aria-hidden className="size-4 text-ktgw-red" />
+                  Envoyer mon dossier par e-mail
+                </a>
+                <a
+                  href="/images/affiche-bourse-mecatronique-2026.jpg"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground"
+                >
+                  <ExternalLink aria-hidden className="size-3.5" />
+                  Afficher l&apos;affiche officielle en haute résolution
+                </a>
+              </div>
+            </div>
+
+            {/* Colonne Détails & Conditions */}
+            <div className="flex flex-col gap-6 lg:col-span-7">
+              {/* Durée */}
+              <div className="grid gap-3 sm:grid-cols-2">
+                <div className="flex items-center gap-3.5 rounded-2xl bg-card p-4 shadow-sm ring-1 ring-foreground/5">
+                  <span className="flex size-14 shrink-0 items-center justify-center rounded-xl bg-ktgw-red/10 font-heading text-2xl font-black text-ktgw-red">
+                    09
+                  </span>
+                  <div>
+                    <h4 className="font-bold text-foreground">Mois de formation</h4>
+                    <p className="text-xs text-muted-foreground">Ateliers pratiques &amp; enseignements théoriques de pointe</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3.5 rounded-2xl bg-card p-4 shadow-sm ring-1 ring-foreground/5">
+                  <span className="flex size-14 shrink-0 items-center justify-center rounded-xl bg-ktgw-green/10 font-heading text-2xl font-black text-ktgw-green">
+                    03
+                  </span>
+                  <div>
+                    <h4 className="font-bold text-foreground">Mois de stage</h4>
+                    <p className="text-xs text-muted-foreground">Immersion professionnelle garantie en entreprise</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* 8 Compétences */}
+              <div className="rounded-2xl bg-card p-5 shadow-sm ring-1 ring-foreground/5">
+                <h4 className="flex items-center gap-2 font-heading font-bold text-foreground">
+                  <Cpu aria-hidden className="size-4 text-ktgw-red" />
+                  8 spécialités au cœur du programme :
+                </h4>
+                <div className="mt-3.5 grid gap-2.5 sm:grid-cols-2">
+                  {mecatroniqueModules.map((m) => (
+                    <div
+                      key={m.title}
+                      className="flex items-center gap-2.5 rounded-xl bg-muted/50 px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+                    >
+                      <m.icon aria-hidden className="size-4 shrink-0 text-ktgw-green" />
+                      <span>{m.title}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Alerte Féminine & Internat */}
+              <div className="flex items-start gap-4 rounded-2xl bg-gradient-to-r from-ktgw-red to-ktgw-red-strong p-5 text-white shadow-md">
+                <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-white/20">
+                  <Venus aria-hidden className="size-6 text-white" />
+                </div>
+                <div>
+                  <h4 className="font-heading font-bold uppercase tracking-wide">
+                    Candidatures féminines prioritaires &amp; Internat sur place
+                  </h4>
+                  <p className="mt-1 text-sm leading-relaxed text-white/90">
+                    Les candidatures féminines sont vivement encouragées ! <strong>Possibilité d&apos;hébergement complet dans l&apos;Internat pour les filles</strong> au sein même du centre CEFOPEXD à Dévikinmé. <em>Les garçons sont également les bienvenus.</em>
+                  </p>
+                </div>
+              </div>
+
+              {/* Grille Conditions & Tarifs */}
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="flex flex-col gap-2 rounded-2xl bg-card p-4 shadow-sm ring-1 ring-foreground/5">
+                  <h5 className="flex items-center gap-2 text-sm font-bold text-foreground">
+                    <GraduationCap aria-hidden className="size-4 text-ktgw-green" />
+                    Conditions d&apos;accès
+                  </h5>
+                  <ul className="flex flex-col gap-1.5 text-xs text-muted-foreground">
+                    <li>• <strong>Niveau :</strong> BAC, BAC+, étudiants</li>
+                    <li>• <strong>Âge :</strong> 18 à 28 ans</li>
+                    <li>• <strong>Public :</strong> Filles et garçons</li>
+                    <li>• <strong>Rentrée :</strong> 16 novembre 2026</li>
+                    <li>• <strong>Date limite :</strong> 20 octobre 2026 à 17h00</li>
+                  </ul>
+                </div>
+
+                <div className="flex flex-col gap-2 rounded-2xl bg-card p-4 shadow-sm ring-1 ring-foreground/5">
+                  <h5 className="flex items-center gap-2 text-sm font-bold text-foreground">
+                    <Coins aria-hidden className="size-4 text-ktgw-sun" />
+                    Conditions administratives
+                  </h5>
+                  <ul className="flex flex-col gap-1.5 text-xs text-muted-foreground">
+                    <li>• <strong>Bourse de 65% :</strong> Pour les 50 premiers inscrits</li>
+                    <li>• <strong>Inscription :</strong> 35.000 F (tenue et outils inclus)</li>
+                    <li>• <strong>Frais avec bourse :</strong> 65.000 F (en 3 tranches)</li>
+                    <li>• <strong>Internat filles :</strong> Disponible sur place</li>
+                  </ul>
+                </div>
+              </div>
+
+              {/* Dossier de candidature */}
+              <div className="rounded-2xl border border-dashed border-ktgw-green/40 bg-ktgw-green/5 p-5">
+                <h5 className="flex items-center gap-2 font-heading text-sm font-bold text-ktgw-green-dark">
+                  <FileCheck aria-hidden className="size-4" />
+                  Composition du dossier (format PDF) :
+                </h5>
+                <ol className="mt-2 flex flex-col gap-1 text-xs text-foreground/90 sm:text-sm">
+                  <li>1. Une lettre de demande d&apos;inscription adressée au Président de l&apos;ONG KommTogoGehweiter</li>
+                  <li>2. Une copie simple du relevé de notes du BAC</li>
+                  <li>3. Une copie simple d&apos;acte de naissance ou une pièce d&apos;identité</li>
+                </ol>
+                <div className="mt-3 flex flex-wrap items-center gap-4 text-xs font-semibold text-muted-foreground">
+                  <span className="flex items-center gap-1.5 text-foreground">
+                    <MapPin aria-hidden className="size-4 text-ktgw-red" />
+                    Centre CEFOPEXD, Dévikinmé (Lacs 3)
+                  </span>
+                  <span className="flex items-center gap-1.5 text-foreground">
+                    <Phone aria-hidden className="size-4 text-ktgw-green" />
+                    +228 96 97 53 53
+                  </span>
+                  <span className="flex items-center gap-1.5 text-foreground">
+                    <Mail aria-hidden className="size-4 text-blue-600" />
+                    cefopexd@gmail.com
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Section>
 
       <Section aria-labelledby="approach-title">
         <SectionTitle id="approach-title" eyebrow="Notre approche" title="Une formation qui mène à l'autonomie" align="center" />

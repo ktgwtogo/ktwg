@@ -3,6 +3,7 @@ import {
   Briefcase,
   Building2,
   Coins,
+  Cpu,
   Globe2,
   GraduationCap,
   Hammer,
@@ -85,6 +86,11 @@ export const cities: { name: string; lat: number; lng: number; hq?: boolean }[] 
 
 /** Filières de formation professionnelle. */
 export const courses: { title: string; text: string; icon: LucideIcon }[] = [
+  {
+    title: "Mécatronique (avec Bourse 65%)",
+    text: "Formation qualifiante de 09 mois + 03 mois de stage en entreprise : électronique auto, diagnostic, mécanique appliquée, programmation, systèmes embarqués, domotique et allemand gratuit. Bourse pour les 50 premiers inscrits et internat pour filles.",
+    icon: Cpu,
+  },
   {
     title: "Coutellerie",
     text: "Forge, façonnage et finition d'outils et de couteaux : un savoir-faire artisanal transmis avec des maîtres artisans.",

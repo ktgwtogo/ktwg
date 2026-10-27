@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 
 const timeline = [
   { year: "2006", title: "Une idée née du football", text: "L'association naît de l'élan suscité par la qualification du Togo pour la Coupe du monde 2006." },
-  { year: "2008", title: "Les premières actions", text: "kommTOGOgehweiter e.V., fondée à Cologne, lance ses actions d'éducation et de formation au Togo." },
+  { year: "2018", title: "Active au Togo", text: "KTGW Togo est active au Togo depuis 2018 pour intensifier les formations professionnelles et les projets d'insertion des jeunes sur le terrain." },
   { year: "2023", title: "Richtfest de l'internat", text: "Le 13 avril, partenaires et autorités célèbrent l'achèvement du gros œuvre de l'internat des jeunes filles." },
   { year: "2025", title: "24 places pour les apprenties", text: "Le premier bloc de l'internat est achevé : 24 jeunes filles peuvent y être accueillies." },
 ];
@@ -63,7 +63,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
             Komm Togo, <span className="font-accent text-ktgw-sun italic">geh weiter</span>
           </>
         }
-        description="« Viens Togo, avance » : depuis 2008, nous aidons les jeunes du Togo à avancer grâce à l'éducation et à la formation professionnelle."
+        description="« Viens Togo, avance » : active depuis 2018 au Togo, nous aidons les jeunes du Togo à avancer grâce à l'éducation et à la formation professionnelle."
         breadcrumbs={[{ label: "À propos" }]}
       />
 

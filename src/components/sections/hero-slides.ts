@@ -5,10 +5,10 @@ import type { HeroSlide } from "@/lib/site/types";
 export const defaultHeroSlides: HeroSlide[] = [
   {
     image: images.ribbon,
-    eyebrow: "ONG togolaise · depuis 2008",
+    eyebrow: "ONG togolaise · depuis 2018",
     title: ["Former aujourd'hui les", "bâtisseurs", "du Togo de demain"],
     subtitle:
-      "Éducation, formation professionnelle bilingue et autonomisation des jeunes, surtout des femmes, depuis 2008.",
+      "Éducation, formation professionnelle bilingue et autonomisation des jeunes, surtout des femmes, depuis 2018.",
   },
   {
     image: images.speech,

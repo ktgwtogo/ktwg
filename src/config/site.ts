@@ -11,7 +11,7 @@ export type SocialNetwork = "facebook" | "tiktok" | "instagram" | "youtube" | "l
 export const siteConfig = {
   name: "KTGW Togo",
   fullName: "KommTogoGehWeiter Togo",
-  foundedYear: 2008,
+  foundedYear: 2018,
 
   togo: {
     address: {

@@ -105,9 +105,9 @@ export function AboutPreview() {
             />
           </div>
           <div className="absolute -right-2 -bottom-6 max-w-[16rem] rounded-2xl bg-card p-5 shadow-xl ring-1 ring-foreground/5 sm:-right-6">
-            <p className="font-heading text-4xl font-extrabold text-ktgw-red">2008</p>
+            <p className="font-heading text-4xl font-extrabold text-ktgw-red">2018</p>
             <p className="text-sm text-muted-foreground">
-              Fondée à Cologne, active au Togo depuis plus de {new Date().getFullYear() - 2008} ans.
+              Active au Togo depuis 2018 (plus de {new Date().getFullYear() - 2018} ans d&apos;action au Togo).
             </p>
           </div>
           <div aria-hidden className="absolute -top-5 -left-5 -z-10 size-32 rounded-full bg-ktgw-sun/30 blur-2xl" />

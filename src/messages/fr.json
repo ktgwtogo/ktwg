@@ -2,7 +2,7 @@
   "Metadata": {
     "title": "KTGW Togo — Former aujourd'hui les bâtisseurs du Togo de demain",
     "titleTemplate": "%s · KTGW Togo",
-    "description": "KommTogoGehWeiter Togo : éducation, formation professionnelle bilingue et autonomisation des jeunes, surtout des femmes, depuis 2008."
+    "description": "KommTogoGehWeiter Togo : éducation, formation professionnelle bilingue et autonomisation des jeunes, surtout des femmes, active depuis 2018 au Togo."
   },
   "Common": {
     "orgName": "KommTogoGehWeiter Togo",
@@ -66,7 +66,7 @@
     },
     "featured": {
       "about": {
-        "title": "Depuis 2008",
+        "title": "Depuis 2018",
         "text": "Une ONG togolaise, branche de kommTOGOgehweiter e.V. (Cologne).",
         "cta": "Notre histoire"
       },
@@ -114,7 +114,7 @@
     "whatsapp": "WhatsApp"
   },
   "Footer": {
-    "about": "ONG togolaise, branche de l'association kommTOGOgehweiter e.V. (Cologne). Depuis 2008, nous formons les jeunes du Togo, surtout les femmes, à des métiers qui leur permettent de vivre dignement.",
+    "about": "ONG togolaise, branche de l'association kommTOGOgehweiter e.V. (Cologne). Active au Togo depuis 2018, nous formons les jeunes du Togo, surtout les femmes, à des métiers qui leur permettent de vivre dignement.",
     "colNavigation": "Navigation",
     "colEngage": "S'engager",
     "colFindUs": "Nous trouver",
@@ -130,7 +130,7 @@
   },
   "Home": {
     "heroTitle": "Former aujourd'hui les bâtisseurs du Togo de demain",
-    "heroSubtitle": "Éducation, formation professionnelle bilingue et autonomisation des jeunes, surtout des femmes, depuis 2008.",
+    "heroSubtitle": "Éducation, formation professionnelle bilingue et autonomisation des jeunes, surtout des femmes, depuis 2018 au Togo.",
     "wip": "Site en construction — Phase 2 (design system & layout)."
   }
 }

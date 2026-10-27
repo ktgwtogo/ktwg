@@ -126,7 +126,7 @@ export const courses: { title: string; text: string; icon: LucideIcon }[] = [
 /** Chiffres clés vérifiés (les autres indicateurs seront saisis dans le dashboard). */
 export function keyFigures(partnerCount: number) {
   return [
-    { value: new Date().getFullYear() - 2008, suffix: "", label: "années d'action", icon: "sprout" },
+    { value: new Date().getFullYear() - 2018, suffix: "", label: "années d'action au Togo", icon: "sprout" },
     { value: 6, suffix: "", label: "villes d'intervention", icon: "map" },
     { value: 13, suffix: "", label: "objectifs pour le Togo", icon: "target" },
     { value: 24, suffix: "", label: "places pour les apprenties à l'internat", icon: "home" },

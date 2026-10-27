@@ -4,41 +4,29 @@ import {
   AlertCircle,
   ArrowDown,
   ArrowUp,
-  Award,
   CheckCircle2,
   Copy,
   Eye,
-  Globe2,
   Layers,
   LayoutTemplate,
-  Link as LinkIcon,
-  Mail,
-  MapPin,
   Megaphone,
   Monitor,
-  MoveDown,
-  MoveUp,
   Palette,
-  Phone,
   Plus,
   RefreshCw,
   Save,
   Send,
-  Share2,
   ShieldCheck,
   Smartphone,
-  Sparkles,
   Tablet,
   Trash2,
-  Users,
-  UtensilsCrossed,
 } from "lucide-react";
 import { useState, useTransition } from "react";
-import { FaFacebook, FaLinkedin, FaTiktok, FaWhatsapp } from "react-icons/fa6";
+import { FaFacebook, FaLinkedin, FaWhatsapp } from "react-icons/fa6";
 import { Button } from "@/components/ui/button";
 import { presidentFounder } from "@/content/organization";
 import { assignSiteDesigner, publishGlobalSiteBuilder } from "@/lib/site/actions";
-import type { GlobalSiteData, SectionBlock, SiteAnnouncement, ThemeSettings } from "@/lib/site/builder-state";
+import type { GlobalSiteData, SectionBlock, ThemeSettings } from "@/lib/site/builder-state";
 import { cn } from "@/lib/utils";
 
 type SiteBuilderStudioProps = {
@@ -384,7 +372,7 @@ export function SiteBuilderStudio({
                   </label>
 
                   <label className="flex flex-col gap-1 text-xs font-bold">
-                    Badge d'alerte :
+                    Badge d&apos;alerte :
                     <input
                       type="text"
                       value={sec.badge ?? ""}
@@ -428,7 +416,7 @@ export function SiteBuilderStudio({
 
                   {sec.image && (
                     <label className="flex flex-col gap-1 text-xs font-bold sm:col-span-3">
-                      URL de l'image :
+                      URL de l&apos;image :
                       <input
                         type="text"
                         value={sec.image}
@@ -450,7 +438,7 @@ export function SiteBuilderStudio({
           <div className="rounded-2xl border bg-card p-6 shadow-sm">
             <h2 className="flex items-center gap-2 font-heading text-lg font-bold text-foreground">
               <Megaphone className="size-5 text-ktgw-red" />
-              Bandeau d'Annonces Urgentes &amp; Articles à la Une
+              Bandeau d&apos;Annonces Urgentes &amp; Articles à la Une
             </h2>
             <p className="mt-1 text-xs text-muted-foreground">
               Configurez les annonces prioritaires (ex: Bourse Mécatronique Industrielle) avec diffusion automatique et boutons de partage sur les réseaux sociaux.
@@ -461,7 +449,7 @@ export function SiteBuilderStudio({
                 <div key={ann.id} className="rounded-2xl border border-ktgw-sun/40 bg-ktgw-sun/5 p-5">
                   <div className="grid gap-4 sm:grid-cols-2">
                     <label className="flex flex-col gap-1 text-xs font-bold">
-                      Titre de l'annonce :
+                      Titre de l&apos;annonce :
                       <input
                         type="text"
                         value={ann.title}
@@ -493,7 +481,7 @@ export function SiteBuilderStudio({
                     </label>
 
                     <label className="flex flex-col gap-1 text-xs font-bold sm:col-span-2">
-                      Contenu détaillé de l'annonce :
+                      Contenu détaillé de l&apos;annonce :
                       <textarea
                         rows={3}
                         value={ann.text}
@@ -509,7 +497,7 @@ export function SiteBuilderStudio({
                     </label>
 
                     <label className="flex flex-col gap-1 text-xs font-bold sm:col-span-2">
-                      Lien d'atterrissage :
+                      Lien d&apos;atterrissage :
                       <input
                         type="text"
                         value={ann.url}
@@ -581,7 +569,7 @@ export function SiteBuilderStudio({
           <div className="rounded-2xl border bg-card p-6 shadow-sm">
             <h3 className="font-heading text-base font-bold text-foreground">Palette de Couleurs Officielle</h3>
             <p className="mt-1 text-xs text-muted-foreground">
-              Ajustez les couleurs maîtresses du site qui s'appliquent sur les boutons, bandeaux et cartes.
+              Ajustez les couleurs maîtresses du site qui s&apos;appliquent sur les boutons, bandeaux et cartes.
             </p>
 
             <div className="mt-6 flex flex-col gap-4">
@@ -718,7 +706,7 @@ export function SiteBuilderStudio({
                     />
                     <Button onClick={handleAssignDesigner} disabled={isPending} className="gap-2 font-bold">
                       <Save className="size-4" />
-                      Attribuer l'autorisation
+                      Attribuer l&apos;autorisation
                     </Button>
                   </div>
                 </label>
@@ -743,7 +731,7 @@ export function SiteBuilderStudio({
         <div className="flex flex-col gap-4">
           <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-card p-3 shadow-sm ring-1 ring-foreground/5">
             <div className="flex items-center gap-2">
-              <span className="text-xs font-bold text-muted-foreground uppercase">Format d'écran :</span>
+              <span className="text-xs font-bold text-muted-foreground uppercase">Format d&apos;écran :</span>
               <button
                 type="button"
                 onClick={() => setPreviewDevice("desktop")}

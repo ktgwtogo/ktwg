@@ -1,5 +1,5 @@
 import { siteConfig } from "@/config/site";
-import { courses, domains, keyFigures, objectives, presidentFounder, unSdgs } from "@/content/organization";
+import { presidentFounder } from "@/content/organization";
 
 export type SectionBlock = {
   id: string;

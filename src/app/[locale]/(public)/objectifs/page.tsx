@@ -1,4 +1,4 @@
-import { Award, CheckCircle2, Globe2, Sparkles, Target } from "lucide-react";
+import { Target } from "lucide-react";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { setRequestLocale } from "next-intl/server";

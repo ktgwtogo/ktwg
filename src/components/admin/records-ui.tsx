@@ -140,7 +140,7 @@ export function SubmissionControls({
           </div>
 
           <div className="mt-3 flex flex-col gap-2">
-            <label className="font-semibold text-muted-foreground">Message officiel préparé au nom du Président-Fondateur et de l'administration :</label>
+            <label className="font-semibold text-muted-foreground">Message officiel préparé au nom du Président-Fondateur et de l&apos;administration :</label>
             <textarea
               readOnly
               rows={5}

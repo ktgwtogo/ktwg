@@ -4,7 +4,6 @@ import {
   BedDouble,
   BookOpen,
   Briefcase,
-  Calendar,
   CheckCircle2,
   Coins,
   Cpu,

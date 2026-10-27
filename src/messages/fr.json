@@ -57,7 +57,7 @@
       "projectBoarding": "Un toit sûr pour les apprenties filles",
       "projectSolar": "L'énergie solaire entre les mains des femmes",
       "allProjects": "Vue d'ensemble de tous nos projets",
-      "ourCourses": "Mécatronique industrielle, artisanat sur-mesure, agroalimentaire, mécanique, solaire, informatique",
+      "ourCourses": "Mécatronique industrielle, formation artisanale appliquée, agroalimentaire, mécanique, solaire, informatique",
       "germanClubs": "L'allemand et l'ouverture au monde à l'école",
       "apply": "Déposer une candidature en 2 minutes",
       "donate": "Mobile Money (Tmoney, Moov) ou don international",
@@ -78,7 +78,7 @@
       },
       "trainings": {
         "title": "Candidatures ouvertes",
-        "text": "Formations d'élite : Mécatronique avec bourse 65% (BAC obligatoire), artisanat sur-mesure, agroalimentaire.",
+        "text": "Formations d'élite : Mécatronique avec bourse 65% (BAC obligatoire), formation artisanale appliquée, agroalimentaire.",
         "cta": "Candidater"
       },
       "getInvolved": {
@@ -162,11 +162,11 @@
     "courses": {
       "eyebrow": "Formations professionnelles",
       "title": "Des filières d'avenir tournées vers l'emploi",
-      "subtitle": "Mécatronique industrielle, transformation agroalimentaire, artisanat sur-mesure, mécanique appliquée, énergies solaires.",
+      "subtitle": "Mécatronique industrielle, transformation agroalimentaire, formation artisanale appliquée, mécanique appliquée, énergies solaires.",
       "mecatroniqueTitle": "Mécatronique Industrielle (Bourse 65%)",
       "mecatroniqueText": "Électronique auto, diagnostic assisté par ordinateur, programmation, systèmes embarqués et allemand gratuit. Niveau BAC requis obligatoire.",
-      "artisanatTitle": "Formation artisanale sur-mesure",
-      "artisanatText": "Façonnage de métaux, menuiserie d'art et confection d'équipements sur-mesure répondant aux besoins du marché local.",
+      "artisanatTitle": "Formation artisanale appliquée",
+      "artisanatText": "Façonnage de métaux, menuiserie d'art, forge, ferronnerie et confection d'équipements pratiques adaptés répondant aux commandes et besoins réels du marché local.",
       "agroTitle": "Transformation agroalimentaire & valorisation",
       "agroText": "Séchage solaire, mouture saine, conserves et valorisation des récoltes togolaises.",
       "mecaniqueTitle": "Mécanique appliquée & maintenance industrielle",

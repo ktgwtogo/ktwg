@@ -38,7 +38,7 @@ import { courses } from "@/content/organization";
 export const metadata: Metadata = {
   title: "Formations professionnelles bilingues · Mécatronique Industrielle (Bourse 65%)",
   description:
-    "Formation qualifiante d'excellence en Mécatronique Industrielle avec bourse de 65% (BAC obligatoire), formation artisanale sur-mesure, transformation agroalimentaire, mécanique appliquée : formations bilingues français–allemand au Togo.",
+    "Formation qualifiante d'excellence en Mécatronique Industrielle avec bourse de 65% (BAC obligatoire), formation artisanale appliquée, transformation agroalimentaire, mécanique appliquée : formations bilingues français–allemand au Togo.",
 };
 
 const approach = [

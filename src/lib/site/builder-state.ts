@@ -168,7 +168,7 @@ export const defaultSections: SectionBlock[] = [
     enabled: true,
     eyebrow: "Nos filières",
     title: "Des métiers utiles et tournés vers l'emploi",
-    subtitle: "Mécatronique industrielle (BAC obligatoire), formation artisanale sur-mesure, transformation agroalimentaire, mécanique appliquée, énergies solaires.",
+    subtitle: "Mécatronique industrielle (BAC obligatoire), formation artisanale appliquée, transformation agroalimentaire, mécanique appliquée, énergies solaires.",
     ctaText: "Voir toutes les formations",
     ctaUrl: "/formations",
   },

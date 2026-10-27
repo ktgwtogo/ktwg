@@ -1,7 +1,6 @@
 import {
   ArrowRight,
   Award,
-  BookOpen,
   CheckCircle2,
   Cpu,
   Globe2,
@@ -9,25 +8,19 @@ import {
   Quote,
   ShieldCheck,
   Sparkles,
-  Target,
-  Users,
   UtensilsCrossed,
   Venus,
 } from "lucide-react";
 import Image from "next/image";
-import { useTranslations } from "next-intl";
 import { ButtonLink } from "@/components/ui/button-link";
-import { Reveal } from "@/components/shared/reveal";
 import { Section } from "@/components/shared/section";
 import { images } from "@/content/images";
-import { presidentFounder } from "@/content/organization";
 
 /**
  * Grande section officielle : Mot et Message du Président-Fondateur Monsieur Blaise-Pascal D'ALMEIDA.
  * Affichée fièrement sur la page d'accueil et sur le site.
  */
 export function PresidentFounderMessageSection() {
-  const t = useTranslations("Common");
 
   return (
     <Section id="mot-du-president" tone="muted" aria-labelledby="president-heading" className="scroll-mt-24 relative overflow-hidden py-16 sm:py-24">

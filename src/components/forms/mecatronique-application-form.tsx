@@ -3,21 +3,14 @@
 import {
   AlertCircle,
   Award,
-  Calendar,
   CheckCircle2,
   Clock,
   Download,
   FileCheck,
   FileText,
-  HelpCircle,
-  Mail,
-  MapPin,
-  Phone,
   Send,
-  Sparkles,
   Upload,
   User,
-  Venus,
 } from "lucide-react";
 import { useState, useTransition } from "react";
 import { FaWhatsapp } from "react-icons/fa6";

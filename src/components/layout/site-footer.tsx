@@ -1,4 +1,4 @@
-import { ArrowUp, Globe, Mail, MapPin, Navigation, Phone } from "lucide-react";
+import { ArrowUp, Mail, MapPin, Navigation, Phone } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { FaWhatsapp } from "react-icons/fa6";
 import { Container } from "@/components/shared/section";

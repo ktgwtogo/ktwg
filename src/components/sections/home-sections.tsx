@@ -7,13 +7,13 @@ import {
   Home,
   MapPinned,
   Quote,
-  Sparkles,
   Sprout,
   Target,
   Users,
 } from "lucide-react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import { ButtonLink } from "@/components/ui/button-link";
 import { PartnerMark } from "@/components/shared/badges";
 import { EventCard, PostCard, ProjectCard } from "@/components/shared/cards";
@@ -297,7 +297,7 @@ export function ObjectivesPreview() {
 
 /** Prochains événements. */
 export async function UpcomingEvents() {
-  const t = useTranslations("HomeSections.events");
+  const t = await getTranslations("HomeSections.events");
   const list = (await upcomingEvents()).slice(0, 3);
   return (
     <Section aria-labelledby="events-title">
@@ -329,7 +329,7 @@ export async function UpcomingEvents() {
 
 /** Dernières actualités. */
 export async function LatestNews() {
-  const t = useTranslations("HomeSections.news");
+  const t = await getTranslations("HomeSections.news");
   const posts = await getPostsFor("accueil");
   if (!posts.length) return null;
   return (
@@ -356,7 +356,7 @@ export async function LatestNews() {
 
 /** Partenaires : défilement infini + appel à partenariat. */
 export async function PartnersSection() {
-  const t = useTranslations("HomeSections.partners");
+  const t = await getTranslations("HomeSections.partners");
   const partners = await getPartners();
   const loop = [...partners, ...partners];
   return (

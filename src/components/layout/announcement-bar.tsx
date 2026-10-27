@@ -1,4 +1,4 @@
-import { ArrowRight, Award, Megaphone } from "lucide-react";
+import { ArrowRight, Award } from "lucide-react";
 import { getAnnouncements } from "@/lib/content/repository";
 import { getGlobalSiteData } from "@/lib/site/actions";
 import { cn } from "@/lib/utils";

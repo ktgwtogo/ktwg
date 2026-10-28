@@ -2,6 +2,7 @@ import { Eye, Monitor, UserCheck, Users } from "lucide-react";
 import { setRequestLocale } from "next-intl/server";
 import { Forbidden, PageHeading } from "@/components/admin/page-heading";
 import { Link, redirect } from "@/i18n/navigation";
+import { pageName } from "@/lib/admin/labels";
 import { getStaff } from "@/lib/admin/staff";
 import { formatDate, formatTime } from "@/lib/format";
 import { cn } from "@/lib/utils";
@@ -24,8 +25,6 @@ const periods = [
   { days: 90, label: "3 mois" },
   { days: 365, label: "12 mois" },
 ] as const;
-
-const pageName = (path: string) => (path === "/" ? "Accueil" : decodeURIComponent(path).replace(/^\/(de|en)(?=\/|$)/, "").replace(/^\//, "") || "Accueil");
 
 /** Fréquentation du site : visites, pages consultées, provenance, membres connectés. */
 export default async function StatsPage({

@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { navIcons } from "@/config/navigation";
+import { imageSlotKeys, type ImageSlot } from "@/content/image-slots";
 import de from "@/messages/de.json";
 import en from "@/messages/en.json";
 import fr from "@/messages/fr.json";
@@ -82,6 +83,11 @@ export const heroSchema = z
   .min(1, "Au moins une diapositive.")
   .max(8);
 
+/** Images remplacées, par emplacement (seuls les emplacements connus sont gardés). */
+export const siteImagesSchema = z
+  .record(z.string(), image)
+  .transform((r) => Object.fromEntries(Object.entries(r).filter(([k]) => imageSlotKeys.includes(k as ImageSlot))));
+
 const messages = { fr, de, en } as Record<string, Record<string, unknown>>;
 
 /** Textes d'origine d'une langue, aplatis : { "Nav.about": "À propos", … }. */
@@ -115,6 +121,7 @@ export const settingLabels: Record<string, string> = {
   socials: "Réseaux sociaux",
   "navigation.main": "Menu principal",
   "home.hero": "Diaporama de l'accueil",
+  images: "Images du site",
   "texts.fr": "Textes du site (français)",
   "texts.de": "Textes du site (allemand)",
   "texts.en": "Textes du site (anglais)",

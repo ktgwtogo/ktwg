@@ -7,7 +7,7 @@ import { PageHeader } from "@/components/shared/page-header";
 import { Reveal } from "@/components/shared/reveal";
 import { Section } from "@/components/shared/section";
 import { SectionTitle } from "@/components/shared/section-title";
-import { images } from "@/content/images";
+import { getSiteImages } from "@/lib/site/settings";
 import { getProjects } from "@/lib/content/repository";
 
 export const metadata: Metadata = {
@@ -24,12 +24,13 @@ const method = [
 
 export default async function ProjectsPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
+  const siteImages = await getSiteImages();
   setRequestLocale(locale);
 
   return (
     <>
       <PageHeader
-        image={images.speech}
+        image={siteImages["banner.projets"]}
         eyebrow="Nos projets"
         title="Des projets qui changent des vies"
         description="Formation professionnelle, hébergement des apprenties, énergie solaire : nos projets répondent à des besoins concrets du terrain."

@@ -3,6 +3,7 @@ import { createClient } from "@supabase/supabase-js";
 import { unstable_cache } from "next/cache";
 import { mainNav, type NavEntry } from "@/config/navigation";
 import { defaultHeroSlides } from "@/components/sections/hero-slides";
+import { defaultSiteImages, type SiteImages } from "@/content/image-slots";
 import { CONTENT_TAG } from "@/lib/content/repository";
 import type { Database } from "@/types/database";
 import { defaultSiteConfig, type HeroSlide, type SiteConfigData } from "./types";
@@ -50,6 +51,12 @@ export async function getSiteConfig(): Promise<SiteConfigData> {
 
 export const getMainNav = () => getSetting<NavEntry[]>("navigation.main", mainNav);
 export const getHeroSlides = () => getSetting<HeroSlide[]>("home.hero", defaultHeroSlides);
+
+/** Images des bannières et sections : les emplacements non modifiés gardent la photo d'origine. */
+export async function getSiteImages(): Promise<SiteImages> {
+  const saved = await getSetting<Partial<SiteImages>>("images", {});
+  return { ...defaultSiteImages, ...saved };
+}
 
 /** Textes modifiés pour une langue : clés « Namespace.cle » → texte. */
 export const getTextOverrides = (locale: string) => getSetting<Record<string, string>>(`texts.${locale}`, {});

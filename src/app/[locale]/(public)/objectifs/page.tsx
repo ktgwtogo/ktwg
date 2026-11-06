@@ -8,6 +8,7 @@ import { Reveal } from "@/components/shared/reveal";
 import { Section } from "@/components/shared/section";
 import { SectionTitle } from "@/components/shared/section-title";
 import { images } from "@/content/images";
+import { getSiteImages } from "@/lib/site/settings";
 import { objectives, presidentFounder, unSdgs } from "@/content/organization";
 
 export const metadata: Metadata = {
@@ -18,12 +19,13 @@ export const metadata: Metadata = {
 
 export default async function ObjectivesPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
+  const siteImages = await getSiteImages();
   setRequestLocale(locale);
 
   return (
     <>
       <PageHeader
-        image={images.plantingWoman}
+        image={siteImages["banner.objectifs"]}
         eyebrow="Nations Unies & Développement Durable"
         title="Les 17 ODD de l'ONU au cœur de l'action de KTGW Togo"
         description="L'ONG KommTogoGehweiter Togo arrime chacun de ses programmes statutaires aux 17 Objectifs de Développement Durable des Nations Unies pour transformer durablement l'avenir des jeunes au Togo."

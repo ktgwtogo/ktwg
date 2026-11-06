@@ -1,13 +1,13 @@
 import { setRequestLocale } from "next-intl/server";
 import { Forbidden, PageHeading } from "@/components/admin/page-heading";
 import { SiteBuilderStudio } from "@/components/admin/site-builder-studio";
-import { ContactSettings, HeroSettings, MenuSettings, SocialSettings, TextSettings } from "@/components/admin/site-settings";
+import { ContactSettings, HeroSettings, ImagesSettings, MenuSettings, SocialSettings, TextSettings } from "@/components/admin/site-settings";
 import { Link, redirect } from "@/i18n/navigation";
 import { getStaff } from "@/lib/admin/staff";
 import { getPages } from "@/lib/content/repository";
 import { getGlobalSiteData, getSiteDesignerEmail } from "@/lib/site/actions";
 import { flatMessages } from "@/lib/site/schemas";
-import { getHeroSlides, getMainNav, getSiteConfig, getTextOverrides } from "@/lib/site/settings";
+import { getHeroSlides, getMainNav, getSiteConfig, getSiteImages, getTextOverrides } from "@/lib/site/settings";
 import { cn } from "@/lib/utils";
 
 const tabs = [
@@ -15,6 +15,7 @@ const tabs = [
   { id: "coordonnees", label: "Coordonnées et Siège Togo" },
   { id: "menu", label: "Menu principal" },
   { id: "accueil", label: "Diaporama de l'accueil" },
+  { id: "images", label: "Images du site" },
   { id: "textes", label: "Textes du site" },
 ] as const;
 
@@ -110,6 +111,15 @@ export default async function SiteSettingsPage({
         description="Les grandes bannières défilantes en haut de la page d'accueil de KTGW Togo."
       >
         <HeroSettings initial={await getHeroSlides()} presidency={presidency} />
+      </Panel>
+    );
+  } else if (tab === "images") {
+    body = (
+      <Panel
+        title="Images du site"
+        description="Bannières en haut des pages et photos des sections de l'accueil. Cliquez sur « Remplacer » pour choisir une photo (JPG, PNG, WebP ou AVIF, 8 Mo maximum), puis enregistrez. Le diaporama se modifie dans l'onglet « Diaporama de l'accueil »."
+      >
+        <ImagesSettings initial={await getSiteImages()} presidency={presidency} />
       </Panel>
     );
   } else {

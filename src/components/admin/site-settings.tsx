@@ -6,6 +6,7 @@ import { ServerError } from "@/components/forms/fields";
 import { Button } from "@/components/ui/button";
 import { navIcons, type NavChild, type NavEntry, type NavIconName } from "@/config/navigation";
 import type { SocialNetwork } from "@/config/site";
+import { imageSlotKeys, imageSlots, type ImageSlot, type SiteImages } from "@/content/image-slots";
 import type { ImageValue } from "@/lib/content/normalize";
 import { saveSetting } from "@/lib/site/actions";
 import type { HeroSlide, SiteConfigData } from "@/lib/site/types";
@@ -451,6 +452,62 @@ export function TextSettings({
       ))}
       {footer}
       <div className="sticky bottom-0 -mx-6 border-t bg-card/95 px-6 py-4 backdrop-blur">
+        <SaveButton pending={pending} presidency={presidency} />
+      </div>
+    </form>
+  );
+}
+
+// ── Images du site ──
+
+/** Bannières des pages et photos des sections : remplacer, décrire ou rétablir l'image d'origine. */
+export function ImagesSettings({ initial, presidency }: { initial: SiteImages; presidency: boolean }) {
+  const [values, setValues] = useState<SiteImages>(initial);
+  const { save, pending, footer } = useSave("images");
+  const groups = [...new Set(imageSlotKeys.map((k) => imageSlots[k].group))];
+  const isDefault = (k: ImageSlot) => values[k].src === imageSlots[k].image.src && values[k].alt === imageSlots[k].image.alt;
+
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        // On n'enregistre que les emplacements modifiés : les autres suivent la photo d'origine.
+        save(Object.fromEntries(imageSlotKeys.filter((k) => !isDefault(k)).map((k) => [k, values[k]])));
+      }}
+      className="flex flex-col gap-8"
+    >
+      {groups.map((group) => (
+        <fieldset key={group} className="flex flex-col gap-4">
+          <legend className="mb-2 font-bold">{group}</legend>
+          <div className="grid gap-4 xl:grid-cols-2">
+            {imageSlotKeys
+              .filter((k) => imageSlots[k].group === group)
+              .map((k) => (
+                <div key={k} className="flex flex-col gap-2">
+                  <div className="flex items-center justify-between gap-2">
+                    <p className="text-sm font-semibold">{imageSlots[k].label}</p>
+                    {!isDefault(k) && (
+                      <button
+                        type="button"
+                        onClick={() => setValues({ ...values, [k]: imageSlots[k].image })}
+                        className="text-xs font-semibold text-muted-foreground underline underline-offset-2 hover:text-foreground"
+                      >
+                        Rétablir l&apos;image d&apos;origine
+                      </button>
+                    )}
+                  </div>
+                  <ImageField
+                    value={values[k] as ImageValue}
+                    onChange={(img) => setValues({ ...values, [k]: img ?? imageSlots[k].image })}
+                    folder="site"
+                  />
+                </div>
+              ))}
+          </div>
+        </fieldset>
+      ))}
+      {footer}
+      <div>
         <SaveButton pending={pending} presidency={presidency} />
       </div>
     </form>

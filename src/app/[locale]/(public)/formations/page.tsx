@@ -31,7 +31,7 @@ import { PageHeader } from "@/components/shared/page-header";
 import { Reveal } from "@/components/shared/reveal";
 import { Section } from "@/components/shared/section";
 import { SectionTitle } from "@/components/shared/section-title";
-import { images } from "@/content/images";
+import { getSiteImages } from "@/lib/site/settings";
 import { courses } from "@/content/organization";
 
 export const metadata: Metadata = {
@@ -60,12 +60,13 @@ const mecatroniqueModules = [
 
 export default async function TrainingsPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
+  const siteImages = await getSiteImages();
   setRequestLocale(locale);
 
   return (
     <>
       <PageHeader
-        image={images.workersGroup}
+        image={siteImages["banner.formations"]}
         eyebrow="Formations professionnelles"
         title={
           <>
@@ -346,7 +347,7 @@ export default async function TrainingsPage({ params }: { params: Promise<{ loca
       <Section id="clubs-allemand" aria-labelledby="clubs-title" className="scroll-mt-28">
         <div className="grid items-center gap-12 lg:grid-cols-2">
           <Reveal className="relative aspect-[4/3] overflow-hidden rounded-3xl shadow-soft">
-            <Image src={images.plantingEmbassy.src} alt={images.plantingEmbassy.alt} fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" />
+            <Image src={siteImages["formations.internat"].src} alt={siteImages["formations.internat"].alt} fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" />
           </Reveal>
           <Reveal delay={120} className="flex flex-col gap-6">
             <SectionTitle id="clubs-title" eyebrow="Éducation interculturelle" title="Les clubs de langue allemande" />

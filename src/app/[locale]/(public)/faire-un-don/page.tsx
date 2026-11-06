@@ -7,8 +7,7 @@ import { PageHeader } from "@/components/shared/page-header";
 import { Section } from "@/components/shared/section";
 import { SectionTitle } from "@/components/shared/section-title";
 import { mobileMoneyPaymentUrl, whatsappUrl } from "@/config/site";
-import { getSiteConfig } from "@/lib/site/settings";
-import { images } from "@/content/images";
+import { getSiteConfig, getSiteImages } from "@/lib/site/settings";
 import { getProject } from "@/lib/content/repository";
 
 export const metadata: Metadata = {
@@ -21,6 +20,7 @@ type Props = { params: Promise<{ locale: string }>; searchParams: Promise<{ proj
 
 export default async function DonatePage({ params, searchParams }: Props) {
   const { locale } = await params;
+  const siteImages = await getSiteImages();
   setRequestLocale(locale);
   const { projet } = await searchParams;
   const project = projet ? await getProject(projet) : undefined;
@@ -30,7 +30,7 @@ export default async function DonatePage({ params, searchParams }: Props) {
   return (
     <>
       <PageHeader
-        image={images.plantingWoman}
+        image={siteImages["banner.faire-un-don"]}
         eyebrow="Faire un don"
         title={
           <>

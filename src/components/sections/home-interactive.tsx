@@ -5,7 +5,7 @@ import { ButtonLink } from "@/components/ui/button-link";
 import { Reveal } from "@/components/shared/reveal";
 import { Section } from "@/components/shared/section";
 import { SectionTitle } from "@/components/shared/section-title";
-import { images } from "@/content/images";
+import { getSiteImages } from "@/lib/site/settings";
 import { cities } from "@/content/organization";
 import { getTestimonials } from "@/lib/content/repository";
 import { PresenceMap } from "./presence-map";
@@ -13,10 +13,10 @@ import { TestimonialsCarousel } from "./testimonials-carousel";
 
 /** Impact & témoignages : photo de groupe + carrousel. */
 export async function ImpactTestimonials() {
-  const testimonials = await getTestimonials();
+  const [testimonials, siteImages] = await Promise.all([getTestimonials(), getSiteImages()]);
   return (
     <section aria-labelledby="impact-title" className="relative isolate overflow-hidden bg-ink py-16 text-white sm:py-24">
-      <Image src={images.workersGroup.src} alt="" fill sizes="100vw" className="-z-20 object-cover opacity-25 blur-[2px]" />
+      <Image src={siteImages["home.impact"].src} alt="" fill sizes="100vw" className="-z-20 object-cover opacity-25 blur-[2px]" />
       <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-br from-ink via-ink/90 to-ktgw-green-dark/80" />
       <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8">
         <Reveal className="flex flex-col gap-6">
@@ -32,7 +32,7 @@ export async function ImpactTestimonials() {
             inverted
           />
           <div className="relative aspect-[3/2] overflow-hidden rounded-2xl ring-1 ring-white/10">
-            <Image src={images.workersGroup.src} alt={images.workersGroup.alt} fill sizes="(min-width: 1024px) 45vw, 100vw" className="object-cover" />
+            <Image src={siteImages["home.impact"].src} alt={siteImages["home.impact"].alt} fill sizes="(min-width: 1024px) 45vw, 100vw" className="object-cover" />
           </div>
         </Reveal>
         <Reveal delay={150}>

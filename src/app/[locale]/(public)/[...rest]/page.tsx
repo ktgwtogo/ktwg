@@ -5,7 +5,7 @@ import { setRequestLocale } from "next-intl/server";
 import { PageHeader } from "@/components/shared/page-header";
 import { Section } from "@/components/shared/section";
 import { ButtonLink } from "@/components/ui/button-link";
-import { images } from "@/content/images";
+import { getSiteImages } from "@/lib/site/settings";
 import { PostCard } from "@/components/shared/cards";
 import { getPage, getPostsFor } from "@/lib/content/repository";
 import { cn } from "@/lib/utils";
@@ -37,7 +37,7 @@ export default async function CustomPageRoute({ params }: Props) {
 
   return (
     <>
-      <PageHeader title={page.title} description={page.description || undefined} image={page.heroImage ?? images.workersGroup} breadcrumbs={[{ label: page.title }]} />
+      <PageHeader title={page.title} description={page.description || undefined} image={page.heroImage ?? (await getSiteImages())["banner.default"]} breadcrumbs={[{ label: page.title }]} />
       <Section>
         <div className="mx-auto flex max-w-4xl flex-col gap-12">
           {page.blocks.map((b, i) => {

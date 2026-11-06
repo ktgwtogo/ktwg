@@ -9,8 +9,7 @@ import { Section } from "@/components/shared/section";
 import { SectionTitle } from "@/components/shared/section-title";
 import { SocialLinks } from "@/components/shared/social-links";
 import { whatsappUrl } from "@/config/site";
-import { getSiteConfig } from "@/lib/site/settings";
-import { images } from "@/content/images";
+import { getSiteConfig, getSiteImages } from "@/lib/site/settings";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -19,6 +18,7 @@ export const metadata: Metadata = {
 
 export default async function ContactPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
+  const siteImages = await getSiteImages();
   setRequestLocale(locale);
   const config = await getSiteConfig();
   const { togo, germany } = config;
@@ -79,7 +79,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
   return (
     <>
       <PageHeader
-        image={images.guests}
+        image={siteImages["banner.contact"]}
         eyebrow="Contact"
         title="Parlons de l'avenir des jeunes du Togo"
         description="Une question, un projet de partenariat, une envie de vous engager ? Notre équipe à Lomé et nos bénévoles à Cologne vous répondent."

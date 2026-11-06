@@ -1,5 +1,6 @@
 "use client";
 
+import { T } from "@/components/edit/editable";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, ChevronLeft, ChevronRight, Handshake, Heart, Pause, Play } from "lucide-react";
 import Image from "next/image";
@@ -188,21 +189,15 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
 
           <div className="mt-10 flex flex-wrap items-center gap-3">
             <ButtonLink href="/faire-un-don" size="xl" className="shadow-lg shadow-ktgw-red/30">
-              <Heart aria-hidden className="fill-current" />
-              Faire un don
-            </ButtonLink>
+              <Heart aria-hidden className="fill-current" /><T s="hero-slider">{"Faire un don"}</T></ButtonLink>
             <ButtonLink href="/partenariat" size="xl" variant="white">
-              <Handshake aria-hidden />
-              Devenir partenaire
-            </ButtonLink>
+              <Handshake aria-hidden /><T s="hero-slider">{"Devenir partenaire"}</T></ButtonLink>
             <ButtonLink
               href="/projets"
               size="xl"
               variant="link"
               className="px-2 text-white underline-offset-8 hover:text-ktgw-sun"
-            >
-              Nos projets
-              <ArrowRight aria-hidden />
+            ><T s="hero-slider">{"Nos projets"}</T><ArrowRight aria-hidden />
             </ButtonLink>
           </div>
         </div>
@@ -280,9 +275,7 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
       >
         <span className="flex h-8 w-5 justify-center rounded-full border-2 border-current pt-1.5">
           <span className="block size-1.5 rounded-full bg-current motion-safe:animate-scroll-hint" />
-        </span>
-        Défiler
-      </a>
+        </span><T s="hero-slider">{"Défiler"}</T></a>
     </section>
   );
 }

@@ -1,3 +1,4 @@
+import { T } from "@/components/edit/editable";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Container } from "@/components/shared/section";
@@ -56,7 +57,7 @@ export function TopBar({ config }: { config: SiteConfigData }) {
         </ul>
 
         <div className="flex shrink-0 items-center gap-1 sm:gap-2">
-          <span className="sr-only">{t("followUs")}</span>
+          <span className="sr-only"><T k="TopBar.followUs">{t("followUs")}</T></span>
           <SocialLinks socials={config.socials} size="sm" className="gap-0" itemClassName="size-7 text-white/85 hover:bg-white/15 hover:text-ktgw-sun sm:size-8" />
           <span aria-hidden className="hidden h-4 w-px bg-white/20 md:block" />
           <LanguageSwitcher tone="inverted" className="hidden md:block" />

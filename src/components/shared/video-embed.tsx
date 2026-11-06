@@ -1,3 +1,4 @@
+import { T } from "@/components/edit/editable";
 import { PlayCircle } from "lucide-react";
 
 /** Adresse d'intégration pour YouTube et Facebook ; null pour les autres (TikTok…). */
@@ -14,9 +15,7 @@ export function VideoEmbed({ url, title }: { url: string; title: string }) {
   if (!src)
     return (
       <a href={url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 rounded-2xl bg-ink p-5 font-semibold text-white hover:bg-ink/90">
-        <PlayCircle aria-hidden className="size-8 text-ktgw-sun" />
-        Voir la vidéo
-      </a>
+        <PlayCircle aria-hidden className="size-8 text-ktgw-sun" /><T s="video-embed">{"Voir la vidéo"}</T></a>
     );
   return (
     <div className="relative aspect-video overflow-hidden rounded-2xl bg-ink">

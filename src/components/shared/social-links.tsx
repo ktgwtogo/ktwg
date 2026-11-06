@@ -1,3 +1,4 @@
+import { T } from "@/components/edit/editable";
 import { useTranslations } from "next-intl";
 import type { IconType } from "react-icons";
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaTiktok, FaWhatsapp, FaYoutube } from "react-icons/fa6";
@@ -45,7 +46,7 @@ export function SocialLinks({ socials, size = "md", className, itemClassName }: 
             >
               <Icon aria-hidden className={size === "sm" ? "size-3.5" : "size-4"} />
               <span className="sr-only">
-                {t(`Social.${network}`)} {t("Common.opensInNewTab")}
+                {t(`Social.${network}`)} <T k="Common.opensInNewTab">{t("Common.opensInNewTab")}</T>
               </span>
             </a>
           </li>

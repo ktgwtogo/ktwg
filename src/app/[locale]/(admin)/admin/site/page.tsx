@@ -2,12 +2,14 @@ import { setRequestLocale } from "next-intl/server";
 import { Forbidden, PageHeading } from "@/components/admin/page-heading";
 import { SiteBuilderStudio } from "@/components/admin/site-builder-studio";
 import { ContactSettings, HeroSettings, ImagesSettings, MenuSettings, SocialSettings, TextSettings } from "@/components/admin/site-settings";
+import { LiveEditButton } from "@/components/edit/live-edit-button";
 import { Link, redirect } from "@/i18n/navigation";
 import { getStaff } from "@/lib/admin/staff";
 import { getPages } from "@/lib/content/repository";
 import { getGlobalSiteData, getSiteDesignerEmail } from "@/lib/site/actions";
 import { flatMessages } from "@/lib/site/schemas";
-import { getHeroSlides, getMainNav, getSiteConfig, getSiteImages, getTextOverrides } from "@/lib/site/settings";
+import { imageSlots } from "@/content/image-slots";
+import { getHeroSlides, getMainNav, getSetting, getSiteConfig, getSiteImages, getTextOverrides } from "@/lib/site/settings";
 import { cn } from "@/lib/utils";
 
 const tabs = [
@@ -119,7 +121,11 @@ export default async function SiteSettingsPage({
         title="Images du site"
         description="Bannières en haut des pages et photos des sections de l'accueil. Cliquez sur « Remplacer » pour choisir une photo (JPG, PNG, WebP ou AVIF, 8 Mo maximum), puis enregistrez. Le diaporama se modifie dans l'onglet « Diaporama de l'accueil »."
       >
-        <ImagesSettings initial={await getSiteImages()} presidency={presidency} />
+        <ImagesSettings
+          initial={await getSiteImages()}
+          extra={Object.fromEntries(Object.entries(await getSetting<Record<string, never>>("images", {})).filter(([k]) => !(k in imageSlots)))}
+          presidency={presidency}
+        />
       </Panel>
     );
   } else {
@@ -167,6 +173,7 @@ export default async function SiteSettingsPage({
             : "Espace réservé au Web Designer désigné par le Président-Fondateur Monsieur Blaise-Pascal D'ALMEIDA."
         }
       />
+      <LiveEditButton locale={locale} />
       <div role="tablist" aria-label="Rubriques de gestion du site" className="flex flex-wrap gap-2">
         {tabs.map((t) => (
           <Link

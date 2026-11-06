@@ -1,3 +1,4 @@
+import { T } from "@/components/edit/editable";
 import { ArrowLeft, CalendarDays, ExternalLink, PenLine, Tag } from "lucide-react";
 import type { Metadata } from "next";
 import Image from "next/image";
@@ -91,7 +92,7 @@ export default async function PostPage({ params }: Props) {
 
           {post.links && post.links.length > 0 && (
             <aside aria-label="Liens utiles" className="rounded-2xl bg-muted/60 p-5">
-              <p className="mb-3 font-bold">Liens utiles</p>
+              <p className="mb-3 font-bold"><T s="actualites-slug">{"Liens utiles"}</T></p>
               <ul className="flex flex-col gap-2">
                 {post.links.map((l) => (
                   <li key={l.url}>
@@ -107,21 +108,17 @@ export default async function PostPage({ params }: Props) {
 
           <div className="mt-6 flex flex-col items-start justify-between gap-4 border-t pt-6">
             <div className="flex flex-col gap-2">
-              <span className="text-sm font-semibold">Partager cette publication :</span>
+              <span className="text-sm font-semibold"><T s="actualites-slug">{"Partager cette publication :"}</T></span>
               <ShareBar url={url} title={post.title} text={post.excerpt} instagram={socials.instagram || undefined} tiktok={socials.tiktok || undefined} size="sm" />
             </div>
             <ButtonLink href="/actualites" variant="ghost" size="lg">
-              <ArrowLeft aria-hidden />
-              Toutes les actualités
-            </ButtonLink>
+              <ArrowLeft aria-hidden /><T s="actualites-slug">{"Toutes les actualités"}</T></ButtonLink>
           </div>
         </article>
       </Section>
 
       <Section tone="muted" aria-labelledby="more-news">
-        <h2 id="more-news" className="mb-8 text-2xl font-bold">
-          À lire aussi
-        </h2>
+        <h2 id="more-news" className="mb-8 text-2xl font-bold"><T s="actualites-slug">{"À lire aussi"}</T></h2>
         <ul className="grid gap-6 sm:grid-cols-2">
           {(await getPosts())
             .filter((p) => p.slug !== post.slug)

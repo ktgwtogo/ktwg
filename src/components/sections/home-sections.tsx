@@ -1,3 +1,4 @@
+import { EditableImage, T } from "@/components/edit/editable";
 import {
   ArrowRight,
   Award,
@@ -11,7 +12,6 @@ import {
   Target,
   Users,
 } from "lucide-react";
-import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import { ButtonLink } from "@/components/ui/button-link";
@@ -44,12 +44,12 @@ export function BourseAnnouncementSpotlight() {
           <div className="flex flex-col">
             <div className="flex flex-wrap items-center gap-2">
               <span className="rounded-full bg-ktgw-sun px-2.5 py-0.5 text-xs font-black text-slate-950 uppercase tracking-wide">
-                {t("badge")}
+                <T k="HomeSections.bourse.badge">{t("badge")}</T>
               </span>
-              <span className="text-xs text-white/80">{t("dates")}</span>
+              <span className="text-xs text-white/80"><T k="HomeSections.bourse.dates">{t("dates")}</T></span>
             </div>
             <p className="mt-1 text-sm font-semibold text-white sm:text-base">
-              {t("title")}
+              <T k="HomeSections.bourse.title">{t("title")}</T>
             </p>
           </div>
         </div>
@@ -58,7 +58,7 @@ export function BourseAnnouncementSpotlight() {
             href="/formations#bourse-mecatronique"
             className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-ktgw-red px-4 py-2.5 text-sm font-bold text-white shadow-md transition-all hover:bg-ktgw-red-strong sm:w-auto"
           >
-            {t("cta")}
+            <T k="HomeSections.bourse.cta">{t("cta")}</T>
             <ArrowRight className="size-4" />
           </Link>
         </div>
@@ -72,9 +72,7 @@ export async function StatsBand() {
   const partners = await getPartners();
   return (
     <section id="chiffres-cles" aria-labelledby="stats-title" className="relative bg-ktgw-green-dark py-16 text-white sm:py-20">
-      <h2 id="stats-title" className="sr-only">
-        KTGW Togo en chiffres
-      </h2>
+      <h2 id="stats-title" className="sr-only"><T s="home-sections">{"KTGW Togo en chiffres"}</T></h2>
       <div className="mx-auto grid max-w-7xl grid-cols-2 gap-x-6 gap-y-12 px-4 sm:px-6 md:grid-cols-3 lg:grid-cols-6 lg:px-8">
         {keyFigures(partners.length).map((f) => {
           const Icon = figureIcons[f.icon];
@@ -103,7 +101,7 @@ export async function AboutPreview() {
       <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
         <Reveal className="relative">
           <div className="relative aspect-[4/5] overflow-hidden rounded-3xl shadow-soft sm:aspect-[4/3] lg:aspect-[4/5]">
-            <Image
+            <EditableImage id="home.about"
               src={siteImages["home.about"].src}
               alt={siteImages["home.about"].alt}
               fill
@@ -113,11 +111,11 @@ export async function AboutPreview() {
           </div>
           <div className="absolute -right-2 -bottom-6 max-w-[17rem] rounded-2xl bg-card p-5 shadow-xl ring-1 ring-foreground/5 sm:-right-6">
             <p className="font-heading text-4xl font-extrabold text-ktgw-red">2018</p>
-            <p className="text-xs font-semibold uppercase text-ktgw-green-strong">Depuis plus de {new Date().getFullYear() - 2018} ans au Togo</p>
+            <p className="text-xs font-semibold uppercase text-ktgw-green-strong"><T s="home-sections">{"Depuis plus de"}</T>{" "}{new Date().getFullYear() - 2018}{" "}<T s="home-sections">{"ans au Togo"}</T></p>
             <p className="mt-1 text-xs text-muted-foreground">
-              {presidentFounder.name}
+              <T s="home-sections">{presidentFounder.name}</T>
               <br />
-              <span className="font-bold text-foreground">{presidentFounder.title}</span>
+              <span className="font-bold text-foreground"><T s="home-sections">{presidentFounder.title}</T></span>
             </p>
           </div>
           <div aria-hidden className="absolute -top-5 -left-5 -z-10 size-32 rounded-full bg-ktgw-sun/30 blur-2xl" />
@@ -129,33 +127,33 @@ export async function AboutPreview() {
             eyebrow={t("eyebrow")}
             title={
               <>
-                {t("titlePart1")}
-                <span className="font-accent text-ktgw-red italic">{t("titlePart2")}</span>
+                <T k="HomeSections.about.titlePart1">{t("titlePart1")}</T>
+                <span className="font-accent text-ktgw-red italic"><T k="HomeSections.about.titlePart2">{t("titlePart2")}</T></span>
               </>
             }
           />
           <p className="text-lg leading-relaxed text-muted-foreground">
-            {t("text1")}
+            <T k="HomeSections.about.text1">{t("text1")}</T>
           </p>
           <p className="leading-relaxed text-muted-foreground">
-            {t("text2")}
+            <T k="HomeSections.about.text2">{t("text2")}</T>
           </p>
           <figure className="relative rounded-2xl border-l-4 border-ktgw-sun bg-accent p-6">
             <Quote aria-hidden className="absolute top-4 right-4 size-8 text-ktgw-sun/60" />
             <blockquote className="font-accent text-xl leading-snug font-semibold italic text-foreground">
-              « {t("quote")} »
+              « <T k="HomeSections.about.quote">{t("quote")}</T> »
             </blockquote>
             <figcaption className="mt-2 text-xs font-medium text-muted-foreground">
-              {t("quoteAuthor")}
+              <T k="HomeSections.about.quoteAuthor">{t("quoteAuthor")}</T>
             </figcaption>
           </figure>
           <div className="flex flex-wrap gap-3">
             <ButtonLink href="/a-propos" size="xl">
-              {t("learnMore")}
+              <T k="HomeSections.about.learnMore">{t("learnMore")}</T>
               <ArrowRight aria-hidden />
             </ButtonLink>
             <ButtonLink href="/objectifs" size="xl" variant="outline">
-              {t("ourObjectives")}
+              <T k="HomeSections.about.ourObjectives">{t("ourObjectives")}</T>
             </ButtonLink>
           </div>
         </Reveal>
@@ -192,10 +190,10 @@ export function DomainsGrid() {
                 <span className="flex size-14 items-center justify-center rounded-2xl bg-accent text-ktgw-red transition-all duration-300 group-hover:rotate-6 group-hover:bg-ktgw-red-strong group-hover:text-white">
                   <d.icon aria-hidden className="size-7" />
                 </span>
-                <h3 className="text-lg leading-snug font-bold">{d.title}</h3>
-                <p className="text-sm leading-relaxed text-muted-foreground">{d.text}</p>
+                <h3 className="text-lg leading-snug font-bold"><T s="home-sections">{d.title}</T></h3>
+                <p className="text-sm leading-relaxed text-muted-foreground"><T s="home-sections">{d.text}</T></p>
                 <span className="mt-auto inline-flex items-center gap-1 text-sm font-semibold text-ktgw-red">
-                  {t("discover")}
+                  <T k="HomeSections.domains.discover">{t("discover")}</T>
                   <ArrowRight aria-hidden className="size-4 transition-transform group-hover:translate-x-1" />
                 </span>
               </Link>
@@ -215,13 +213,11 @@ export async function FeaturedProjects() {
       <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
         <SectionTitle
           id="projects-title"
-          eyebrow="Projets phares"
-          title="Des projets concrets, des vies transformées"
-          description="Chaque projet répond à un besoin identifié sur le terrain au Togo, en étroite coopération avec nos partenaires."
+          eyebrow={<T s="home-sections">{"Projets phares"}</T>}
+          title={<T s="home-sections">{"Des projets concrets, des vies transformées"}</T>}
+          description={<T s="home-sections">{"Chaque projet répond à un besoin identifié sur le terrain au Togo, en étroite coopération avec nos partenaires."}</T>}
         />
-        <ButtonLink href="/projets" variant="outline" size="xl" className="shrink-0">
-          Tous nos projets
-          <ArrowRight aria-hidden />
+        <ButtonLink href="/projets" variant="outline" size="xl" className="shrink-0"><T s="home-sections">{"Tous nos projets"}</T><ArrowRight aria-hidden />
         </ButtonLink>
       </div>
       <ul className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -263,23 +259,21 @@ export function ObjectivesPreview() {
                 <div className="flex flex-col gap-1">
                   <div className="flex items-center gap-2">
                     <span className="font-heading text-xs font-bold text-ktgw-sun">{String(i + 1).padStart(2, "0")}</span>
-                    <span className="rounded bg-white/10 px-1.5 py-0.5 text-[10px] font-bold text-emerald-300">{o.odd}</span>
+                    <span className="rounded bg-white/10 px-1.5 py-0.5 text-[10px] font-bold text-emerald-300"><T s="home-sections">{o.odd}</T></span>
                   </div>
-                  <p className="font-semibold leading-snug text-white">{o.title}</p>
+                  <p className="font-semibold leading-snug text-white"><T s="home-sections">{o.title}</T></p>
                 </div>
               </div>
               {i === 5 && (
                 <div className="relative mt-3 h-28 w-full overflow-hidden rounded-xl border border-white/15">
-                  <Image
+                  <EditableImage id="home-sections.agroalimentaire"
                     src={images.agroalimentaire.src}
                     alt={images.agroalimentaire.alt}
                     fill
                     sizes="(min-width: 768px) 33vw, 100vw"
                     className="object-cover"
                   />
-                  <span className="absolute bottom-1 right-2 rounded bg-black/60 px-2 py-0.5 text-[10px] text-white backdrop-blur-sm">
-                    Atelier Agroalimentaire Togo
-                  </span>
+                  <span className="absolute bottom-1 right-2 rounded bg-black/60 px-2 py-0.5 text-[10px] text-white backdrop-blur-sm"><T s="home-sections">{"Atelier Agroalimentaire Togo"}</T></span>
                 </div>
               )}
             </Reveal>
@@ -288,7 +282,7 @@ export function ObjectivesPreview() {
       </ol>
       <div className="mt-10 flex justify-center">
         <ButtonLink href="/objectifs" variant="sun" size="xl">
-          {t("cta")}
+          <T k="HomeSections.objectives.cta">{t("cta")}</T>
           <ArrowRight aria-hidden />
         </ButtonLink>
       </div>
@@ -305,7 +299,7 @@ export async function UpcomingEvents() {
       <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
         <SectionTitle id="events-title" eyebrow={t("eyebrow")} title={t("title")} description={t("subtitle")} />
         <ButtonLink href="/evenements" variant="outline" size="xl" className="shrink-0">
-          {t("cta")}
+          <T k="HomeSections.events.cta">{t("cta")}</T>
           <ArrowRight aria-hidden />
         </ButtonLink>
       </div>
@@ -321,7 +315,7 @@ export async function UpcomingEvents() {
         </ul>
       ) : (
         <p className="mt-10 rounded-2xl bg-muted p-8 text-center text-muted-foreground">
-          {t("none")}
+          <T k="HomeSections.events.none">{t("none")}</T>
         </p>
       )}
     </Section>
@@ -338,7 +332,7 @@ export async function LatestNews() {
       <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
         <SectionTitle id="news-title" eyebrow={t("eyebrow")} title={t("title")} />
         <ButtonLink href="/actualites" variant="outline" size="xl" className="shrink-0">
-          {t("cta")}
+          <T k="HomeSections.news.cta">{t("cta")}</T>
           <ArrowRight aria-hidden />
         </ButtonLink>
       </div>
@@ -384,24 +378,24 @@ export async function PartnersSection() {
       <div className="mx-auto mt-16 max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="relative grid overflow-hidden rounded-3xl bg-ink text-white shadow-xl lg:grid-cols-2">
           <div className="relative min-h-64 lg:min-h-full">
-            <Image src={siteImages["home.partners"].src} alt={siteImages["home.partners"].alt} fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" />
+            <EditableImage id="home.partners" src={siteImages["home.partners"].src} alt={siteImages["home.partners"].alt} fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" />
             <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-ink/70 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-ink" />
           </div>
           <div className="flex flex-col gap-5 p-8 sm:p-12">
-            <p className="text-sm font-semibold tracking-widest text-ktgw-sun uppercase">{t("bannerEyebrow")}</p>
+            <p className="text-sm font-semibold tracking-widest text-ktgw-sun uppercase"><T k="HomeSections.partners.bannerEyebrow">{t("bannerEyebrow")}</T></p>
             <h3 className="text-3xl font-extrabold sm:text-4xl">
-              {t("bannerTitle")}
+              <T k="HomeSections.partners.bannerTitle">{t("bannerTitle")}</T>
             </h3>
             <p className="leading-relaxed text-white/80">
-              {t("bannerText")}
+              <T k="HomeSections.partners.bannerText">{t("bannerText")}</T>
             </p>
             <div className="flex flex-wrap gap-3">
               <ButtonLink href="/partenariat" size="xl" variant="sun">
                 <Handshake aria-hidden />
-                {t("propose")}
+                <T k="HomeSections.partners.propose">{t("propose")}</T>
               </ButtonLink>
               <ButtonLink href="/contact" size="xl" variant="link" className="text-white hover:text-ktgw-sun">
-                {t("contact")}
+                <T k="HomeSections.partners.contact">{t("contact")}</T>
                 <ArrowRight aria-hidden />
               </ButtonLink>
             </div>
@@ -451,19 +445,19 @@ export function FinalCta() {
       <div className="relative mx-auto flex max-w-3xl flex-col items-center gap-6 text-center">
         <Heart aria-hidden className="size-12 fill-ktgw-red-strong text-ktgw-red-strong" />
         <h2 id="cta-title" className="text-3xl font-extrabold sm:text-5xl">
-          {t("title")}
+          <T k="HomeSections.finalCta.title">{t("title")}</T>
         </h2>
         <p className="text-lg text-ink/80">
-          {t("subtitle")}
+          <T k="HomeSections.finalCta.subtitle">{t("subtitle")}</T>
         </p>
         <div className="flex flex-wrap justify-center gap-3">
           <ButtonLink href="/faire-un-don" size="xl">
             <Heart aria-hidden className="fill-current" />
-            {t("donate")}
+            <T k="HomeSections.finalCta.donate">{t("donate")}</T>
           </ButtonLink>
           <ButtonLink href="/s-engager#benevolat" size="xl" variant="white">
             <Users aria-hidden />
-            {t("volunteer")}
+            <T k="HomeSections.finalCta.volunteer">{t("volunteer")}</T>
           </ButtonLink>
         </div>
       </div>

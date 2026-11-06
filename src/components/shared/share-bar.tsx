@@ -1,5 +1,6 @@
 "use client";
 
+import { T } from "@/components/edit/editable";
 import { Check, Link2, Mail } from "lucide-react";
 import { useState } from "react";
 import type { IconType } from "react-icons";
@@ -75,8 +76,8 @@ export function ShareBar({
       <button type="button" onClick={() => copy("lien")} aria-label="Copier le lien" title="Copier le lien" className={cn(btn, "hover:bg-ktgw-green-strong")}>
         {copied === "lien" ? <Check aria-hidden className="size-4" /> : <Link2 aria-hidden className="size-4" />}
       </button>
-      {copied && copied !== "lien" && <span className="text-xs font-semibold text-ktgw-green-strong">Texte copié : collez-le dans votre publication.</span>}
-      {copied === "lien" && <span className="text-xs font-semibold text-ktgw-green-strong">Lien copié.</span>}
+      {copied && copied !== "lien" && <span className="text-xs font-semibold text-ktgw-green-strong"><T s="share-bar">{"Texte copié : collez-le dans votre publication."}</T></span>}
+      {copied === "lien" && <span className="text-xs font-semibold text-ktgw-green-strong"><T s="share-bar">{"Lien copié."}</T></span>}
     </div>
   );
 }

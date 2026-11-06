@@ -1,6 +1,6 @@
+import { EditableImage, T } from "@/components/edit/editable";
 import { ArrowRight, Eye, FileText, HandHeart, Heart, Landmark, Scale, Target, Users } from "lucide-react";
 import type { Metadata } from "next";
-import Image from "next/image";
 import { setRequestLocale } from "next-intl/server";
 import { ButtonLink } from "@/components/ui/button-link";
 import { FinalCta } from "@/components/sections/home-sections";
@@ -57,14 +57,13 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
   return (
     <>
       <PageHeader
-        image={siteImages["banner.a-propos"]}
-        eyebrow="Qui sommes-nous"
+        image={siteImages["banner.a-propos"]} imageId="banner.a-propos"
+        eyebrow={<T s="a-propos">{"Qui sommes-nous"}</T>}
         title={
-          <>
-            Komm Togo, <span className="font-accent text-ktgw-sun italic">geh weiter</span>
+          <><T s="a-propos">{"Komm Togo,"}</T>{" "}<span className="font-accent text-ktgw-sun italic"><T s="a-propos">{"geh weiter"}</T></span>
           </>
         }
-        description="« Viens Togo, avance » : active depuis 2018 au Togo, nous aidons les jeunes du Togo à avancer grâce à l'éducation et à la formation professionnelle."
+        description={<T s="a-propos">{"« Viens Togo, avance » : active depuis 2018 au Togo, nous aidons les jeunes du Togo à avancer grâce à l'éducation et à la formation professionnelle."}</T>}
         breadcrumbs={[{ label: "À propos" }]}
       />
 
@@ -72,19 +71,10 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
       <Section aria-labelledby="history-title">
         <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
           <Reveal className="flex flex-col gap-6">
-            <SectionTitle id="history-title" eyebrow="Notre histoire" title="D'un élan d'amitié à une ONG engagée" />
-            <p className="text-lg leading-relaxed text-muted-foreground">
-              KommTogoGehWeiter Togo (KTGW Togo) est la branche togolaise de <strong className="text-foreground">kommTOGOgehweiter e.V.</strong>, une
-              association d&apos;utilité publique fondée à Cologne. Côté allemand, elle fonctionne entièrement grâce au bénévolat. Ses membres
-              viennent d&apos;Allemagne, de France et du Togo.
-            </p>
-            <p className="leading-relaxed text-muted-foreground">
-              Notre conviction tient en une phrase :{" "}
-              <em className="font-accent text-lg font-semibold text-foreground">
-                « Chaque centime investi dans l&apos;éducation en Afrique protège des chemins dangereux vers l&apos;Europe. »
-              </em>{" "}
-              Former un jeune à un métier, c&apos;est lui permettre de construire son avenir au Togo, auprès des siens.
-            </p>
+            <SectionTitle id="history-title" eyebrow={<T s="a-propos">{"Notre histoire"}</T>} title={<T s="a-propos">{"D'un élan d'amitié à une ONG engagée"}</T>} />
+            <p className="text-lg leading-relaxed text-muted-foreground"><T s="a-propos">{"KommTogoGehWeiter Togo (KTGW Togo) est la branche togolaise de"}</T>{" "}<strong className="text-foreground"><T s="a-propos">{"kommTOGOgehweiter e.V."}</T></strong><T s="a-propos">{", une association d'utilité publique fondée à Cologne. Côté allemand, elle fonctionne entièrement grâce au bénévolat. Ses membres viennent d'Allemagne, de France et du Togo."}</T></p>
+            <p className="leading-relaxed text-muted-foreground"><T s="a-propos">{"Notre conviction tient en une phrase :"}</T>{" "}
+              <em className="font-accent text-lg font-semibold text-foreground"><T s="a-propos">{"« Chaque centime investi dans l'éducation en Afrique protège des chemins dangereux vers l'Europe. »"}</T></em>{" "}<T s="a-propos">{"Former un jeune à un métier, c'est lui permettre de construire son avenir au Togo, auprès des siens."}</T></p>
           </Reveal>
           <ol className="relative flex flex-col gap-8 border-l-2 border-ktgw-sun/60 pl-8">
             {timeline.map((t, i) => (
@@ -92,8 +82,8 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
                 <Reveal delay={i * 100} className="relative">
                   <span aria-hidden className="absolute top-1 -left-[2.65rem] flex size-5 items-center justify-center rounded-full bg-ktgw-red-strong ring-4 ring-background" />
                   <p className="font-heading text-3xl font-extrabold text-ktgw-red">{t.year}</p>
-                  <h3 className="mt-1 text-lg font-bold">{t.title}</h3>
-                  <p className="mt-1 text-muted-foreground">{t.text}</p>
+                  <h3 className="mt-1 text-lg font-bold"><T s="a-propos">{t.title}</T></h3>
+                  <p className="mt-1 text-muted-foreground"><T s="a-propos">{t.text}</T></p>
                 </Reveal>
               </li>
             ))}
@@ -103,7 +93,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
 
       {/* Mission, vision, valeurs */}
       <Section tone="muted" aria-labelledby="pillars-title">
-        <SectionTitle id="pillars-title" eyebrow="Ce qui nous guide" title="Mission, vision et valeurs" align="center" />
+        <SectionTitle id="pillars-title" eyebrow={<T s="a-propos">{"Ce qui nous guide"}</T>} title={<T s="a-propos">{"Mission, vision et valeurs"}</T>} align="center" />
         <ul className="mt-12 grid gap-6 md:grid-cols-3">
           {pillars.map((p, i) => (
             <li key={p.title}>
@@ -111,8 +101,8 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
                 <span className="flex size-14 items-center justify-center rounded-2xl bg-ktgw-red-strong text-white">
                   <p.icon aria-hidden className="size-7" />
                 </span>
-                <h3 className="text-xl font-bold">{p.title}</h3>
-                <p className="leading-relaxed text-muted-foreground">{p.text}</p>
+                <h3 className="text-xl font-bold"><T s="a-propos">{p.title}</T></h3>
+                <p className="leading-relaxed text-muted-foreground"><T s="a-propos">{p.text}</T></p>
               </Reveal>
             </li>
           ))}
@@ -123,22 +113,13 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
       <Section aria-labelledby="coop-title">
         <div className="grid items-center gap-12 lg:grid-cols-2">
           <Reveal className="relative aspect-[4/3] overflow-hidden rounded-3xl shadow-soft">
-            <Image src={siteImages["a-propos.histoire"].src} alt={siteImages["a-propos.histoire"].alt} fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" />
+            <EditableImage id="a-propos.histoire" src={siteImages["a-propos.histoire"].src} alt={siteImages["a-propos.histoire"].alt} fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" />
           </Reveal>
           <Reveal delay={120} className="flex flex-col gap-6">
-            <SectionTitle id="coop-title" eyebrow="Coopération Allemagne – Togo" title="Deux pays, un même chemin" />
-            <p className="leading-relaxed text-muted-foreground">
-              Nos projets reposent sur une coopération étroite avec des partenaires allemands : l&apos;association mère à Cologne, Togohilfe, la
-              Chambre des métiers de Cologne (Handwerkskammer zu Köln) et l&apos;ambassade d&apos;Allemagne au Togo. Au Togo, nous travaillons
-              avec les autorités administratives, traditionnelles et religieuses, ainsi qu&apos;avec nos partenaires locaux.
-            </p>
-            <p className="leading-relaxed text-muted-foreground">
-              Cette coopération apporte le savoir-faire de l&apos;artisanat allemand et la connaissance du terrain togolais. Elle crée aussi des
-              échanges culturels et linguistiques, notamment grâce aux clubs d&apos;allemand.
-            </p>
-            <ButtonLink href="/partenariat" size="xl" className="w-fit">
-              Devenir partenaire
-              <ArrowRight aria-hidden />
+            <SectionTitle id="coop-title" eyebrow={<T s="a-propos">{"Coopération Allemagne – Togo"}</T>} title={<T s="a-propos">{"Deux pays, un même chemin"}</T>} />
+            <p className="leading-relaxed text-muted-foreground"><T s="a-propos">{"Nos projets reposent sur une coopération étroite avec des partenaires allemands : l'association mère à Cologne, Togohilfe, la Chambre des métiers de Cologne (Handwerkskammer zu Köln) et l'ambassade d'Allemagne au Togo. Au Togo, nous travaillons avec les autorités administratives, traditionnelles et religieuses, ainsi qu'avec nos partenaires locaux."}</T></p>
+            <p className="leading-relaxed text-muted-foreground"><T s="a-propos">{"Cette coopération apporte le savoir-faire de l'artisanat allemand et la connaissance du terrain togolais. Elle crée aussi des échanges culturels et linguistiques, notamment grâce aux clubs d'allemand."}</T></p>
+            <ButtonLink href="/partenariat" size="xl" className="w-fit"><T s="a-propos">{"Devenir partenaire"}</T><ArrowRight aria-hidden />
             </ButtonLink>
           </Reveal>
         </div>
@@ -149,31 +130,19 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
         <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-slate-950 via-slate-900 to-ktgw-green-dark p-8 text-white shadow-2xl sm:p-12">
           <div className="relative z-10 grid gap-8 lg:grid-cols-12 lg:items-center">
             <div className="flex flex-col gap-4 lg:col-span-8">
-              <span className="inline-flex w-fit items-center gap-2 rounded-full bg-ktgw-sun/20 px-3 py-1 text-xs font-bold text-ktgw-sun ring-1 ring-ktgw-sun/40">
-                Direction &amp; Présidence Fondatrice
-              </span>
-              <h2 className="font-heading text-3xl font-extrabold sm:text-4xl text-white">
-                Monsieur Blaise-Pascal D&apos;ALMEIDA
-              </h2>
-              <p className="text-lg font-semibold text-ktgw-sun">
-                Président-Fondateur de KTGW
-              </p>
-              <blockquote className="border-l-4 border-ktgw-sun pl-4 text-base italic text-white/90 sm:text-lg">
-                « Chaque centime investi dans l&apos;éducation en Afrique protège des chemins dangereux vers l&apos;Europe. Notre mission est de donner aux jeunes du Togo les compétences concrètes et la fierté de réussir dans leur pays. »
-              </blockquote>
-              <p className="text-sm text-white/75">
-                Sous son impulsion, KTGW Togo déploie des formations d&apos;excellence, l&apos;internat des jeunes filles au centre CEFOPEXD, l&apos;agroalimentaire et la nouvelle filière en mécatronique industrielle.
-              </p>
+              <span className="inline-flex w-fit items-center gap-2 rounded-full bg-ktgw-sun/20 px-3 py-1 text-xs font-bold text-ktgw-sun ring-1 ring-ktgw-sun/40"><T s="a-propos">{"Direction & Présidence Fondatrice"}</T></span>
+              <h2 className="font-heading text-3xl font-extrabold sm:text-4xl text-white"><T s="a-propos">{"Monsieur Blaise-Pascal D'ALMEIDA"}</T></h2>
+              <p className="text-lg font-semibold text-ktgw-sun"><T s="a-propos">{"Président-Fondateur de KTGW"}</T></p>
+              <blockquote className="border-l-4 border-ktgw-sun pl-4 text-base italic text-white/90 sm:text-lg"><T s="a-propos">{"« Chaque centime investi dans l'éducation en Afrique protège des chemins dangereux vers l'Europe. Notre mission est de donner aux jeunes du Togo les compétences concrètes et la fierté de réussir dans leur pays. »"}</T></blockquote>
+              <p className="text-sm text-white/75"><T s="a-propos">{"Sous son impulsion, KTGW Togo déploie des formations d'excellence, l'internat des jeunes filles au centre CEFOPEXD, l'agroalimentaire et la nouvelle filière en mécatronique industrielle."}</T></p>
             </div>
             <div className="flex flex-col items-center justify-center rounded-2xl border border-white/10 bg-white/5 p-6 text-center backdrop-blur-sm lg:col-span-4">
               <span className="flex size-20 items-center justify-center rounded-2xl bg-ktgw-red text-white shadow-xl">
                 <Users className="size-10" />
               </span>
-              <p className="mt-4 font-heading text-lg font-bold text-white">M. Blaise-Pascal D&apos;ALMEIDA</p>
-              <p className="text-xs text-ktgw-sun font-medium">Président-Fondateur</p>
-              <span className="mt-3 rounded-full bg-white/10 px-3 py-1 text-[11px] text-white/80">
-                Lomé · Cologne · Devikinmé
-              </span>
+              <p className="mt-4 font-heading text-lg font-bold text-white"><T s="a-propos">{"M. Blaise-Pascal D'ALMEIDA"}</T></p>
+              <p className="text-xs text-ktgw-sun font-medium"><T s="a-propos">{"Président-Fondateur"}</T></p>
+              <span className="mt-3 rounded-full bg-white/10 px-3 py-1 text-[11px] text-white/80"><T s="a-propos">{"Lomé · Cologne · Devikinmé"}</T></span>
             </div>
           </div>
         </div>
@@ -183,9 +152,9 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
       <Section tone="muted" aria-labelledby="gov-title">
         <SectionTitle
           id="gov-title"
-          eyebrow="Gouvernance"
-          title="Une organisation claire et responsable"
-          description="Nos instances garantissent des décisions collégiales et une gestion rigoureuse des fonds confiés."
+          eyebrow={<T s="a-propos">{"Gouvernance"}</T>}
+          title={<T s="a-propos">{"Une organisation claire et responsable"}</T>}
+          description={<T s="a-propos">{"Nos instances garantissent des décisions collégiales et une gestion rigoureuse des fonds confiés."}</T>}
           align="center"
         />
         <ul className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -193,20 +162,16 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
             <li key={g.title}>
               <Reveal delay={i * 80} className="flex h-full flex-col gap-3 rounded-2xl bg-card p-6 shadow-soft ring-1 ring-foreground/5">
                 <g.icon aria-hidden className="size-8 text-ktgw-green" />
-                <h3 className="font-bold">{g.title}</h3>
-                <p className="text-sm leading-relaxed text-muted-foreground">{g.text}</p>
+                <h3 className="font-bold"><T s="a-propos">{g.title}</T></h3>
+                <p className="text-sm leading-relaxed text-muted-foreground"><T s="a-propos">{g.text}</T></p>
               </Reveal>
             </li>
           ))}
         </ul>
         <div className="mt-10 flex flex-col items-center gap-3 text-center">
-          <p className="max-w-2xl text-sm text-muted-foreground">
-            La composition de l&apos;équipe et des instances, ainsi que nos rapports d&apos;activité et financiers, sont publiés sur la page Transparence.
-          </p>
+          <p className="max-w-2xl text-sm text-muted-foreground"><T s="a-propos">{"La composition de l'équipe et des instances, ainsi que nos rapports d'activité et financiers, sont publiés sur la page Transparence."}</T></p>
           <ButtonLink href="/transparence" variant="outline" size="xl">
-            <FileText aria-hidden />
-            Voir la page Transparence
-          </ButtonLink>
+            <FileText aria-hidden /><T s="a-propos">{"Voir la page Transparence"}</T></ButtonLink>
         </div>
       </Section>
 
@@ -216,13 +181,11 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
           <div className="flex flex-col gap-6">
             <SectionTitle
               id="zones-title"
-              eyebrow="Zones d'action"
-              title="Présents dans six villes du Togo"
-              description="Lomé, Aného, Kpalimé, Atakpamé, Kara et Dapaong : nous agissons du littoral jusqu'aux Savanes."
+              eyebrow={<T s="a-propos">{"Zones d'action"}</T>}
+              title={<T s="a-propos">{"Présents dans six villes du Togo"}</T>}
+              description={<T s="a-propos">{"Lomé, Aného, Kpalimé, Atakpamé, Kara et Dapaong : nous agissons du littoral jusqu'aux Savanes."}</T>}
             />
-            <ButtonLink href="/projets" size="xl" variant="secondary" className="w-fit">
-              Découvrir nos projets
-              <ArrowRight aria-hidden />
+            <ButtonLink href="/projets" size="xl" variant="secondary" className="w-fit"><T s="a-propos">{"Découvrir nos projets"}</T><ArrowRight aria-hidden />
             </ButtonLink>
           </div>
           <PresenceMap />

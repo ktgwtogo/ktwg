@@ -1,3 +1,4 @@
+import { T } from "@/components/edit/editable";
 import { ArrowRight, CalendarDays, Clock, MapPin, Monitor, Users } from "lucide-react";
 import Image from "next/image";
 import { useLocale } from "next-intl";
@@ -56,16 +57,12 @@ export function ProjectCard({ project, priority }: { project: Project; priority?
           />
         )}
         <div className="mt-auto flex items-center justify-between gap-3 pt-3">
-          <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-ktgw-red">
-            Découvrir
-            <ArrowRight aria-hidden className="size-4 transition-transform group-hover:translate-x-1" />
+          <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-ktgw-red"><T s="cards">{"Découvrir"}</T><ArrowRight aria-hidden className="size-4 transition-transform group-hover:translate-x-1" />
           </span>
           <Link
             href={`/faire-un-don?projet=${project.slug}`}
             className="relative z-10 rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/85"
-          >
-            Soutenir ce projet
-          </Link>
+          ><T s="cards">{"Soutenir ce projet"}</T></Link>
         </div>
       </div>
     </article>
@@ -100,9 +97,7 @@ export function PostCard({ post }: { post: Post }) {
           </Link>
         </h3>
         <p className="line-clamp-3 text-sm leading-relaxed text-muted-foreground">{post.excerpt}</p>
-        <span className="mt-auto inline-flex items-center gap-1.5 pt-2 text-sm font-semibold text-ktgw-red">
-          Lire l&apos;article
-          <ArrowRight aria-hidden className="size-4 transition-transform group-hover:translate-x-1" />
+        <span className="mt-auto inline-flex items-center gap-1.5 pt-2 text-sm font-semibold text-ktgw-red"><T s="cards">{"Lire l'article"}</T><ArrowRight aria-hidden className="size-4 transition-transform group-hover:translate-x-1" />
         </span>
       </div>
     </article>

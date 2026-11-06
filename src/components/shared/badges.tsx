@@ -1,3 +1,4 @@
+import { T } from "@/components/edit/editable";
 import { cn } from "@/lib/utils";
 import type { Partner } from "@/content/partners";
 
@@ -10,9 +11,7 @@ export function SampleBadge({ className }: { className?: string }) {
         "inline-flex items-center rounded-full border border-dashed border-current px-2 py-0.5 text-[10px] font-semibold tracking-wider uppercase opacity-80",
         className
       )}
-    >
-      Exemple
-    </span>
+    ><T s="badges">{"Exemple"}</T></span>
   );
 }
 

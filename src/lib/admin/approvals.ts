@@ -8,6 +8,7 @@ import { renderEmail } from "@/lib/email/template";
 import { categoryLabel } from "./mailbox";
 import { operationLabels, rejectOperation, runOperation, type OperationName } from "./operations";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { applyEdit, type EditPayload } from "@/lib/site/edit-store";
 import { audit, type Staff } from "./staff";
 
 /**
@@ -72,6 +73,9 @@ const executors: Record<string, Executor> = {
   },
 
   /** Paramètre du site (coordonnées, menus, diaporama, textes), déjà validé. */
+  /** Modification faite en direct sur le site (texte ou image), déjà validée. */
+  "edit.save": (p, requestedBy) => applyEdit(p as unknown as EditPayload, requestedBy),
+
   "settings.save": async (p, requestedBy) => {
     const { error } = await createAdminClient()
       .from("site_settings")
@@ -189,6 +193,7 @@ export const approvalKindLabels: Record<string, string> = {
   "content.save": "Contenu du site",
   "content.delete": "Suppression d'un contenu",
   "settings.save": "Paramètres du site",
+  "edit.save": "Modification en direct du site",
   operation: "Action du bureau",
   "mailing.send": "E-mail groupé",
   "report.publish": "Rapport d'activité",

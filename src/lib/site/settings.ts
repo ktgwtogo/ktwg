@@ -4,6 +4,7 @@ import { unstable_cache } from "next/cache";
 import { mainNav, type NavEntry } from "@/config/navigation";
 import { defaultHeroSlides } from "@/components/sections/hero-slides";
 import { defaultSiteImages, type SiteImages } from "@/content/image-slots";
+import type { SiteEdits } from "./edit-types";
 import { CONTENT_TAG } from "@/lib/content/repository";
 import type { Database } from "@/types/database";
 import { defaultSiteConfig, type HeroSlide, type SiteConfigData } from "./types";
@@ -60,3 +61,12 @@ export async function getSiteImages(): Promise<SiteImages> {
 
 /** Textes modifiés pour une langue : clés « Namespace.cle » → texte. */
 export const getTextOverrides = (locale: string) => getSetting<Record<string, string>>(`texts.${locale}`, {});
+
+/** Modifications faites en direct (textes de la langue + images), pour <T> et <EditableImage>. */
+export async function getEdits(locale: string): Promise<SiteEdits> {
+  const [texts, images] = await Promise.all([
+    getSetting<SiteEdits["texts"]>(`edits.${locale}`, {}),
+    getSetting<SiteEdits["images"]>("images", {}),
+  ]);
+  return { texts, images };
+}

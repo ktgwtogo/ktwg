@@ -1,5 +1,6 @@
 "use client";
 
+import { T } from "@/components/edit/editable";
 import { MapPin } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
@@ -55,13 +56,11 @@ export function MapEmbed({ src, className, tone = "dark", immediate = true }: Ma
           >
             <MapPin className="size-6 animate-bounce" />
           </span>
-          <span className="relative text-sm font-bold text-white">{t("showMap")}</span>
-          <span className="relative max-w-64 text-xs text-white/70">Siège Tokoin Cébévito, Lomé – Togo</span>
+          <span className="relative text-sm font-bold text-white"><T k="Footer.showMap">{t("showMap")}</T></span>
+          <span className="relative max-w-64 text-xs text-white/70"><T s="map-embed">{"Siège Tokoin Cébévito, Lomé – Togo"}</T></span>
         </button>
       )}
-      <div className="pointer-events-none absolute bottom-2 left-2 rounded-lg bg-black/60 px-2 py-1 text-[11px] font-medium text-white backdrop-blur-sm">
-        📍 Tokoin Lomé, Togo
-      </div>
+      <div className="pointer-events-none absolute bottom-2 left-2 rounded-lg bg-black/60 px-2 py-1 text-[11px] font-medium text-white backdrop-blur-sm"><T s="map-embed">{"📍 Tokoin Lomé, Togo"}</T></div>
     </div>
   );
 }

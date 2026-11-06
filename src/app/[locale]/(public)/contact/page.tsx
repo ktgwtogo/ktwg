@@ -1,3 +1,4 @@
+import { T } from "@/components/edit/editable";
 import { Clock, Globe, Mail, MapPin, Navigation, Phone } from "lucide-react";
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
@@ -52,9 +53,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1 rounded-full bg-[#25D366]/15 px-2.5 py-1 text-xs font-semibold text-[#128C4B] hover:bg-[#25D366] hover:text-ink dark:text-[#4ade80]"
               >
-                <FaWhatsapp aria-hidden className="size-3.5" />
-                WhatsApp
-              </a>
+                <FaWhatsapp aria-hidden className="size-3.5" /><T s="contact">{"WhatsApp"}</T></a>
             </li>
           ))}
         </ul>
@@ -79,10 +78,10 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
   return (
     <>
       <PageHeader
-        image={siteImages["banner.contact"]}
-        eyebrow="Contact"
-        title="Parlons de l'avenir des jeunes du Togo"
-        description="Une question, un projet de partenariat, une envie de vous engager ? Notre équipe à Lomé et nos bénévoles à Cologne vous répondent."
+        image={siteImages["banner.contact"]} imageId="banner.contact"
+        eyebrow={<T s="contact">{"Contact"}</T>}
+        title={<T s="contact">{"Parlons de l'avenir des jeunes du Togo"}</T>}
+        description={<T s="contact">{"Une question, un projet de partenariat, une envie de vous engager ? Notre équipe à Lomé et nos bénévoles à Cologne vous répondent."}</T>}
         breadcrumbs={[{ label: "Contact" }]}
       />
 
@@ -93,8 +92,8 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
               <span className="flex size-12 items-center justify-center rounded-2xl bg-accent text-ktgw-red">
                 <c.icon aria-hidden className="size-6" />
               </span>
-              <h2 className="text-lg font-bold">{c.title}</h2>
-              <div className="text-sm leading-relaxed text-muted-foreground">{c.content}</div>
+              <h2 className="text-lg font-bold"><T s="contact">{c.title}</T></h2>
+              <div className="text-sm leading-relaxed text-muted-foreground"><T s="contact">{c.content}</T></div>
               {c.action && (
                 <a
                   href={c.action.href}
@@ -103,7 +102,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
                   className="mt-auto inline-flex items-center gap-1.5 text-sm font-semibold text-ktgw-red hover:underline"
                 >
                   <Navigation aria-hidden className="size-4" />
-                  {c.action.label}
+                  <T s="contact">{c.action.label}</T>
                 </a>
               )}
             </li>
@@ -112,7 +111,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
 
         <div className="mt-16 grid gap-12 lg:grid-cols-5">
           <div className="lg:col-span-3">
-            <SectionTitle eyebrow="Écrivez-nous" title="Envoyer un message" description="Les champs marqués d'un astérisque (*) sont obligatoires." />
+            <SectionTitle eyebrow={<T s="contact">{"Écrivez-nous"}</T>} title={<T s="contact">{"Envoyer un message"}</T>} description={<T s="contact">{"Les champs marqués d'un astérisque (*) sont obligatoires."}</T>} />
             <div className="mt-8 rounded-3xl bg-card p-6 shadow-soft ring-1 ring-foreground/5 sm:p-10">
               <ContactForm />
             </div>
@@ -120,10 +119,8 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
 
           <aside className="flex flex-col gap-6 lg:col-span-2" aria-label="Plan d'accès et autres contacts">
             <div className="flex flex-col gap-4">
-              <h2 className="text-2xl font-bold">Plan d&apos;accès</h2>
-              <p className="text-sm text-muted-foreground">
-                Nous sommes à Tokoin Cébévito, près du CHU Sylvanus Olympio, à Lomé.
-              </p>
+              <h2 className="text-2xl font-bold"><T s="contact">{"Plan d'accès"}</T></h2>
+              <p className="text-sm text-muted-foreground"><T s="contact">{"Nous sommes à Tokoin Cébévito, près du CHU Sylvanus Olympio, à Lomé."}</T></p>
               <MapEmbed src={togo.mapsEmbedUrl} tone="light" className="aspect-square shadow-soft" />
               <a
                 href={togo.mapsUrl}
@@ -131,13 +128,11 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
                 rel="noopener noreferrer"
                 className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-ink px-5 font-semibold text-white hover:opacity-90 dark:bg-white dark:text-ink"
               >
-                <Navigation aria-hidden className="size-4" />
-                Ouvrir l&apos;itinéraire dans Google Maps
-              </a>
+                <Navigation aria-hidden className="size-4" /><T s="contact">{"Ouvrir l'itinéraire dans Google Maps"}</T></a>
             </div>
 
             <div className="rounded-2xl bg-accent p-6">
-              <h2 className="mb-1 text-lg font-bold">Siège en Allemagne</h2>
+              <h2 className="mb-1 text-lg font-bold"><T s="contact">{"Siège en Allemagne"}</T></h2>
               <p className="mb-3 text-sm text-muted-foreground">
                 {germany.name} · {germany.city}
               </p>
@@ -156,15 +151,13 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
                 </li>
                 <li className="flex items-center gap-2">
                   <Globe aria-hidden className="size-4 text-ktgw-green" />
-                  <a href={germany.website} target="_blank" rel="noopener noreferrer" className="hover:text-ktgw-red">
-                    kommtogogehweiter.de
-                  </a>
+                  <a href={germany.website} target="_blank" rel="noopener noreferrer" className="hover:text-ktgw-red"><T s="contact">{"kommtogogehweiter.de"}</T></a>
                 </li>
               </ul>
             </div>
 
             <div className="rounded-2xl bg-card p-6 shadow-soft ring-1 ring-foreground/5">
-              <h2 className="mb-3 text-lg font-bold">Suivez-nous</h2>
+              <h2 className="mb-3 text-lg font-bold"><T s="contact">{"Suivez-nous"}</T></h2>
               <SocialLinks socials={config.socials} itemClassName="bg-muted text-foreground/80 hover:bg-ktgw-red-strong hover:text-white" className="flex-wrap gap-2" />
             </div>
           </aside>

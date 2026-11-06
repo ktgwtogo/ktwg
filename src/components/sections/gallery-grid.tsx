@@ -1,5 +1,6 @@
 "use client";
 
+import { T } from "@/components/edit/editable";
 import { Dialog } from "@base-ui/react/dialog";
 import { ChevronLeft, ChevronRight, Expand, X } from "lucide-react";
 import Image from "next/image";
@@ -59,7 +60,7 @@ export function GalleryGrid({ items }: { items: GalleryItem[] }) {
               <span aria-hidden className="absolute top-3 right-3 flex size-9 items-center justify-center rounded-full bg-white/90 text-ink opacity-0 transition-opacity group-hover:opacity-100">
                 <Expand className="size-4" />
               </span>
-              <span className="sr-only">Agrandir la photo</span>
+              <span className="sr-only"><T s="gallery-grid">{"Agrandir la photo"}</T></span>
             </button>
           </li>
         ))}

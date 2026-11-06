@@ -1,3 +1,4 @@
+import { T } from "@/components/edit/editable";
 import { BadgeCheck, Coins, Eye, Globe2, HandHeart, Package, UsersRound, Wrench } from "lucide-react";
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
@@ -38,19 +39,17 @@ export default async function PartnershipPage({ params }: { params: Promise<{ lo
   return (
     <>
       <PageHeader
-        image={siteImages["banner.partenariat"]}
-        eyebrow="Partenariat"
+        image={siteImages["banner.partenariat"]} imageId="banner.partenariat"
+        eyebrow={<T s="partenariat">{"Partenariat"}</T>}
         title={
-          <>
-            Investissez dans <span className="font-accent text-ktgw-sun italic">la jeunesse</span> du Togo
-          </>
+          <><T s="partenariat">{"Investissez dans"}</T>{" "}<span className="font-accent text-ktgw-sun italic"><T s="partenariat">{"la jeunesse"}</T></span>{" "}<T s="partenariat">{"du Togo"}</T></>
         }
-        description="Rejoignez les institutions, associations et entreprises qui font confiance à KTGW Togo. Votre demande nous parvient en 2 minutes."
+        description={<T s="partenariat">{"Rejoignez les institutions, associations et entreprises qui font confiance à KTGW Togo. Votre demande nous parvient en 2 minutes."}</T>}
         breadcrumbs={[{ label: "S'engager", href: "/s-engager" }, { label: "Devenir partenaire" }]}
       />
 
       <Section aria-labelledby="why-title">
-        <SectionTitle id="why-title" eyebrow="Pourquoi nous rejoindre" title="Un partenariat utile et transparent" align="center" />
+        <SectionTitle id="why-title" eyebrow={<T s="partenariat">{"Pourquoi nous rejoindre"}</T>} title={<T s="partenariat">{"Un partenariat utile et transparent"}</T>} align="center" />
         <ul className="mt-12 grid gap-6 md:grid-cols-3">
           {reasons.map((r, i) => (
             <li key={r.title}>
@@ -58,8 +57,8 @@ export default async function PartnershipPage({ params }: { params: Promise<{ lo
                 <span className="flex size-14 items-center justify-center rounded-2xl bg-accent text-ktgw-red">
                   <r.icon aria-hidden className="size-7" />
                 </span>
-                <h3 className="text-xl font-bold">{r.title}</h3>
-                <p className="text-muted-foreground">{r.text}</p>
+                <h3 className="text-xl font-bold"><T s="partenariat">{r.title}</T></h3>
+                <p className="text-muted-foreground"><T s="partenariat">{r.text}</T></p>
               </Reveal>
             </li>
           ))}
@@ -67,13 +66,13 @@ export default async function PartnershipPage({ params }: { params: Promise<{ lo
       </Section>
 
       <Section tone="muted" aria-labelledby="contrib-title">
-        <SectionTitle id="contrib-title" eyebrow="Formes de soutien" title="Ce que vous pouvez apporter" />
+        <SectionTitle id="contrib-title" eyebrow={<T s="partenariat">{"Formes de soutien"}</T>} title={<T s="partenariat">{"Ce que vous pouvez apporter"}</T>} />
         <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           {contributions.map((c) => (
             <li key={c.title} className="flex flex-col gap-3 rounded-2xl bg-card p-5 shadow-soft ring-1 ring-foreground/5">
               <c.icon aria-hidden className="size-8 text-ktgw-green" />
-              <h3 className="font-bold">{c.title}</h3>
-              <p className="text-sm text-muted-foreground">{c.text}</p>
+              <h3 className="font-bold"><T s="partenariat">{c.title}</T></h3>
+              <p className="text-sm text-muted-foreground"><T s="partenariat">{c.text}</T></p>
             </li>
           ))}
         </ul>
@@ -84,12 +83,12 @@ export default async function PartnershipPage({ params }: { params: Promise<{ lo
           <div className="flex flex-col gap-6 lg:col-span-2">
             <SectionTitle
               id="form-title"
-              eyebrow="Votre demande"
-              title="Proposer un partenariat"
-              description="Trois étapes rapides. Notre équipe vous répond sous quelques jours pour organiser un premier échange."
+              eyebrow={<T s="partenariat">{"Votre demande"}</T>}
+              title={<T s="partenariat">{"Proposer un partenariat"}</T>}
+              description={<T s="partenariat">{"Trois étapes rapides. Notre équipe vous répond sous quelques jours pour organiser un premier échange."}</T>}
             />
             <div className="rounded-2xl bg-accent p-6">
-              <h3 className="mb-4 font-bold">Ils sont déjà à nos côtés</h3>
+              <h3 className="mb-4 font-bold"><T s="partenariat">{"Ils sont déjà à nos côtés"}</T></h3>
               <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
                 {(await getPartners()).map((p) => (
                   <li key={p.name} className="flex items-center gap-3">

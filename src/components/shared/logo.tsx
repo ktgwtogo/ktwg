@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { EditableImage } from "@/components/edit/editable";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
@@ -12,7 +12,7 @@ export function Logo({ className, priority }: { className?: string; priority?: b
   const t = useTranslations("Common");
   return (
     <Link href="/" className={cn("inline-flex shrink-0 rounded-lg", className)}>
-      <Image
+      <EditableImage id="logo.logo-ktgw"
         src="/images/logo-ktgw.png"
         alt={t("home")}
         width={861}

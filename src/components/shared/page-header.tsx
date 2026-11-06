@@ -3,6 +3,7 @@ import Image from "next/image";
 import type { ReactNode } from "react";
 import type { SiteImage } from "@/content/images";
 import { Link } from "@/i18n/navigation";
+import { EditableImage } from "@/components/edit/editable";
 import { Container } from "./section";
 
 type Crumb = { label: string; href?: string };
@@ -10,8 +11,10 @@ type Crumb = { label: string; href?: string };
 type PageHeaderProps = {
   title: ReactNode;
   description?: ReactNode;
-  eyebrow?: string;
+  eyebrow?: ReactNode;
   image: SiteImage;
+  /** Emplacement de l'image (rend la bannière remplaçable en direct). */
+  imageId?: string;
   /** Fil d'Ariane (l'accueil est ajouté automatiquement). */
   breadcrumbs: Crumb[];
   children?: ReactNode;
@@ -21,10 +24,12 @@ type PageHeaderProps = {
  * Bandeau d'en-tête des pages intérieures : photo, voile dégradé,
  * fil d'Ariane, titre (h1) et introduction.
  */
-export function PageHeader({ title, description, eyebrow, image, breadcrumbs, children }: PageHeaderProps) {
+export function PageHeader({ title, description, eyebrow, image, imageId, breadcrumbs, children }: PageHeaderProps) {
+  const Banner = imageId ? EditableImage : Image;
   return (
     <header className="relative isolate overflow-hidden bg-ink text-white">
-      <Image
+      <Banner
+        id={imageId!}
         src={image.src}
         alt=""
         fill

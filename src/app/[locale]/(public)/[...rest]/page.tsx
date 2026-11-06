@@ -1,3 +1,4 @@
+import { T } from "@/components/edit/editable";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -97,9 +98,7 @@ export default async function CustomPageRoute({ params }: Props) {
       </Section>
       {posts.length > 0 && (
         <Section tone="muted" aria-labelledby="publications">
-          <h2 id="publications" className="mb-8 text-3xl font-extrabold">
-            Publications
-          </h2>
+          <h2 id="publications" className="mb-8 text-3xl font-extrabold"><T s="rest">{"Publications"}</T></h2>
           <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {posts.map((p) => (
               <li key={p.slug}>

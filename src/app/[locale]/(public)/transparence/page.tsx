@@ -1,3 +1,4 @@
+import { T } from "@/components/edit/editable";
 import { BookCheck, Clock, FileText, Mail, PieChart, Scale, ShieldCheck } from "lucide-react";
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
@@ -34,28 +35,28 @@ export default async function TransparencyPage({ params }: { params: Promise<{ l
   return (
     <>
       <PageHeader
-        image={siteImages["banner.transparence"]}
-        eyebrow="Transparence"
-        title="Rendre compte, à chaque étape"
-        description="La confiance de nos donateurs et partenaires est notre bien le plus précieux. Voici nos engagements et nos documents officiels."
+        image={siteImages["banner.transparence"]} imageId="banner.transparence"
+        eyebrow={<T s="transparence">{"Transparence"}</T>}
+        title={<T s="transparence">{"Rendre compte, à chaque étape"}</T>}
+        description={<T s="transparence">{"La confiance de nos donateurs et partenaires est notre bien le plus précieux. Voici nos engagements et nos documents officiels."}</T>}
         breadcrumbs={[{ label: "À propos", href: "/a-propos" }, { label: "Transparence" }]}
       />
 
       <Section aria-labelledby="commit-title">
-        <SectionTitle id="commit-title" eyebrow="Nos engagements" title="Une gestion claire et responsable" align="center" />
+        <SectionTitle id="commit-title" eyebrow={<T s="transparence">{"Nos engagements"}</T>} title={<T s="transparence">{"Une gestion claire et responsable"}</T>} align="center" />
         <ul className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {commitments.map((c) => (
             <li key={c.title} className="flex flex-col gap-3 rounded-2xl bg-card p-6 shadow-soft ring-1 ring-foreground/5">
               <c.icon aria-hidden className="size-9 text-ktgw-green" />
-              <h3 className="text-lg font-bold">{c.title}</h3>
-              <p className="text-sm leading-relaxed text-muted-foreground">{c.text}</p>
+              <h3 className="text-lg font-bold"><T s="transparence">{c.title}</T></h3>
+              <p className="text-sm leading-relaxed text-muted-foreground"><T s="transparence">{c.text}</T></p>
             </li>
           ))}
         </ul>
       </Section>
 
       <Section tone="muted" aria-labelledby="docs-title" width="narrow">
-        <SectionTitle id="docs-title" eyebrow="Documents" title="Documents officiels" />
+        <SectionTitle id="docs-title" eyebrow={<T s="transparence">{"Documents"}</T>} title={<T s="transparence">{"Documents officiels"}</T>} />
         <ul className="mt-8 flex flex-col gap-4">
           {documents.map((d) => (
             <li key={d.title} className="flex flex-col gap-4 rounded-2xl bg-card p-5 shadow-soft ring-1 ring-foreground/5 sm:flex-row sm:items-center">
@@ -63,28 +64,22 @@ export default async function TransparencyPage({ params }: { params: Promise<{ l
                 <FileText aria-hidden className="size-6" />
               </span>
               <div className="flex-1">
-                <h3 className="font-bold">{d.title}</h3>
-                <p className="text-sm text-muted-foreground">{d.description}</p>
+                <h3 className="font-bold"><T s="transparence">{d.title}</T></h3>
+                <p className="text-sm text-muted-foreground"><T s="transparence">{d.description}</T></p>
               </div>
               {d.url ? (
-                <a href={d.url} className="inline-flex h-10 items-center rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground">
-                  Télécharger (PDF)
-                </a>
+                <a href={d.url} className="inline-flex h-10 items-center rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground"><T s="transparence">{"Télécharger (PDF)"}</T></a>
               ) : (
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-muted px-3 py-1.5 text-xs font-semibold text-muted-foreground">
-                  <Clock aria-hidden className="size-3.5" />
-                  Publication prochaine
-                </span>
+                  <Clock aria-hidden className="size-3.5" /><T s="transparence">{"Publication prochaine"}</T></span>
               )}
             </li>
           ))}
         </ul>
         <div className="mt-10 flex flex-col items-center gap-4 rounded-2xl bg-card p-8 text-center shadow-soft ring-1 ring-foreground/5">
-          <p className="text-muted-foreground">Bailleur, partenaire ou donateur, vous souhaitez un document en particulier ?</p>
+          <p className="text-muted-foreground"><T s="transparence">{"Bailleur, partenaire ou donateur, vous souhaitez un document en particulier ?"}</T></p>
           <ButtonLink href="/contact" size="xl">
-            <Mail aria-hidden />
-            Demander un document
-          </ButtonLink>
+            <Mail aria-hidden /><T s="transparence">{"Demander un document"}</T></ButtonLink>
         </div>
       </Section>
     </>

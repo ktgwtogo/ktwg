@@ -252,3 +252,25 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ── Mode « Modifier le site en direct » (components/edit/edit-mode.tsx) ── */
+.ktgw-editing [data-edit] {
+  outline: 1px dashed rgb(245 158 11 / 0.9);
+  outline-offset: 2px;
+  border-radius: 2px;
+  cursor: text;
+}
+.ktgw-editing [data-edit]:hover {
+  background: rgb(253 230 138 / 0.35);
+}
+.ktgw-editing [data-edit][contenteditable="true"],
+.ktgw-editing [data-edit][contenteditable="plaintext-only"] {
+  outline: 2px solid rgb(245 158 11);
+  background: rgb(255 255 255 / 0.95);
+  color: #111;
+}
+.ktgw-editing img[data-edit-img] {
+  outline: 3px dashed rgb(16 185 129 / 0.95);
+  outline-offset: -3px;
+  cursor: pointer;
+}

@@ -461,7 +461,7 @@ export function TextSettings({
 // ── Images du site ──
 
 /** Bannières des pages et photos des sections : remplacer, décrire ou rétablir l'image d'origine. */
-export function ImagesSettings({ initial, presidency }: { initial: SiteImages; presidency: boolean }) {
+export function ImagesSettings({ initial, extra, presidency }: { initial: SiteImages; extra: Record<string, SiteImages[ImageSlot]>; presidency: boolean }) {
   const [values, setValues] = useState<SiteImages>(initial);
   const { save, pending, footer } = useSave("images");
   const groups = [...new Set(imageSlotKeys.map((k) => imageSlots[k].group))];
@@ -472,7 +472,8 @@ export function ImagesSettings({ initial, presidency }: { initial: SiteImages; p
       onSubmit={(e) => {
         e.preventDefault();
         // On n'enregistre que les emplacements modifiés : les autres suivent la photo d'origine.
-        save(Object.fromEntries(imageSlotKeys.filter((k) => !isDefault(k)).map((k) => [k, values[k]])));
+        // Les images remplacées en direct sur le site (hors de cette liste) sont conservées.
+        save({ ...extra, ...Object.fromEntries(imageSlotKeys.filter((k) => !isDefault(k)).map((k) => [k, values[k]])) });
       }}
       className="flex flex-col gap-8"
     >

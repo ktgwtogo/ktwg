@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 
 type SectionTitleProps = {
   /** Petit sur-titre au-dessus du titre (ex. « Nos projets »). */
-  eyebrow?: string;
+  eyebrow?: ReactNode;
   title: ReactNode;
   description?: ReactNode;
   align?: "left" | "center";

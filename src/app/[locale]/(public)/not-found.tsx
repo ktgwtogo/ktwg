@@ -1,3 +1,4 @@
+import { T } from "@/components/edit/editable";
 import { ArrowLeft, Compass } from "lucide-react";
 import { ButtonLink } from "@/components/ui/button-link";
 import { Container } from "@/components/shared/section";
@@ -10,18 +11,12 @@ export default function NotFound() {
         <Compass aria-hidden className="size-10" />
       </span>
       <p className="font-heading text-7xl font-extrabold text-ktgw-red sm:text-8xl">404</p>
-      <h1 className="text-3xl font-extrabold sm:text-4xl">Ce chemin ne mène nulle part…</h1>
-      <p className="max-w-md text-lg text-muted-foreground">
-        La page que vous cherchez n&apos;existe pas ou a été déplacée. Reprenons la route ensemble !
-      </p>
+      <h1 className="text-3xl font-extrabold sm:text-4xl"><T s="home-not-found">{"Ce chemin ne mène nulle part…"}</T></h1>
+      <p className="max-w-md text-lg text-muted-foreground"><T s="home-not-found">{"La page que vous cherchez n'existe pas ou a été déplacée. Reprenons la route ensemble !"}</T></p>
       <div className="flex flex-wrap justify-center gap-3">
         <ButtonLink href="/" size="xl">
-          <ArrowLeft aria-hidden />
-          Retour à l&apos;accueil
-        </ButtonLink>
-        <ButtonLink href="/contact" size="xl" variant="outline">
-          Nous contacter
-        </ButtonLink>
+          <ArrowLeft aria-hidden /><T s="home-not-found">{"Retour à l'accueil"}</T></ButtonLink>
+        <ButtonLink href="/contact" size="xl" variant="outline"><T s="home-not-found">{"Nous contacter"}</T></ButtonLink>
       </div>
     </Container>
   );

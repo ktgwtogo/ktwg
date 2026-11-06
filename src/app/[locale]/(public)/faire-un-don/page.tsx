@@ -1,3 +1,4 @@
+import { T } from "@/components/edit/editable";
 import { Bitcoin, ExternalLink, Gift, Globe2, ShieldCheck, Smartphone, Wallet } from "lucide-react";
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
@@ -30,21 +31,19 @@ export default async function DonatePage({ params, searchParams }: Props) {
   return (
     <>
       <PageHeader
-        image={siteImages["banner.faire-un-don"]}
-        eyebrow="Faire un don"
+        image={siteImages["banner.faire-un-don"]} imageId="banner.faire-un-don"
+        eyebrow={<T s="faire-un-don">{"Faire un don"}</T>}
         title={
-          <>
-            Chaque centime pour l&apos;éducation <span className="font-accent text-ktgw-sun italic">compte</span>
+          <><T s="faire-un-don">{"Chaque centime pour l'éducation"}</T>{" "}<span className="font-accent text-ktgw-sun italic"><T s="faire-un-don">{"compte"}</T></span>
           </>
         }
-        description="Votre don finance des formations, l'internat des apprenties et l'équipement des ateliers. Merci pour votre générosité !"
+        description={<T s="faire-un-don">{"Votre don finance des formations, l'internat des apprenties et l'équipement des ateliers. Merci pour votre générosité !"}</T>}
         breadcrumbs={[{ label: "S'engager", href: "/s-engager" }, { label: "Faire un don" }]}
       />
 
       <Section>
         {project && (
-          <p className="mb-10 rounded-2xl border-l-4 border-ktgw-sun bg-accent p-5 font-medium">
-            Vous soutenez le projet : <strong>{project.title}</strong>
+          <p className="mb-10 rounded-2xl border-l-4 border-ktgw-sun bg-accent p-5 font-medium"><T s="faire-un-don">{"Vous soutenez le projet :"}</T>{" "}<strong>{project.title}</strong>
           </p>
         )}
 
@@ -54,29 +53,27 @@ export default async function DonatePage({ params, searchParams }: Props) {
             <span className="flex size-14 items-center justify-center rounded-2xl bg-ktgw-sun text-ink">
               <Smartphone aria-hidden className="size-7" />
             </span>
-            <h2 id="togo-title" className="text-2xl font-bold">
-              Paiement en ligne : Mobile Money et cryptomonnaie
-            </h2>
+            <h2 id="togo-title" className="text-2xl font-bold"><T s="faire-un-don">{"Paiement en ligne : Mobile Money et cryptomonnaie"}</T></h2>
             <ul aria-label="Moyens de paiement disponibles" className="flex flex-col gap-2">
               <li className="flex items-center gap-3 rounded-2xl bg-ktgw-sun/20 p-3 ring-1 ring-ktgw-sun/50">
                 <span aria-hidden className="text-2xl">🇹🇬</span>
                 <span className="flex-1">
-                  <span className="block font-bold">Togo</span>
-                  <span className="text-sm text-muted-foreground">Yas · Moov Money</span>
+                  <span className="block font-bold"><T s="faire-un-don">{"Togo"}</T></span>
+                  <span className="text-sm text-muted-foreground"><T s="faire-un-don">{"Yas · Moov Money"}</T></span>
                 </span>
               </li>
               <li className="flex items-center gap-3 rounded-2xl bg-muted/60 p-3">
                 <Globe2 aria-hidden className="size-6 shrink-0 text-ktgw-green-strong" />
                 <span className="flex-1">
-                  <span className="block font-semibold">Autres pays</span>
-                  <span className="text-sm text-muted-foreground">Mobile Money : choisissez votre pays et votre opérateur sur la page de paiement</span>
+                  <span className="block font-semibold"><T s="faire-un-don">{"Autres pays"}</T></span>
+                  <span className="text-sm text-muted-foreground"><T s="faire-un-don">{"Mobile Money : choisissez votre pays et votre opérateur sur la page de paiement"}</T></span>
                 </span>
               </li>
               <li className="flex items-center gap-3 rounded-2xl bg-muted/60 p-3">
                 <Bitcoin aria-hidden className="size-6 shrink-0 text-ktgw-orange" />
                 <span className="flex-1">
-                  <span className="block font-semibold">Cryptomonnaie</span>
-                  <span className="text-sm text-muted-foreground">Paiement en cryptomonnaie depuis le monde entier</span>
+                  <span className="block font-semibold"><T s="faire-un-don">{"Cryptomonnaie"}</T></span>
+                  <span className="text-sm text-muted-foreground"><T s="faire-un-don">{"Paiement en cryptomonnaie depuis le monde entier"}</T></span>
                 </span>
               </li>
             </ul>
@@ -99,25 +96,19 @@ export default async function DonatePage({ params, searchParams }: Props) {
                 rel="noopener noreferrer"
                 className="inline-flex h-14 w-full items-center justify-center gap-3 rounded-2xl bg-ktgw-red-strong px-6 text-lg font-bold text-white shadow-soft hover:opacity-90 sm:w-fit"
               >
-                <Wallet aria-hidden className="size-6" />
-                Payer maintenant
-                <ExternalLink aria-hidden className="size-4" />
+                <Wallet aria-hidden className="size-6" /><T s="faire-un-don">{"Payer maintenant"}</T><ExternalLink aria-hidden className="size-4" />
               </a>
-              <p className="text-sm font-semibold">Montant libre · Mobile Money · Cryptomonnaie</p>
+              <p className="text-sm font-semibold"><T s="faire-un-don">{"Montant libre · Mobile Money · Cryptomonnaie"}</T></p>
               <a
                 href={whatsappUrl(phone.e164)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex w-fit items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground"
               >
-                <FaWhatsapp aria-hidden className="size-4 text-[#25D366]" />
-                Une question ? Écrivez-nous sur WhatsApp
-              </a>
+                <FaWhatsapp aria-hidden className="size-4 text-[#25D366]" /><T s="faire-un-don">{"Une question ? Écrivez-nous sur WhatsApp"}</T></a>
             </div>
             <p className="flex items-start gap-2 text-xs text-muted-foreground">
-              <ShieldCheck aria-hidden className="size-4 shrink-0 text-ktgw-green" />
-              Paiement sécurisé par SasPay, au profit de KTGW Togo.
-            </p>
+              <ShieldCheck aria-hidden className="size-4 shrink-0 text-ktgw-green" /><T s="faire-un-don">{"Paiement sécurisé par SasPay, au profit de KTGW Togo."}</T></p>
           </section>
 
           {/* Depuis l'international */}
@@ -125,24 +116,17 @@ export default async function DonatePage({ params, searchParams }: Props) {
             <span className="flex size-14 items-center justify-center rounded-2xl bg-white/10 text-ktgw-sun">
               <Globe2 aria-hidden className="size-7" />
             </span>
-            <h2 id="intl-title" className="text-2xl font-bold">
-              Depuis l&apos;international
-            </h2>
-            <p className="leading-relaxed text-white/85">
-              Depuis l&apos;Allemagne, la France ou tout autre pays, faites votre don par virement à l&apos;association mère{" "}
-              <strong>kommTOGOgehweiter e.V.</strong> à Cologne. L&apos;association est reconnue d&apos;utilité publique en Allemagne, ce qui permet
-              d&apos;obtenir un reçu fiscal (Spendenquittung).
-            </p>
+            <h2 id="intl-title" className="text-2xl font-bold"><T s="faire-un-don">{"Depuis l'international"}</T></h2>
+            <p className="leading-relaxed text-white/85"><T s="faire-un-don">{"Depuis l'Allemagne, la France ou tout autre pays, faites votre don par virement à l'association mère"}</T>{" "}
+              <strong><T s="faire-un-don">{"kommTOGOgehweiter e.V."}</T></strong>{" "}<T s="faire-un-don">{"à Cologne. L'association est reconnue d'utilité publique en Allemagne, ce qui permet d'obtenir un reçu fiscal (Spendenquittung)."}</T></p>
             <a
               href={siteConfig.germany.website}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-auto inline-flex h-12 w-fit items-center gap-2 rounded-xl bg-ktgw-sun px-5 font-semibold text-ink hover:bg-ktgw-orange"
-            >
-              Donner via kommtogogehweiter.de
-              <ExternalLink aria-hidden className="size-4" />
+            ><T s="faire-un-don">{"Donner via kommtogogehweiter.de"}</T><ExternalLink aria-hidden className="size-4" />
             </a>
-            <p className="text-xs text-white/60">Le paiement en ligne par carte (Stripe, FedaPay, CinetPay) sera bientôt disponible directement sur ce site.</p>
+            <p className="text-xs text-white/60"><T s="faire-un-don">{"Le paiement en ligne par carte (Stripe, FedaPay, CinetPay) sera bientôt disponible directement sur ce site."}</T></p>
           </section>
         </div>
       </Section>
@@ -152,15 +136,13 @@ export default async function DonatePage({ params, searchParams }: Props) {
           <div className="flex flex-col gap-6 lg:col-span-2">
             <SectionTitle
               id="declare-title"
-              eyebrow="Déclaration de don"
-              title="Vous avez fait un don ? Dites-le-nous"
-              description="Votre déclaration nous permet de vous remercier, de vous envoyer un reçu et d'affecter votre don au bon projet."
+              eyebrow={<T s="faire-un-don">{"Déclaration de don"}</T>}
+              title={<T s="faire-un-don">{"Vous avez fait un don ? Dites-le-nous"}</T>}
+              description={<T s="faire-un-don">{"Votre déclaration nous permet de vous remercier, de vous envoyer un reçu et d'affecter votre don au bon projet."}</T>}
             />
             <div className="flex items-start gap-3 rounded-2xl bg-card p-5 shadow-soft ring-1 ring-foreground/5">
               <Gift aria-hidden className="size-6 shrink-0 text-ktgw-red" />
-              <p className="text-sm text-muted-foreground">
-                Vous préférez offrir du matériel (outils, ordinateurs, panneaux solaires, fournitures) ? Utilisez le formulaire « Don en nature » ci-dessous : un reçu officiel vous sera remis.
-              </p>
+              <p className="text-sm text-muted-foreground"><T s="faire-un-don">{"Vous préférez offrir du matériel (outils, ordinateurs, panneaux solaires, fournitures) ? Utilisez le formulaire « Don en nature » ci-dessous : un reçu officiel vous sera remis."}</T></p>
             </div>
           </div>
           <div className="rounded-3xl bg-card p-6 shadow-soft ring-1 ring-foreground/5 sm:p-10 lg:col-span-3">
@@ -174,9 +156,9 @@ export default async function DonatePage({ params, searchParams }: Props) {
           <div className="lg:col-span-2">
             <SectionTitle
               id="nature-title"
-              eyebrow="Don en nature"
-              title="Offrir du matériel ou des fournitures"
-              description="Outils, ordinateurs, matériel solaire, fournitures scolaires, vivres pour l'internat… Décrivez votre don : nous organisons la remise et vous envoyons un reçu officiel."
+              eyebrow={<T s="faire-un-don">{"Don en nature"}</T>}
+              title={<T s="faire-un-don">{"Offrir du matériel ou des fournitures"}</T>}
+              description={<T s="faire-un-don">{"Outils, ordinateurs, matériel solaire, fournitures scolaires, vivres pour l'internat… Décrivez votre don : nous organisons la remise et vous envoyons un reçu officiel."}</T>}
             />
           </div>
           <div className="rounded-3xl bg-card p-6 shadow-soft ring-1 ring-foreground/5 sm:p-10 lg:col-span-3">

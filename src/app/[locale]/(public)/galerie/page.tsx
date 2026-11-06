@@ -1,3 +1,4 @@
+import { T } from "@/components/edit/editable";
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { GalleryGrid } from "@/components/sections/gallery-grid";
@@ -19,10 +20,10 @@ export default async function GalleryPage({ params }: { params: Promise<{ locale
   return (
     <>
       <PageHeader
-        image={siteImages["banner.galerie"]}
-        eyebrow="Galerie"
-        title="Nos actions en images"
-        description="Moments de fête, de travail et d'engagement, sur le terrain avec nos partenaires."
+        image={siteImages["banner.galerie"]} imageId="banner.galerie"
+        eyebrow={<T s="galerie">{"Galerie"}</T>}
+        title={<T s="galerie">{"Nos actions en images"}</T>}
+        description={<T s="galerie">{"Moments de fête, de travail et d'engagement, sur le terrain avec nos partenaires."}</T>}
         breadcrumbs={[{ label: "À propos", href: "/a-propos" }, { label: "Galerie" }]}
       />
       <Section>

@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { navIcons } from "@/config/navigation";
-import { imageSlotKeys, type ImageSlot } from "@/content/image-slots";
+import { IMAGE_ID } from "./edit-types";
 import de from "@/messages/de.json";
 import en from "@/messages/en.json";
 import fr from "@/messages/fr.json";
@@ -83,10 +83,8 @@ export const heroSchema = z
   .min(1, "Au moins une diapositive.")
   .max(8);
 
-/** Images remplacées, par emplacement (seuls les emplacements connus sont gardés). */
-export const siteImagesSchema = z
-  .record(z.string(), image)
-  .transform((r) => Object.fromEntries(Object.entries(r).filter(([k]) => imageSlotKeys.includes(k as ImageSlot))));
+/** Images remplacées, par emplacement (onglet Images du site et modification en direct). */
+export const siteImagesSchema = z.record(z.string().regex(IMAGE_ID, "Emplacement d'image invalide."), image);
 
 const messages = { fr, de, en } as Record<string, Record<string, unknown>>;
 

@@ -1,3 +1,4 @@
+import { T } from "@/components/edit/editable";
 import { ArrowRight, CalendarCheck, Handshake, Heart, MapPin } from "lucide-react";
 import type { Metadata } from "next";
 import Image from "next/image";
@@ -61,7 +62,7 @@ export default async function ProjectPage({ params }: Props) {
       <Section>
         <div className="grid gap-12 lg:grid-cols-3">
           <article className="flex flex-col gap-6 lg:col-span-2">
-            <h2 className="text-3xl font-extrabold">Le projet</h2>
+            <h2 className="text-3xl font-extrabold"><T s="projets-slug">{"Le projet"}</T></h2>
             {project.body.map((para, i) => (
               <p key={i} className={i === 0 ? "text-lg leading-relaxed text-foreground/90" : "leading-relaxed text-muted-foreground"}>
                 {para}
@@ -70,7 +71,7 @@ export default async function ProjectPage({ params }: Props) {
 
             {project.milestones && (
               <div className="mt-6">
-                <h2 className="mb-6 text-2xl font-bold">Étapes clés</h2>
+                <h2 className="mb-6 text-2xl font-bold"><T s="projets-slug">{"Étapes clés"}</T></h2>
                 <ol className="flex flex-col gap-6 border-l-2 border-ktgw-sun/60 pl-6">
                   {project.milestones.map((m) => (
                     <li key={m.date} className="relative">
@@ -89,7 +90,7 @@ export default async function ProjectPage({ params }: Props) {
 
           <aside className="flex flex-col gap-6" aria-label="Informations clés">
             <div className="rounded-2xl bg-card p-6 shadow-soft ring-1 ring-foreground/5 lg:sticky lg:top-28">
-              <h2 className="mb-4 text-lg font-bold">En bref</h2>
+              <h2 className="mb-4 text-lg font-bold"><T s="projets-slug">{"En bref"}</T></h2>
               <dl className="flex flex-col divide-y">
                 {project.facts.map((f) => (
                   <div key={f.label} className="flex flex-col gap-0.5 py-3 first:pt-0">
@@ -108,13 +109,9 @@ export default async function ProjectPage({ params }: Props) {
               )}
               <div className="mt-6 flex flex-col gap-3">
                 <ButtonLink href={`/faire-un-don?projet=${project.slug}`} size="xl">
-                  <Heart aria-hidden className="fill-current" />
-                  Soutenir ce projet
-                </ButtonLink>
+                  <Heart aria-hidden className="fill-current" /><T s="projets-slug">{"Soutenir ce projet"}</T></ButtonLink>
                 <ButtonLink href="/partenariat" size="xl" variant="outline">
-                  <Handshake aria-hidden />
-                  Devenir partenaire
-                </ButtonLink>
+                  <Handshake aria-hidden /><T s="projets-slug">{"Devenir partenaire"}</T></ButtonLink>
               </div>
             </div>
           </aside>
@@ -123,7 +120,7 @@ export default async function ProjectPage({ params }: Props) {
 
       {project.gallery.length > 0 && (
         <Section tone="muted" aria-labelledby="project-gallery">
-          <SectionTitle id="project-gallery" eyebrow="En images" title="Le projet sur le terrain" />
+          <SectionTitle id="project-gallery" eyebrow={<T s="projets-slug">{"En images"}</T>} title={<T s="projets-slug">{"Le projet sur le terrain"}</T>} />
           <ul className="mt-10 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
             {project.gallery.map((img, i) => (
               <li key={img.src} className={i === 0 ? "col-span-2 row-span-2" : undefined}>
@@ -144,10 +141,8 @@ export default async function ProjectPage({ params }: Props) {
 
       <Section aria-labelledby="other-projects">
         <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
-          <SectionTitle id="other-projects" eyebrow="À découvrir aussi" title="Nos autres projets" />
-          <ButtonLink href="/projets" variant="outline" size="xl">
-            Tous les projets
-            <ArrowRight aria-hidden />
+          <SectionTitle id="other-projects" eyebrow={<T s="projets-slug">{"À découvrir aussi"}</T>} title={<T s="projets-slug">{"Nos autres projets"}</T>} />
+          <ButtonLink href="/projets" variant="outline" size="xl"><T s="projets-slug">{"Tous les projets"}</T><ArrowRight aria-hidden />
           </ButtonLink>
         </div>
         <ul className="mt-10 grid gap-6 sm:grid-cols-2">

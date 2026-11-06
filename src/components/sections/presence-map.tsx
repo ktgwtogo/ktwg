@@ -1,3 +1,4 @@
+import { T } from "@/components/edit/editable";
 import { MapPin } from "lucide-react";
 import { cities } from "@/content/organization";
 
@@ -29,10 +30,7 @@ export function PresenceMap() {
     <figure className="relative mx-auto w-full max-w-lg">
       <svg viewBox="0 0 480 580" role="img" aria-labelledby="map-title map-desc" className="h-auto w-full">
         <title id="map-title">Carte de présence de KTGW Togo</title>
-        <desc id="map-desc">
-          Six villes d&apos;intervention au Togo : {cities.map((c) => c.name).join(", ")}. Un arc relie Lomé au siège de l&apos;association à
-          Cologne, en Allemagne.
-        </desc>
+        <desc id="map-desc"><T s="presence-map">{"Six villes d'intervention au Togo :"}</T>{" "}{cities.map((c) => c.name).join(", ")}<T s="presence-map">{". Un arc relie Lomé au siège de l'association à Cologne, en Allemagne."}</T></desc>
         <defs>
           <linearGradient id="togo-fill" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="var(--ktgw-green)" stopOpacity="0.22" />
@@ -87,9 +85,7 @@ export function PresenceMap() {
         })}
       </svg>
       <figcaption className="mt-2 flex items-center justify-center gap-2 text-xs text-muted-foreground">
-        <MapPin aria-hidden className="size-3.5" />
-        Carte stylisée, non à l&apos;échelle
-      </figcaption>
+        <MapPin aria-hidden className="size-3.5" /><T s="presence-map">{"Carte stylisée, non à l'échelle"}</T></figcaption>
     </figure>
   );
 }

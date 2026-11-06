@@ -1,3 +1,4 @@
+import { T } from "@/components/edit/editable";
 import { CalendarPlus, Clock, MapPin, Monitor, Users } from "lucide-react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -71,12 +72,11 @@ export default async function EventPage({ params }: Props) {
               <li className="flex gap-3 rounded-2xl bg-card p-5 shadow-soft ring-1 ring-foreground/5">
                 <Clock aria-hidden className="size-6 shrink-0 text-ktgw-red" />
                 <div>
-                  <p className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">Date</p>
+                  <p className="text-xs font-semibold tracking-wider text-muted-foreground uppercase"><T s="evenements-slug">{"Date"}</T></p>
                   <p className="font-semibold">{formatDate(event.start, locale)}</p>
                   <p className="text-sm text-muted-foreground">
                     {formatTime(event.start, locale)}
-                    {event.end && ` – ${formatTime(event.end, locale)}`} (heure de Lomé)
-                  </p>
+                    {event.end && ` – ${formatTime(event.end, locale)}`}{" "}<T s="evenements-slug">{"(heure de Lomé)"}</T></p>
                 </div>
               </li>
               <li className="flex gap-3 rounded-2xl bg-card p-5 shadow-soft ring-1 ring-foreground/5">
@@ -86,7 +86,7 @@ export default async function EventPage({ params }: Props) {
                   <MapPin aria-hidden className="size-6 shrink-0 text-ktgw-red" />
                 )}
                 <div>
-                  <p className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">Lieu</p>
+                  <p className="text-xs font-semibold tracking-wider text-muted-foreground uppercase"><T s="evenements-slug">{"Lieu"}</T></p>
                   <p className="font-semibold">{event.venue}</p>
                   <p className="text-sm text-muted-foreground">{event.city}</p>
                 </div>
@@ -95,9 +95,9 @@ export default async function EventPage({ params }: Props) {
                 <li className="flex gap-3 rounded-2xl bg-card p-5 shadow-soft ring-1 ring-foreground/5">
                   <Users aria-hidden className="size-6 shrink-0 text-ktgw-red" />
                   <div>
-                    <p className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">Places</p>
+                    <p className="text-xs font-semibold tracking-wider text-muted-foreground uppercase"><T s="evenements-slug">{"Places"}</T></p>
                     <p className="font-semibold">{full ? "Complet : liste d'attente" : `${remaining} places restantes`}</p>
-                    <p className="text-sm text-muted-foreground">sur {event.capacity}</p>
+                    <p className="text-sm text-muted-foreground"><T s="evenements-slug">{"sur"}</T>{" "}{event.capacity}</p>
                   </div>
                 </li>
               )}
@@ -108,15 +108,13 @@ export default async function EventPage({ params }: Props) {
                     download={`${event.slug}.ics`}
                     className="flex h-full items-center gap-3 rounded-2xl border-2 border-dashed border-ktgw-green/50 p-5 font-semibold text-ktgw-green-strong transition-colors hover:bg-ktgw-green/10 dark:text-ktgw-green"
                   >
-                    <CalendarPlus aria-hidden className="size-6 shrink-0" />
-                    Ajouter à mon agenda
-                  </a>
+                    <CalendarPlus aria-hidden className="size-6 shrink-0" /><T s="evenements-slug">{"Ajouter à mon agenda"}</T></a>
                 </li>
               )}
             </ul>
 
             <div className="flex flex-col gap-4">
-              <h2 className="text-2xl font-bold">Programme</h2>
+              <h2 className="text-2xl font-bold"><T s="evenements-slug">{"Programme"}</T></h2>
               {event.body.map((p, i) => (
                 <p key={i} className="text-lg leading-relaxed text-foreground/85">
                   {p}
@@ -131,10 +129,10 @@ export default async function EventPage({ params }: Props) {
                 {isPast ? "Événement terminé" : full ? "Liste d'attente" : "Inscription"}
               </h2>
               {isPast ? (
-                <p className="text-muted-foreground">Merci à toutes et à tous pour votre participation ! Retrouvez les photos dans la galerie.</p>
+                <p className="text-muted-foreground"><T s="evenements-slug">{"Merci à toutes et à tous pour votre participation ! Retrouvez les photos dans la galerie."}</T></p>
               ) : (
                 <>
-                  <p className="mb-6 text-sm text-muted-foreground">Gratuit. Vous recevrez une confirmation de notre équipe.</p>
+                  <p className="mb-6 text-sm text-muted-foreground"><T s="evenements-slug">{"Gratuit. Vous recevrez une confirmation de notre équipe."}</T></p>
                   <EventRegistrationForm eventSlug={event.slug} eventTitle={event.title} full={full} />
                 </>
               )}

@@ -1,5 +1,6 @@
 "use client";
 
+import { T } from "@/components/edit/editable";
 import { ChevronDown, Handshake, Heart, LogIn, Mail, Phone, UserPlus, UserRound, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
@@ -58,8 +59,8 @@ export function MobileNav({ items: mainNav, config }: { items: NavEntry[]; confi
         className="w-full gap-0 overflow-y-auto sm:max-w-sm data-[side=right]:w-full data-[side=right]:sm:max-w-sm"
       >
         <div className="flex h-18 items-center justify-between border-b px-4">
-          <SheetTitle className="sr-only">{t("Header.menu")}</SheetTitle>
-          <SheetDescription className="sr-only">{t("Header.mainNav")}</SheetDescription>
+          <SheetTitle className="sr-only"><T k="Header.menu">{t("Header.menu")}</T></SheetTitle>
+          <SheetDescription className="sr-only"><T k="Header.mainNav">{t("Header.mainNav")}</T></SheetDescription>
           <Logo className="h-14" />
           <SheetClose
             aria-label={t("Header.closeMenu")}
@@ -121,27 +122,21 @@ export function MobileNav({ items: mainNav, config }: { items: NavEntry[]; confi
         <div className="mt-auto flex flex-col gap-3 border-t px-4 py-5">
           <ButtonLink href="/faire-un-don" size="xl" onClick={close}>
             <Heart aria-hidden className="fill-current" />
-            {t("Common.donate")}
+            <T k="Common.donate">{t("Common.donate")}</T>
           </ButtonLink>
           <ButtonLink href="/partenariat" size="xl" variant="secondary" onClick={close}>
             <Handshake aria-hidden />
-            {t("Common.becomePartner")}
+            <T k="Common.becomePartner">{t("Common.becomePartner")}</T>
           </ButtonLink>
           {signedIn ? (
             <ButtonLink href="/mon-espace" size="xl" variant="outline" onClick={close}>
-              <UserRound aria-hidden />
-              Espace membre
-            </ButtonLink>
+              <UserRound aria-hidden /><T s="mobile-nav">{"Espace membre"}</T></ButtonLink>
           ) : (
             <>
               <ButtonLink href="/connexion?mode=inscription" size="xl" variant="outline" onClick={close} className="border-ktgw-green text-ktgw-green-strong">
-                <UserPlus aria-hidden />
-                Devenir membre
-              </ButtonLink>
+                <UserPlus aria-hidden /><T s="mobile-nav">{"Devenir membre"}</T></ButtonLink>
               <ButtonLink href="/connexion" size="xl" variant="ghost" onClick={close}>
-                <LogIn aria-hidden />
-                Connexion
-              </ButtonLink>
+                <LogIn aria-hidden /><T s="mobile-nav">{"Connexion"}</T></ButtonLink>
             </>
           )}
 

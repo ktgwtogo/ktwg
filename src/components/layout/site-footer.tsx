@@ -1,3 +1,4 @@
+import { T } from "@/components/edit/editable";
 import { ArrowUp, Mail, MapPin, Navigation, Phone } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { FaWhatsapp } from "react-icons/fa6";
@@ -65,9 +66,9 @@ export function SiteFooter({ config }: { config: SiteConfigData }) {
         {/* 1. Présentation */}
         <div className="flex flex-col gap-5 lg:col-span-4">
           <Logo className="h-24" />
-          <p className="text-sm leading-relaxed">{t("Footer.about")}</p>
+          <p className="text-sm leading-relaxed"><T k="Footer.about">{t("Footer.about")}</T></p>
           <blockquote className="border-l-2 border-ktgw-sun pl-4 text-sm text-white italic">
-            « {t("Common.motto")} »
+            « <T k="Common.motto">{t("Common.motto")}</T> »
           </blockquote>
           <SocialLinks socials={config.socials} itemClassName="bg-white/5 text-white/80 hover:bg-ktgw-sun hover:text-ink" className="gap-2" />
         </div>
@@ -86,19 +87,15 @@ export function SiteFooter({ config }: { config: SiteConfigData }) {
         <div className="flex flex-col gap-5 md:col-span-2 lg:col-span-4">
           <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-2">
             <h2 className="flex items-center gap-2 font-heading text-sm font-bold tracking-wider text-ktgw-sun uppercase">
-              <span className="flex size-2 rounded-full bg-ktgw-red animate-ping" />
-              Siège National au Togo
-            </h2>
-            <span className="rounded-full bg-emerald-500/20 px-2.5 py-0.5 text-[11px] font-bold text-emerald-300 ring-1 ring-emerald-500/30">
-              Lomé · Tokoin
-            </span>
+              <span className="flex size-2 rounded-full bg-ktgw-red animate-ping" /><T s="site-footer">{"Siège National au Togo"}</T></h2>
+            <span className="rounded-full bg-emerald-500/20 px-2.5 py-0.5 text-[11px] font-bold text-emerald-300 ring-1 ring-emerald-500/30"><T s="site-footer">{"Lomé · Tokoin"}</T></span>
           </div>
 
           <address className="flex flex-col gap-3.5 text-sm not-italic rounded-2xl border border-white/10 bg-white/[0.04] p-4">
             <p className="flex gap-3">
               <MapPin aria-hidden className="mt-0.5 size-5 shrink-0 text-ktgw-sun" />
               <span className="leading-relaxed">
-                <strong className="text-white">Siège Social KTGW Togo :</strong>
+                <strong className="text-white"><T s="site-footer">{"Siège Social KTGW Togo :"}</T></strong>
                 <br />
                 {togo.address.street}
                 <br />
@@ -121,9 +118,7 @@ export function SiteFooter({ config }: { config: SiteConfigData }) {
                         aria-label={t("Footer.whatsappWith", { number: p.display })}
                         className="inline-flex items-center gap-1.5 rounded-full bg-[#25D366] px-2.5 py-0.5 text-xs font-bold text-slate-950 transition-transform hover:scale-105"
                       >
-                        <FaWhatsapp aria-hidden className="size-3.5" />
-                        WhatsApp
-                      </a>
+                        <FaWhatsapp aria-hidden className="size-3.5" /><T s="site-footer">{"WhatsApp"}</T></a>
                     )}
                   </li>
                 ))}
@@ -141,17 +136,13 @@ export function SiteFooter({ config }: { config: SiteConfigData }) {
           <div className="flex flex-col gap-2">
             <div className="flex items-center justify-between text-xs text-white/70">
               <span className="flex items-center gap-1.5 font-semibold text-white">
-                <Navigation aria-hidden className="size-3.5 text-ktgw-sun" />
-                Localisation Google Maps (Tokoin)
-              </span>
+                <Navigation aria-hidden className="size-3.5 text-ktgw-sun" /><T s="site-footer">{"Localisation Google Maps (Tokoin)"}</T></span>
               <a
                 href={togo.mapsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-ktgw-sun hover:underline"
-              >
-                Ouvrir dans Maps &rarr;
-              </a>
+              ><T s="site-footer">{"Ouvrir dans Maps &rarr;"}</T></a>
             </div>
             <MapEmbed src={togo.mapsEmbedUrl} immediate={true} />
             <a
@@ -160,18 +151,15 @@ export function SiteFooter({ config }: { config: SiteConfigData }) {
               rel="noopener noreferrer"
               className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-xl bg-ktgw-sun px-4 text-sm font-bold text-ink shadow-md transition-all hover:bg-ktgw-sun-light hover:shadow-lg"
             >
-              <Navigation aria-hidden className="size-4" />
-              Itinéraire vers le siège à Tokoin (Lomé)
-              <span className="sr-only">{t("Common.opensInNewTab")}</span>
+              <Navigation aria-hidden className="size-4" /><T s="site-footer">{"Itinéraire vers le siège à Tokoin (Lomé)"}</T><span className="sr-only"><T k="Common.opensInNewTab">{t("Common.opensInNewTab")}</T></span>
             </a>
           </div>
 
           <div className="rounded-2xl border border-white/10 bg-white/5 p-3.5 text-xs">
             <p className="font-semibold text-white/90">
-              {t("Footer.germanyHQ")} : {germany.city} ({germany.name})
+              <T k="Footer.germanyHQ">{t("Footer.germanyHQ")}</T> : {germany.city} ({germany.name})
             </p>
-            <p className="mt-1 text-white/60">
-              Association partenaire en Allemagne · Tél : <a href={`tel:${germany.phone.e164}`} className="hover:text-ktgw-sun text-white/80">{germany.phone.display}</a>
+            <p className="mt-1 text-white/60"><T s="site-footer">{"Association partenaire en Allemagne · Tél :"}</T>{" "}<a href={`tel:${germany.phone.e164}`} className="hover:text-ktgw-sun text-white/80">{germany.phone.display}</a>
             </p>
           </div>
         </div>
@@ -197,7 +185,7 @@ export function SiteFooter({ config }: { config: SiteConfigData }) {
               className="flex items-center gap-1.5 rounded-full border border-white/15 px-3 py-1.5 hover:border-ktgw-sun hover:text-ktgw-sun"
             >
               <ArrowUp aria-hidden className="size-3.5" />
-              {t("Footer.backToTop")}
+              <T k="Footer.backToTop">{t("Footer.backToTop")}</T>
             </a>
           </div>
         </Container>

@@ -6,7 +6,7 @@ import { NewsletterSection } from "@/components/sections/home-interactive";
 import { PostCard } from "@/components/shared/cards";
 import { PageHeader } from "@/components/shared/page-header";
 import { Section } from "@/components/shared/section";
-import { images } from "@/content/images";
+import { getSiteImages } from "@/lib/site/settings";
 import { getPostsFor } from "@/lib/content/repository";
 import { Link } from "@/i18n/navigation";
 import { formatDate } from "@/lib/format";
@@ -18,13 +18,14 @@ export const metadata: Metadata = {
 
 export default async function NewsPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
+  const siteImages = await getSiteImages();
   setRequestLocale(locale);
   const [featured, ...rest] = await getPostsFor("actualites");
 
   return (
     <>
       <PageHeader
-        image={images.priest}
+        image={siteImages["banner.actualites"]}
         eyebrow="Actualités"
         title="Les nouvelles du terrain"
         description="Chantiers, cérémonies, plantations et formations : suivez la vie de KTGW Togo."

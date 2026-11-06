@@ -22,6 +22,7 @@ import { Section } from "@/components/shared/section";
 import { SectionTitle } from "@/components/shared/section-title";
 import { StatCounter } from "@/components/shared/stat-counter";
 import { images } from "@/content/images";
+import { getSiteImages } from "@/lib/site/settings";
 import { domains, keyFigures, objectives, presidentFounder } from "@/content/organization";
 import type { Partner } from "@/content/partners";
 import { getPartners, getPostsFor, getProjects, upcomingEvents } from "@/lib/content/repository";
@@ -94,8 +95,8 @@ export async function StatsBand() {
 }
 
 /** Qui sommes-nous : texte, photo, Président-Fondateur et devise. */
-export function AboutPreview() {
-  const t = useTranslations("HomeSections.about");
+export async function AboutPreview() {
+  const [t, siteImages] = await Promise.all([getTranslations("HomeSections.about"), getSiteImages()]);
 
   return (
     <Section aria-labelledby="about-title">
@@ -103,8 +104,8 @@ export function AboutPreview() {
         <Reveal className="relative">
           <div className="relative aspect-[4/5] overflow-hidden rounded-3xl shadow-soft sm:aspect-[4/3] lg:aspect-[4/5]">
             <Image
-              src={images.plantingPartners.src}
-              alt={images.plantingPartners.alt}
+              src={siteImages["home.about"].src}
+              alt={siteImages["home.about"].alt}
               fill
               sizes="(min-width: 1024px) 50vw, 100vw"
               className="object-cover"
@@ -356,8 +357,7 @@ export async function LatestNews() {
 
 /** Partenaires : défilement infini + appel à partenariat. */
 export async function PartnersSection() {
-  const t = await getTranslations("HomeSections.partners");
-  const partners = await getPartners();
+  const [t, partners, siteImages] = await Promise.all([getTranslations("HomeSections.partners"), getPartners(), getSiteImages()]);
   const loop = [...partners, ...partners];
   return (
     <section aria-labelledby="partners-title" className="overflow-hidden py-16 sm:py-24">
@@ -384,7 +384,7 @@ export async function PartnersSection() {
       <div className="mx-auto mt-16 max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="relative grid overflow-hidden rounded-3xl bg-ink text-white shadow-xl lg:grid-cols-2">
           <div className="relative min-h-64 lg:min-h-full">
-            <Image src={images.guests.src} alt={images.guests.alt} fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" />
+            <Image src={siteImages["home.partners"].src} alt={siteImages["home.partners"].alt} fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" />
             <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-ink/70 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-ink" />
           </div>
           <div className="flex flex-col gap-5 p-8 sm:p-12">

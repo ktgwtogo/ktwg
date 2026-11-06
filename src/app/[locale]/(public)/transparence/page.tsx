@@ -5,7 +5,7 @@ import { ButtonLink } from "@/components/ui/button-link";
 import { PageHeader } from "@/components/shared/page-header";
 import { Section } from "@/components/shared/section";
 import { SectionTitle } from "@/components/shared/section-title";
-import { images } from "@/content/images";
+import { getSiteImages } from "@/lib/site/settings";
 
 export const metadata: Metadata = {
   title: "Transparence",
@@ -28,12 +28,13 @@ const documents: { title: string; description: string; url?: string }[] = [
 
 export default async function TransparencyPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
+  const siteImages = await getSiteImages();
   setRequestLocale(locale);
 
   return (
     <>
       <PageHeader
-        image={images.guests}
+        image={siteImages["banner.transparence"]}
         eyebrow="Transparence"
         title="Rendre compte, à chaque étape"
         description="La confiance de nos donateurs et partenaires est notre bien le plus précieux. Voici nos engagements et nos documents officiels."

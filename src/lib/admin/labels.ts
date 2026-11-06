@@ -39,3 +39,6 @@ const auditLabels: Record<string, string> = {
 };
 
 export const auditLabel = (action: string) => auditLabels[action] ?? action;
+
+/** Nom lisible d'une page du site public (sans préfixe de langue). */
+export const pageName = (path: string) => (path === "/" ? "Accueil" : decodeURIComponent(path).replace(/^\/(de|en)(?=\/|$)/, "").replace(/^\//, "") || "Accueil");

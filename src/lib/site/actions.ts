@@ -5,7 +5,7 @@ import { executeApproval, requestApproval } from "@/lib/admin/approvals";
 import { audit, getStaff } from "@/lib/admin/staff";
 import { CONTENT_TAG } from "@/lib/content/repository";
 import { defaultGlobalSiteData, type GlobalSiteData } from "./builder-state";
-import { cleanTexts, contactSchema, heroSchema, navigationSchema, settingLabels, socialsSchema } from "./schemas";
+import { cleanTexts, contactSchema, heroSchema, navigationSchema, settingLabels, siteImagesSchema, socialsSchema } from "./schemas";
 import { getSetting } from "./settings";
 
 export type SettingResult = { ok: true; pending?: boolean } | { ok: false; error: string };
@@ -15,6 +15,7 @@ const schemas = {
   socials: socialsSchema,
   "navigation.main": navigationSchema,
   "home.hero": heroSchema,
+  images: siteImagesSchema,
 } as const;
 
 /** Valide un paramètre ; renvoie la valeur propre ou un message d'erreur. */

@@ -5,7 +5,7 @@ import { PageHeader } from "@/components/shared/page-header";
 import { Section } from "@/components/shared/section";
 import { SectionTitle } from "@/components/shared/section-title";
 import { pastEvents, upcomingEvents } from "@/lib/content/repository";
-import { images } from "@/content/images";
+import { getSiteImages } from "@/lib/site/settings";
 
 export const metadata: Metadata = {
   title: "Événements",
@@ -17,13 +17,14 @@ export const revalidate = 3600;
 
 export default async function EventsPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
+  const siteImages = await getSiteImages();
   setRequestLocale(locale);
   const [upcoming, past] = await Promise.all([upcomingEvents(), pastEvents()]);
 
   return (
     <>
       <PageHeader
-        image={images.guests}
+        image={siteImages["banner.evenements"]}
         eyebrow="Agenda"
         title="Nos événements"
         description="Portes ouvertes, plantations, rencontres : venez nous rencontrer au Togo ou en ligne. L'inscription ne prend qu'une minute."

@@ -1,11 +1,11 @@
-import { ArrowRight, BadgeCheck, ClipboardCheck, HandCoins, Inbox, Mail, Ticket, UsersRound } from "lucide-react";
+import { ArrowRight, BadgeCheck, ClipboardCheck, Eye, HandCoins, Inbox, Mail, Monitor, Ticket, UserCheck, Users, UsersRound } from "lucide-react";
 import { setRequestLocale } from "next-intl/server";
 import { PageHeading } from "@/components/admin/page-heading";
 import { QuickAccess } from "@/components/admin/quick-access";
 import { ValidationRule } from "@/components/admin/validation-rule";
 import { Link, redirect } from "@/i18n/navigation";
 import { guides } from "@/lib/admin/guides";
-import { auditLabel } from "@/lib/admin/labels";
+import { auditLabel, pageName } from "@/lib/admin/labels";
 import { getAdminNav } from "@/lib/admin/nav";
 import { getStaff } from "@/lib/admin/staff";
 import { formatDate } from "@/lib/format";
@@ -17,6 +17,15 @@ type Stat = {
   href?: string;
   icon: typeof Inbox;
   tone: string;
+};
+
+type Traffic = {
+  views: number;
+  visitors: number;
+  members: number;
+  today: number;
+  daily: { day: string; views: number; visitors: number }[];
+  pages: { path: string; views: number }[];
 };
 
 const fcfa = (n: number) => `${n.toLocaleString("fr-FR")} FCFA`;
@@ -175,6 +184,21 @@ export default async function AdminHome({ params }: { params: Promise<{ locale: 
   }
   const max = Math.max(1, ...months.map((m) => m.value));
 
+  // Fréquentation du site public sur 30 jours (même source que la page Statistiques).
+  const { data: trafficData } = showStats ? await supabase.rpc("site_stats", { p_days: 30 }) : { data: null };
+  const traffic = trafficData as unknown as Traffic | null;
+  const maxDay = Math.max(1, ...(traffic?.daily ?? []).map((d) => d.views));
+  const topPages = (traffic?.pages ?? []).slice(0, 5);
+  const maxPage = Math.max(1, ...topPages.map((p) => p.views));
+  const trafficCards = traffic
+    ? [
+        { label: "Visiteurs", value: traffic.visitors, icon: Users, tone: "bg-ktgw-green/15 text-ktgw-green-strong" },
+        { label: "Pages vues", value: traffic.views, icon: Eye, tone: "bg-ktgw-sun/20 text-ktgw-orange" },
+        { label: "Membres connectés", value: traffic.members, icon: UserCheck, tone: "bg-ktgw-red/10 text-ktgw-red-strong" },
+        { label: "Visiteurs aujourd'hui", value: traffic.today, icon: Monitor, tone: "bg-ink/10 text-ink dark:bg-white/10 dark:text-white" },
+      ]
+    : [];
+
   const { data: recent } = staff.presidency
     ? await supabase.from("audit_log").select("id, action, entity, details, created_at, actor_id").order("created_at", { ascending: false }).limit(8)
     : { data: null };
@@ -233,6 +257,69 @@ export default async function AdminHome({ params }: { params: Promise<{ locale: 
                 );
               })}
             </ul>
+          )}
+
+          {traffic && (
+            <section aria-labelledby="frequentation" className="rounded-3xl bg-card p-6 shadow-soft ring-1 ring-foreground/5">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <h2 id="frequentation" className="text-lg font-bold">
+                    Fréquentation du site
+                  </h2>
+                  <p className="text-sm text-muted-foreground">30 derniers jours, sans cookie publicitaire ni adresse IP.</p>
+                </div>
+                <Link href="/admin/statistiques" className="shrink-0 text-sm font-semibold text-ktgw-red">
+                  Tout voir
+                </Link>
+              </div>
+              <ul className="mt-5 grid grid-cols-2 gap-3 2xl:grid-cols-4">
+                {trafficCards.map((c) => (
+                  <li key={c.label} className="flex items-center gap-3 rounded-2xl bg-muted/50 p-4 ring-1 ring-foreground/5">
+                    <span className={`flex size-10 shrink-0 items-center justify-center rounded-xl ${c.tone}`}>
+                      <c.icon aria-hidden className="size-5" />
+                    </span>
+                    <span className="min-w-0">
+                      <span className="block text-2xl font-extrabold tabular-nums">{c.value.toLocaleString("fr-FR")}</span>
+                      <span className="block truncate text-xs text-muted-foreground">{c.label}</span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-6 grid gap-6 lg:grid-cols-2">
+                <div>
+                  <h3 className="text-sm font-semibold">Pages vues par jour</h3>
+                  {!traffic.daily.length ? (
+                    <p className="mt-3 text-sm text-muted-foreground">Aucune visite enregistrée sur la période.</p>
+                  ) : (
+                    <ol className="mt-3 flex h-32 items-end gap-0.5" aria-label="Pages vues par jour">
+                      {traffic.daily.map((d) => (
+                        <li key={d.day} className="flex h-full flex-1 flex-col justify-end" title={`${formatDate(d.day, locale, "short")} : ${d.views} pages vues, ${d.visitors} visiteurs`}>
+                          <span className="w-full rounded-t bg-gradient-to-t from-ktgw-green-strong to-ktgw-green" style={{ height: `${Math.max(3, (d.views / maxDay) * 100)}%` }} />
+                        </li>
+                      ))}
+                    </ol>
+                  )}
+                </div>
+                <div>
+                  <h3 className="text-sm font-semibold">Pages les plus consultées</h3>
+                  {!topPages.length ? (
+                    <p className="mt-3 text-sm text-muted-foreground">Aucune page consultée sur la période.</p>
+                  ) : (
+                    <ul className="mt-3 flex flex-col gap-2.5">
+                      {topPages.map((p) => (
+                        <li key={p.path} className="text-sm">
+                          <div className="flex justify-between gap-3">
+                            <span className="truncate font-medium">{pageName(p.path)}</span>
+                            <span className="tabular-nums text-muted-foreground">{p.views}</span>
+                          </div>
+                          <span className="mt-1 block h-1.5 rounded-full bg-ktgw-green/70" style={{ width: `${(p.views / maxPage) * 100}%` }} />
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              </div>
+            </section>
           )}
 
           {showStats && (

@@ -6,7 +6,7 @@ import { PageHeader } from "@/components/shared/page-header";
 import { Reveal } from "@/components/shared/reveal";
 import { Section } from "@/components/shared/section";
 import { SectionTitle } from "@/components/shared/section-title";
-import { images } from "@/content/images";
+import { getSiteImages } from "@/lib/site/settings";
 import { Link } from "@/i18n/navigation";
 
 export const metadata: Metadata = {
@@ -24,12 +24,13 @@ const ways = [
 
 export default async function GetInvolvedPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
+  const siteImages = await getSiteImages();
   setRequestLocale(locale);
 
   return (
     <>
       <PageHeader
-        image={images.plantingHibiscus}
+        image={siteImages["banner.s-engager"]}
         eyebrow="S'engager"
         title={
           <>
